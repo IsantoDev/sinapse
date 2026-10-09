@@ -247,8 +247,9 @@ body.immersive .cv-in{padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))
   .cs-body>*{grid-column:1/-1}.cs-body>.case{grid-column:auto}
   .tm-log .m{max-width:72%}
   .sheet{left:var(--side);bottom:0}
-  .sheet-in{max-width:1100px!important;margin:0 auto;display:block!important;column-count:2;column-gap:32px;padding:28px 32px!important}
-  .sheet-in>*{break-inside:avoid;margin-bottom:22px}.sheet-in>.sheet-head{column-span:all}
+  .sheet-in{max-width:1180px!important;margin:0 auto;padding:28px 36px 40px!important}
+  .pgrid{display:grid!important;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:36px;align-items:start}
+  .statgrid.five{grid-template-columns:repeat(5,minmax(0,1fr))}
   .ov{align-items:center}.ov-in{border-radius:22px;border-bottom:1px solid var(--line);max-width:620px}
   #genchip{left:calc(50% + var(--side)/2)}
 }
@@ -270,6 +271,23 @@ body.immersive .cv-in{padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))
   .tm-info .infolog p{padding:6px 0;border-bottom:1px dashed var(--line)}
   .nstrip.big i{width:calc(12px + var(--ns,0)*12px);height:calc(12px + var(--ns,0)*12px)}
 }
+/* Perfil */
+.phead{display:flex;gap:14px;align-items:center;min-width:0;flex:1}
+.pring{width:58px;height:58px;border-radius:50%;flex:none;display:grid;place-items:center;background:conic-gradient(var(--spark) calc(var(--p)*360deg),var(--line) 0)}
+.pring b{width:48px;height:48px;border-radius:50%;background:var(--bg);display:grid;place-items:center;font:800 20px var(--f-display)}
+.ptx{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}.ptx h3{margin:0}
+.pbar{height:6px;border-radius:9px;background:var(--surface);overflow:hidden;max-width:420px}.pbar i{display:block;height:100%;background:var(--spark);border-radius:inherit}
+.ptx small{font:11.5px var(--f-mono);color:var(--muted)}
+.statgrid.five{grid-template-columns:repeat(3,minmax(0,1fr))}
+.statgrid.five .stat:nth-child(n+4){display:none}
+.pgrid{display:flex;flex-direction:column;gap:22px}
+.pcol{display:flex;flex-direction:column;gap:20px;min-width:0}
+.pgt{margin:4px 0 -6px;font:700 15px var(--f-display);letter-spacing:-.01em;color:var(--fg);padding-bottom:6px;border-bottom:1px solid var(--line)}
+details.dt{cursor:pointer}details.dt summary{list-style:none;display:flex;flex-direction:column;gap:4px}details.dt summary::-webkit-details-marker{display:none}
+details.dt summary::after{content:'Ver explicação';font:600 11px var(--f-mono);color:var(--muted);letter-spacing:.04em}
+details.dt[open] summary::after{content:'Fechar'}
+details.dt small{display:block;margin-top:6px}
+@media (min-width:1024px){.statgrid.five{grid-template-columns:repeat(5,minmax(0,1fr))}.statgrid.five .stat:nth-child(n+4){display:block}}
 /* Design: hierarquia, agrupamento e dados */
 .pill.daily{gap:4px}.pill.daily svg{width:16px;height:16px}.pill.daily .of{color:var(--muted);font-weight:400}
 .pill.daily.done{border-color:var(--ok);color:var(--ok)}
@@ -1966,7 +1984,7 @@ function feedLive(k,v5,w){ST.live=ST.live||{};const l=ST.live[k]||{v:v5,n:0,last
 function recordSignal(a,av,obs){if(!av||typeof av!=='object')return;const got=[];CAT_KEYS.forEach(k=>{const v=av[k];if(v==null||!isFinite(v))return;const x=clamp(Math.round(+v),0,3);got.push([k,x]);feedLive(k,x*5/3,.22)});if(!got.length)return;
   const o=sstr(obs,200)||'';a.signals=a.signals||[];a.signals.push({t:Date.now(),s:Object.fromEntries(got),o,stage:a.stage});if(a.signals.length>80)a.signals.shift();
   const top=got.slice().sort((x,y)=>Math.abs(y[1]-1.5)-Math.abs(x[1]-1.5))[0];
-  ST.liveLog=[{k:top[0],v:top[1],o,case:a.def.title,date:today()},...(ST.liveLog||[])].slice(0,30);save();
+  if(!(ST.liveLog&&ST.liveLog[0]&&ST.liveLog[0].o===o&&ST.liveLog[0].case===a.def.title))ST.liveLog=[{k:top[0],v:top[1],o,case:a.def.title,date:today()},...(ST.liveLog||[])].slice(0,30);save();
   if(caseView==='chat'){renderStrip(top[0]);if(o)signalToast(top[0],top[1],o);const il=document.querySelector('.tm-info .infolog');if(il)il.innerHTML=(a.signals||[]).slice(-4).reverse().map(x=>x.o?`<p>${esc(x.o)}</p>`:'').join('')}layoutPanels()}
 function caseAvg(a,k){const xs=(a.signals||[]).map(s=>s.s[k]).filter(v=>v!=null);return xs.length?xs.reduce((p,c)=>p+c,0)/xs.length:null}
 function renderStrip(pulse){const a=ST.activeCase,els=document.querySelectorAll('.nstrip');if(!a||!els.length)return;const col={dados:'var(--cat-dados)',estat:'var(--cat-estat)',modelo:'var(--cat-modelo)',negocio:'var(--cat-negocio)'};
@@ -2046,23 +2064,28 @@ $('#openCases').addEventListener('click',openCases);
 /* ================= perfil ================= */
 function openSheet(){if(!$('#cases').hidden)closeCases(true);setNav('profile');armBack();const li=levelInfo(ST.xp),tot=ST.ok+ST.bad,phr=QUIZ.filter(c=>c.pro&&(ST.ans[c.id]||{}).ok>0).reverse();
   const tracks=masteryTracks();
-  const item=id=>{const c=byId[id];if(!c)return'';const txt=c.q||c.title;return `<div class="li t-${catOf(c)}"><span class="chip">${CAT_LABEL[catOf(c)]}</span><span>${esc(txt)}</span>${c.why?`<small>${esc(c.why)}</small>`:c.ans?`<small>${esc(c.ans)}</small>`:''}</div>`};
+  const item=id=>{const c=byId[id];if(!c)return'';const txt=c.q||c.title,ex=c.why||c.ans||(c.steps?c.steps.map(x=>x.why).join(' '):'');return `<details class="li dt t-${catOf(c)}"><summary><span class="chip">${CAT_LABEL[catOf(c)]}</span><span>${esc(txt)}</span></summary>${c.kind==='quiz'?`<small><b>Resposta:</b> ${esc(c.opts[0])}</small>`:''}${ex?`<small>${esc(ex)}</small>`:''}</details>`};
   $('#sheet').innerHTML=`<div class="sheet-in" role="dialog" aria-label="Seu progresso">
-   <div class="sheet-head"><h3>Nível ${li.L} · ${esc(rankOf(li.L))}</h3><button class="icon-btn" id="closeSheet" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
-   <div class="statgrid"><div class="stat"><b>${ST.xp.toLocaleString('pt-BR')}</b><span>XP total</span></div><div class="stat"><b>${tot?pct(ST.ok/tot,0):'–'}</b><span>acertos (${tot})</span></div><div class="stat"><b>${ST.best}</b><span>maior combo</span></div></div>
+   <div class="sheet-head"><div class="phead"><span class="pring" style="--p:${li.into/li.need}"><b>${li.L}</b></span><div class="ptx"><h3>${esc(rankOf(li.L))}</h3><div class="pbar"><i style="width:${Math.round(li.into/li.need*100)}%"></i></div><small>${li.into} de ${li.need} XP para o nível ${li.L+1} · ${ST.xp.toLocaleString('pt-BR')} XP no total</small></div></div><button class="icon-btn" id="closeSheet" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+   <div class="statgrid five"><div class="stat"><b>${tot?pct(ST.ok/tot,0):'–'}</b><span>acertos (${tot})</span></div><div class="stat"><b>${(ST.lastDay===today()||ST.lastDay===yesterday())?ST.streak:0}</b><span>dias seguidos</span></div><div class="stat"><b>${ST.best}</b><span>maior combo</span></div><div class="stat"><b>${(ST.cases||[]).length}</b><span>casos jogados</span></div><div class="stat"><b>${(ST.cases||[]).length?num((ST.cases||[]).reduce((a,c)=>a+c.nota,0)/(ST.cases||[]).length,1):'–'}</b><span>nota média nos casos</span></div></div>
+   <div class="pgrid"><div class="pcol"><h5 class="pgt">Seu progresso</h5>
    ${neuralMap(tracks)}
    ${weekSpark()}
    <div><h4>Domínio por categoria (acertou 2× seguidas)</h4><div class="mastery">${tracks.map(t=>`<div class="mrow t-${t.k}"><span>${CATS[t.k]}</span><div class="mbar"><i style="width:${t.n?t.m/t.n*100:0}%"></i></div><output>${t.m}/${t.n}</output></div>`).join('')}</div></div>
+   ${calibHTML()}
+   </div><div class="pcol"><h5 class="pgt">Para usar em reuniões e entrevistas</h5>
    <div><h4>Frases prontas (${phr.length})</h4><div class="list">${phr.length?phr.slice(0,25).map(c=>`<div class="li t-${catOf(c)}"><span class="chip">${MODE_LABEL[c.mode]||CAT_LABEL[catOf(c)]}</span><span>${esc(c.pro)}</span></div>`).join(''):'<p class="empty">Cada card que você acerta deixa aqui uma frase pronta para reunião e entrevista. Releia antes de entrar numa.</p>'}</div></div>
    ${(ST.casePhrases||[]).length?`<div><h4>Frases dos casos (${ST.casePhrases.length})</h4><div class="list">${ST.casePhrases.slice(0,15).map(p=>`<div class="li t-${p.cat}"><span class="chip">${CATS[p.cat]||'Caso'}</span><span>${esc(p.t)}</span></div>`).join('')}</div></div>`:''}
-   ${calibHTML()}
    ${(ST.stories||[]).length?`<div><h4>Histórias para entrevista (${ST.stories.length})</h4><div class="list">${ST.stories.slice(0,10).map((h,i)=>`<div class="li t-${h.cat}"><span class="chip">${CATS[h.cat]||'Caso'}</span><b>${esc(h.title)}</b><small><b>Situação.</b> ${esc(h.s)} <b>Tarefa.</b> ${esc(h.t)} <b>Ação.</b> ${esc(h.a)} <b>Resultado.</b> ${esc(h.r)}</small><button class="rbtn cp" type="button" data-story="${i}">Copiar</button></div>`).join('')}</div></div>`:''}
-   <div><h4>Resumo e outras contas</h4><div class="btnrow"><button class="btn" id="wkBtn" type="button">Resumo da semana</button><button class="btn ai-only" id="wkPost" type="button">Post da semana para LinkedIn</button><button class="btn" id="exBtn" type="button">Levar progresso para outra conta</button><button class="btn" id="imBtn" type="button">Trazer progresso</button></div><div id="xfer"></div></div>
+   <h5 class="pgt">Revisar</h5>
    <div><h4>Caderno de erros (${ST.errs.length})</h4><div class="list">${ST.errs.length?ST.errs.slice(0,15).map(item).join(''):'<p class="empty">Nada aqui ainda. O que você errar entra aqui com a explicação.</p>'}</div></div>
    <div><h4>Salvos (${ST.saved.length})</h4><div class="list">${ST.saved.length?ST.saved.map(item).join(''):'<p class="empty">Toque em Salvar num card para guardar aqui.</p>'}</div></div>
+   <h5 class="pgt">Conta e conteúdo</h5>
+   <div><h4>Resumo e outras contas</h4><div class="btnrow"><button class="btn" id="wkBtn" type="button">Resumo da semana</button><button class="btn ai-only" id="wkPost" type="button">Post da semana para LinkedIn</button><button class="btn" id="exBtn" type="button">Levar progresso para outra conta</button><button class="btn" id="imBtn" type="button">Trazer progresso</button></div><div id="xfer"></div></div>
    <div><h4>Conteúdo novo e uso offline</h4><p class="hook" style="margin-bottom:10px"><span class="gen-count">${GEN.length}</span> cards gerados pelo Claude, somando ${CARDS.length} no total. Reserva de cards ainda não vistos: <b class="reserve-min">~${Math.min(reserveMin(),RESERVE_MIN)}</b> de ${RESERVE_MIN} min (no seu ritmo de ~${Math.round(secPerCard())} s por card). A geração só roda com internet. Para estudar sem conexão, baixe o arquivo: ele leva todos os cards e seu progresso e abre em qualquer navegador.</p>
     <div class="btnrow"><button class="btn gen-toggle ai-only" type="button" aria-pressed="${!!ST.autoGen}"></button><button class="btn ai-only" id="genNow" type="button">Gerar 6 agora</button><button class="btn" id="dlOffline" type="button">Baixar versão offline (.html)</button></div><p class="sync" id="dlMsg" style="margin-top:8px"></p></div>
    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span class="sync">progresso salvo: ${cloudState==='nuvem'?'na sua conta (sincroniza entre aparelhos)':'neste navegador'}</span><button class="btn danger" id="resetBtn" type="button">Zerar progresso</button></div>
+   </div></div>
   </div>`;
   $('#sheet').hidden=false;$('#closeSheet').addEventListener('click',closeSheet);refreshGenUI();
   $('#genNow').addEventListener('click',()=>{gen.backoff=0;generate(pickGenTrack())});

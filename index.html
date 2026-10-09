@@ -158,7 +158,7 @@ body.ai-on .ai-btn{display:inline-flex!important}
 .sheet h4{margin:0 0 8px;font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .sheet-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .mastery{display:flex;flex-direction:column;gap:9px}
-.mrow{display:grid;grid-template-columns:110px 1fr 44px;gap:10px;align-items:center;font-size:13px}
+.mrow{display:grid;grid-template-columns:150px 1fr 44px;gap:10px;align-items:center;font-size:13px}
 .mbar{height:8px;border-radius:99px;background:var(--surface);overflow:hidden}
 .mbar i{display:block;height:100%;background:var(--tc);border-radius:inherit;transition:width .6s}
 .mrow output{font:600 12px var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
@@ -181,6 +181,61 @@ body.ai-on .ai-btn{display:inline-flex!important}
 #lvlup .s{color:var(--muted);font:12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
 @keyframes zoom{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
 [hidden]{display:none!important}
+.t-dados{--tc:var(--ana)} .t-estat{--tc:var(--ds)} .t-modelo{--tc:var(--ia)} .t-negocio{--tc:var(--ml)}
+.tab-cases{background:var(--spark);border-color:var(--spark);color:var(--bg);font-weight:700}
+/* Casos: lista + chat de simulação */
+#cases{position:fixed;inset:0;z-index:28;background:var(--bg);display:flex;justify-content:center;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.cs{width:100%;max-width:560px;height:100%;display:flex;flex-direction:column;min-height:0}
+.cs-h{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.cs-h .t{flex:1;min-width:0;display:flex;flex-direction:column}
+.cs-h .t b{font:700 17px/1.15 var(--f-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs-h .t span{font:11px var(--f-mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs-body{flex:1;min-height:0;overflow-y:auto;padding:14px 16px 20px;display:flex;flex-direction:column;gap:12px}
+.cs-intro{font-size:14px;color:var(--muted);margin:0}
+.cs-sec{font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:6px 0 0}
+.case{display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:13px 14px;cursor:pointer}
+.case:hover:not(:disabled){border-color:var(--tc)}
+.case:disabled{opacity:.55;cursor:default}
+.case .row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font:600 10.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.case .chip{font:600 10px var(--f-mono);padding:2px 6px}
+.case b{font:700 16px/1.2 var(--f-display);color:var(--fg)}
+.case p{margin:0;font-size:13.5px;color:var(--muted)}
+.case .score{margin-left:auto;color:var(--ok)}
+.genform{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px dashed var(--line);border-radius:16px;padding:13px 14px}
+.genform .seg{gap:5px}
+.note{font-size:13px;color:var(--muted);background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.cv-obj{background:var(--bg2);border-bottom:1px solid var(--line);padding:12px 16px;font-size:13.5px;display:flex;flex-direction:column;gap:6px;max-height:45%;overflow-y:auto}
+.cv-obj ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:3px}
+.cv-obj li.done{color:var(--ok);text-decoration:line-through}
+.cv-obj li.now{color:var(--fg);font-weight:600}
+.cv-obj li{color:var(--muted)}
+.stagebar{display:flex;gap:4px;padding:0 16px 10px}
+.stagebar i{flex:1;height:4px;border-radius:9px;background:var(--surface)}
+.stagebar i.on{background:var(--spark)}
+.m{display:flex;gap:8px;align-items:flex-end;max-width:92%;animation:rise .25s ease-out}
+.m .av{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;font:700 11px var(--f-mono);color:var(--bg);background:var(--pc,var(--muted))}
+.m .b{background:var(--surface);border:1px solid var(--line);border-radius:16px 16px 16px 4px;padding:8px 12px;font-size:14.5px;line-height:1.42;white-space:pre-wrap;overflow-wrap:anywhere;min-width:0}
+.m .nm{display:block;font:600 11px var(--f-body);color:var(--pc,var(--muted));margin-bottom:2px}
+.m.me{align-self:flex-end}
+.m.me .b{background:color-mix(in srgb,var(--spark) 22%,var(--surface));border-color:color-mix(in srgb,var(--spark) 45%,var(--line));border-radius:16px 16px 4px 16px}
+.m.nar{align-self:center;max-width:100%;text-align:center;font-size:12.5px;color:var(--muted);font-style:italic;padding:2px 8px}
+.m.men .b{background:color-mix(in srgb,var(--ia) 14%,var(--bg2));border:1px dashed var(--ia)}
+.m.sys{align-self:center;font:12px var(--f-mono);color:var(--bad)}
+.m pre.art{margin:6px 0 2px;padding:8px 10px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font:11.5px/1.45 var(--f-mono);overflow-x:auto;white-space:pre;max-width:100%}
+.typing .b{display:flex;gap:4px;padding:12px 14px}
+.typing .b i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:pulse 1s infinite}
+.typing .b i:nth-child(2){animation-delay:.15s}.typing .b i:nth-child(3){animation-delay:.3s}
+.cv-in{display:flex;gap:8px;align-items:flex-end;padding:10px 16px 6px;border-top:1px solid var(--line)}
+.cv-in textarea{flex:1;min-width:0;resize:none;max-height:140px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font:15px/1.4 var(--f-body)}
+.cv-in textarea:focus{outline:2px solid var(--spark);outline-offset:0}
+.cv-in .send{width:44px;height:44px;border-radius:50%;border:0;background:var(--spark);color:var(--bg);display:grid;place-items:center;cursor:pointer;flex:none}
+.cv-in .send:disabled{opacity:.4}
+.cv-act{display:flex;gap:6px;padding:0 16px 10px;flex-wrap:wrap}
+.cv-act .rbtn{font-size:12px}
+.debrief{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px;animation:rise .35s ease-out}
+.debrief .nota{font:800 44px/1 var(--f-display);color:var(--spark)}
+.debrief h5{margin:0;font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.debrief ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:14px}
 .ctx{display:flex;gap:10px;align-items:flex-start}
 .ctx .av{width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1.5px solid var(--tc);display:grid;place-items:center;font:700 12px var(--f-mono);color:var(--tc);flex:none}
 .ctx .bub{background:var(--bg2);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:9px 13px;font-size:15px;line-height:1.4;min-width:0}
@@ -230,12 +285,13 @@ body.ai-on .ai-only{display:flex!important}
       </div>
       <button class="icon-btn" id="soundBtn" aria-label="Som ligado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path id="sndWave" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg></button>
     </div>
-    <nav class="tabs" role="tablist" aria-label="Trilhas">
-      <button class="tab" role="tab" data-f="all" aria-selected="true">Tudo</button>
-      <button class="tab t-ana" role="tab" data-f="ana" aria-selected="false"><i></i>Analista</button>
-      <button class="tab t-ds" role="tab" data-f="ds" aria-selected="false"><i></i>Ciência de Dados</button>
-      <button class="tab t-ml" role="tab" data-f="ml" aria-selected="false"><i></i>Machine Learning</button>
-      <button class="tab t-ia" role="tab" data-f="ia" aria-selected="false"><i></i>IA</button>
+    <nav class="tabs" role="tablist" aria-label="Categorias">
+      <button class="tab tab-cases" type="button" id="openCases">Casos</button>
+      <button class="tab" role="tab" data-f="all" aria-selected="true">Aleatório</button>
+      <button class="tab t-dados" role="tab" data-f="dados" aria-selected="false"><i></i>Dados e Engenharia</button>
+      <button class="tab t-estat" role="tab" data-f="estat" aria-selected="false"><i></i>Estatística</button>
+      <button class="tab t-modelo" role="tab" data-f="modelo" aria-selected="false"><i></i>Modelagem e IA</button>
+      <button class="tab t-negocio" role="tab" data-f="negocio" aria-selected="false"><i></i>Negócio e Liderança</button>
     </nav>
   </header>
   <main id="feed" aria-label="Feed de cards"></main>
@@ -243,6 +299,7 @@ body.ai-on .ai-only{display:flex!important}
 <canvas data-shell id="fx" aria-hidden="true"></canvas>
 <div data-shell id="sheet" class="sheet" hidden></div><div data-shell id="genchip" hidden></div>
 <div data-shell id="lvlup" hidden></div>
+<div data-shell id="cases" hidden></div>
 
 <script data-shell>
 "use strict";
@@ -611,6 +668,17 @@ VIZ.gchart=({S,data,card})=>{const ch=data,tc=getComputedStyle(card).getProperty
 
 /* ================= conteúdo ================= */
 const TRACKS={ana:'Analista',ds:'Ciência de Dados',ml:'ML',ia:'IA',neuro:'Neuro'};
+/* As 4 categorias do mapa de competências. Cada card cai em uma; o feed pode ser aleatório ou filtrado. */
+const CATS={dados:'Dados e Engenharia',estat:'Estatística',modelo:'Modelagem e IA',negocio:'Negócio e Liderança'};
+const CAT_LABEL={...CATS,neuro:'Neuro'};
+const CAT_KEYS=Object.keys(CATS);
+const CAT_ID={};
+'a1 a14 a15 s-outlier s-normal m1 m2 m3 m4 m5 m11 m13 m14 m16 s-over s-th r2 r8 r11 r12 r14 f2 f4 f5 f7'.split(' ').forEach(id=>CAT_ID[id]='estat');
+'a5 a7 a8 r1 r3 r4 r5 r16 f1 f6'.split(' ').forEach(id=>CAT_ID[id]='negocio');
+'m15 r7 r13 r15'.split(' ').forEach(id=>CAT_ID[id]='dados');
+CAT_ID.d11='modelo';
+const TRACK2CAT={ana:'dados',ds:'estat',ml:'modelo',ia:'modelo'};
+function catOf(c){if(!c)return'neuro';if(c.cat)return c.cat;if(c.track==='neuro'||!c.track)return'neuro';return c.cat=CAT_ID[c.id]||(c.mode==='reuniao'?'negocio':TRACK2CAT[c.track]||'modelo')}
 const CARDS=[
 /* ---- simulações ---- */
 {id:'s-outlier',track:'ana',kind:'sim',viz:'outlier',title:'Média mente quando aparece um extremo',hook:'Cinco colegas ganham perto de <b>R$ 3 mil</b>. Arraste o salário do sexto e veja quem se mexe: a média ou a mediana.',follow:'a1'},
@@ -739,6 +807,22 @@ const CARDS=[
 {id:'r15',track:'ml',kind:'quiz',mode:'trabalho',ctx:{who:'Engenheiro de dados',say:'Seu modelo em produção começou a dar score alto para todo mundo desde segunda.'},q:'Primeira coisa a verificar:',opts:['Se a distribuição das features de entrada mudou: algum campo veio nulo, em outra unidade ou com nova categoria','Retreinar o modelo imediatamente','Aumentar o threshold','Trocar o algoritmo'],why:'Mudança brusca de um dia para o outro quase sempre é dado quebrado no pipeline, não drift lento. Retreinar com dado quebrado ensina o erro.',pro:'Mudou de repente, eu olho o dado de entrada antes de mexer no modelo.'},
 {id:'r16',track:'ia',kind:'quiz',mode:'reuniao',ctx:{who:'Diretor de atendimento',say:'Dá pra colocar o ChatGPT pra responder os clientes direto, sem ninguém revisar?'},q:'Resposta responsável e útil:',opts:['“Dá para começar com o assistente sugerindo respostas para o atendente aprovar, medindo acerto e tempo economizado. Com taxa de acerto alta num tipo de pedido, liberamos resposta direta só para ele.”','“Sim, a IA já é melhor que humano.”','“Não, IA alucina, é perigoso.”','“Só depois de treinar um modelo próprio.”'],why:'Entrar com humano no circuito gera dados de qualidade e confiança. A automação total vem por tipo de pedido, com métrica, não de uma vez.',pro:'IA entra primeiro sugerindo, com métrica; a automação vem por partes, onde o acerto já foi provado.'},
 
+/* ---- mapa de competências: habilidades sem cobertura ---- */
+{id:'k1',cat:'dados',track:'ana',kind:'quiz',mode:'trabalho',q:'Seu script de previsão roda todo dia às 5h pelo agendador. Um dia falha calado e ninguém percebe por uma semana. O que evita isso?',opts:['Validar a saída (contagem, nulos, faixa de valores) e alertar no canal do time quando falhar ou fugir do esperado','Rodar o script à mão todo dia','Aumentar o tempo limite do agendador','Escrever mais comentários no código'],why:'Pipeline sem verificação falha em silêncio. Checagens simples na saída e um alerta transformam uma semana de dado errado em uma hora.',pro:'Todo processo agendado meu valida a própria saída e avisa quando algo sai do normal.'},
+{id:'k2',cat:'dados',track:'ana',kind:'quiz',mode:'bolso',q:'Tabela de 500 milhões de linhas no data warehouse. A consulta de um mês está lenta e cara. Primeiro ajuste?',opts:['Filtrar pela coluna de partição (data) e selecionar só as colunas necessárias','Trocar SELECT * por SELECT DISTINCT *','Exportar para CSV e abrir no Excel','Adicionar ORDER BY no final'],why:'Em warehouses colunares (BigQuery, Snowflake, Redshift) o custo cresce com os bytes lidos. Partição corta linhas; escolher colunas corta o resto.',pro:'Em warehouse, filtro pela partição e escolho as colunas: o custo é proporcional ao que eu leio.'},
+{id:'k3',cat:'dados',track:'ml',kind:'quiz',mode:'reuniao',ctx:{who:'Head de dados',say:'Três times calculam “cliente ativo” cada um do seu jeito e os números nunca batem na reunião.'},q:'Proposta de quem pensa em plataforma:',opts:['“Definimos a métrica uma vez, versionada numa camada semântica ou de features, e todo mundo consome dali. Começo pelas 5 métricas mais disputadas.”','“Cada time continua do seu jeito, mas avisa qual usou.”','“Vamos fazer uma reunião por mês para conciliar.”','“O meu cálculo está certo, os outros adotam.”'],why:'Divergência de métrica se resolve com uma fonte única e versionada, não com reunião. Começar pelas métricas mais disputadas dá resultado rápido.',pro:'Métrica importante tem uma definição, um dono e um lugar só.'},
+{id:'k4',cat:'estat',track:'ds',kind:'quiz',mode:'trabalho',q:'O A/B foi planejado em 50/50 e terminou com 52.300 usuários em A e 47.700 em B. O que fazer antes de olhar a conversão?',opts:['Investigar o desbalanceamento (sample ratio mismatch): algo falhou na atribuição ou no registro','Nada, é variação normal','Descartar os usuários a mais de A','Concluir que A é melhor porque atraiu mais gente'],why:'Com 100 mil usuários, o desvio esperado é de uns 160. Uma diferença de 2.300 é impossível por acaso e indica bug: o resultado não é confiável até achar a causa.',pro:'Antes de ler um A/B, confiro se a divisão dos grupos saiu como planejada.'},
+{id:'k5',cat:'negocio',track:'ds',kind:'quiz',mode:'reuniao',ctx:{who:'Gerente de logística',say:'Quero um modelo que preveja quais entregas vão atrasar.'},q:'Melhor primeira pergunta:',opts:['“O que você faria diferente se soubesse que um pedido vai atrasar? E quantos pedidos por dia dá para tratar?”','“Qual algoritmo você prefere?”','“Quantos anos de histórico temos?”','“Ok, começo amanhã.”'],why:'Formular o problema começa pela ação e pela capacidade de agir. Se só dá para tratar 50 pedidos por dia, o problema vira ranquear os 50 de maior risco, e isso muda a métrica.',pro:'Antes do modelo, pergunto qual ação a previsão dispara e quanto dá para agir por dia.'},
+{id:'k6',cat:'negocio',track:'ana',kind:'quiz',mode:'bolso',q:'Em varejo, por que comparar as vendas de hoje com o mesmo dia da semana passada, e não com ontem?',opts:['Porque a venda tem ciclo semanal: segunda não se compara com domingo','Porque ontem ainda não fechou','Porque a semana passada é mais recente','Tanto faz'],why:'Conhecer o domínio inclui saber os ciclos: semana, dia de pagamento, feriados, fim de ano. Comparar dias diferentes gera falsos alarmes.',pro:'Comparo com o mesmo dia da semana anterior e, perto de datas especiais, com o ano passado.'},
+{id:'k7',cat:'negocio',track:'ml',kind:'quiz',mode:'reuniao',ctx:{who:'Head de marketing',say:'Meu pedido é o mais urgente. Coloca na frente de tudo.'},q:'Resposta de quem lidera o backlog:',opts:['“Te mostro a fila com o impacto e o esforço de cada pedido. Se o seu entrar agora, sai o de vendas; vamos decidir isso junto com eles hoje.”','“Tá bom, coloco na frente.”','“Não dá, a fila está cheia.”','“Manda por e-mail que eu vejo.”'],why:'Priorizar é tornar visível o custo da escolha. Quem pede prioridade precisa ver o que deixa de ser feito, e a decisão envolve quem perde.',pro:'Eu não digo não: mostro o que sai da fila para o seu pedido entrar.'},
+{id:'k8',cat:'negocio',track:'ds',kind:'quiz',mode:'trabalho',q:'Você revisa a análise de um colega: “a campanha aumentou as vendas em 15%”, comparando março com fevereiro. Melhor comentário de revisão?',opts:['“Março tem mais dias e dois pagamentos de salário. Dá para comparar com março do ano passado ou com lojas sem campanha? Posso ajudar a montar.”','“Está errado, refaz.”','“Aprovado.”','“Use um modelo mais sofisticado.”'],why:'Boa revisão aponta o risco, explica o porquê e propõe o caminho, em tom de colaboração. Isso eleva o padrão do time sem criar defesa.',pro:'Em revisão, aponto o risco e proponho o caminho, não só o problema.'},
+{id:'k9',cat:'negocio',track:'ml',kind:'quiz',mode:'trabalho',q:'Um júnior do seu time está travado há 2 dias e não pediu ajuda. Melhor ação de líder?',opts:['Fazer um pareamento curto agora, deixando ele conduzir, e combinar uma regra: travou 2 horas, chama alguém','Resolver o problema por ele para ganhar tempo','Esperar ele pedir ajuda','Reclamar do atraso na daily'],why:'Mentoria resolve o caso e cria o hábito. Fazer por ele tira o aprendizado; esperar custa dias. A regra explícita tira a vergonha de pedir ajuda.',pro:'No meu time a regra é clara: travou duas horas, chama.'},
+{id:'k10',cat:'negocio',track:'ds',kind:'quiz',mode:'reuniao',ctx:{who:'Engenheiro de outra área',say:'Não vou mudar o log do app só pra vocês medirem conversão.'},q:'Como ganhar sem ter autoridade sobre ele?',opts:['“Esse mesmo evento resolve o alerta de erro que o seu time pede há meses. Eu escrevo a especificação e o teste, você só revisa.”','“É prioridade da diretoria, você tem que fazer.”','“Então vou escalar para o seu gestor.”','“Tudo bem, a gente estima sem o dado.”'],why:'Influência sem autoridade vem de alinhar interesses e reduzir o custo para o outro lado. Escalar é o último recurso, porque queima a relação.',pro:'Antes de pedir, descubro o que o outro time ganha e faço a parte chata.'},
+{id:'k11',cat:'negocio',track:'ds',kind:'quiz',mode:'bolso',q:'Como mostrar o valor do time de dados no fim do ano?',opts:['Listar as decisões que o time influenciou, com o ganho estimado em reais ou horas e a premissa de cada conta','Contar quantos dashboards e modelos foram entregues','Mostrar a AUC média dos modelos','Dizer que dados são estratégicos'],why:'Quantidade de entregas não é valor. Decisão influenciada com ganho estimado e premissa explícita é o que a diretoria entende na hora de renovar orçamento.',pro:'O valor do time de dados se mede em decisões melhores, não em dashboards entregues.'},
+{id:'k12',cat:'negocio',track:'ds',kind:'quiz',mode:'trabalho',q:'Um gerente pede a lista de clientes com CPF e diagnóstico médico para uma campanha. O que fazer?',opts:['Confirmar finalidade e base legal com a área de privacidade, e entregar só o mínimo necessário, agregado ou anonimizado quando possível','Mandar a planilha, ele é gerente','Recusar sem explicar','Mandar sem o CPF, mas com nome e diagnóstico'],why:'Dado de saúde é dado sensível na LGPD. A finalidade precisa de base legal, e o princípio da necessidade manda entregar o mínimo. Nome com diagnóstico continua identificando a pessoa.',pro:'Dado sensível só sai com finalidade clara, base legal e o mínimo necessário.'},
+{id:'k13',cat:'negocio',track:'ml',kind:'flip',mode:'entrevista',q:'“Como você decide entre construir uma solução interna ou comprar uma ferramenta?”',ans:'Comparo o custo total: licença contra pessoas, manutenção e infraestrutura por 2 a 3 anos. Construo o que diferencia o negócio e compro o que é commodity. Pesa também o tempo até gerar valor, o risco de ficar preso ao fornecedor e se o time tem capacidade de manter. Quando dá, faço um piloto curto com critério de sucesso definido antes, e prefiro decisões reversíveis.',pro:'Construo o que diferencia o negócio; compro o que é commodity.'},
+{id:'k14',cat:'negocio',track:'ana',kind:'flip',mode:'entrevista',q:'“Me conta de uma vez que você discordou de um stakeholder.”',ans:'Situação: o gestor queria um dashboard com 30 métricas para a diretoria. Tarefa: entregar algo que fosse usado. Ação: perguntei quais decisões seriam tomadas, mostrei um protótipo com 4 KPIs e deixei o resto numa aba de detalhe. Resultado: a diretoria passou a usar o painel toda semana e os pedidos de novas métricas caíram. Aprendi a discordar trazendo uma alternativa pronta.',pro:'Eu discordo trazendo uma alternativa pronta, não só uma objeção.'},
+
 /* ---- entrevista (flip) ---- */
 {id:'f1',track:'ml',kind:'flip',q:'“Explique overfitting para alguém do negócio.”',ans:'É quando o modelo decora o passado em vez de aprender o padrão. Como um aluno que memoriza as respostas da prova antiga: tira 10 nela e vai mal na prova nova. Eu detecto comparando o desempenho em dados que o modelo nunca viu e corrijo simplificando o modelo, regularizando ou trazendo mais dados.'},
 {id:'f2',track:'ml',kind:'flip',q:'“Como você escolheria o threshold de um classificador?”',ans:'Pelo custo de cada erro, não pelo 0,5 padrão. Levanto quanto custa um falso positivo e um falso negativo, calculo o custo esperado para vários thresholds no conjunto de validação e escolho o menor. Depois confirmo uma única vez no teste e monitoro em produção.'},
@@ -756,7 +840,7 @@ const QUIZ=CARDS.filter(c=>c.kind==='quiz'||c.kind==='flip'||c.kind==='chain');
 
 /* ================= estado ================= */
 const RANKS=[[1,'Estagiário de Dados'],[3,'Analista Jr'],[5,'Analista Pleno'],[8,'Cientista de Dados Jr'],[11,'ML Engineer'],[15,'AI Engineer'],[20,'Arquiteto de IA'],[30,'Sinapse Lendária']];
-const DEF=()=>({v:1,xp:0,streak:0,lastDay:'',best:0,ans:{},seen:{},saved:[],errs:[],rev:[],daily:{day:'',n:0},sound:true,ok:0,bad:0,autoGen:false,hidden:[],avgSec:30});
+const DEF=()=>({v:1,xp:0,streak:0,lastDay:'',best:0,ans:{},seen:{},saved:[],errs:[],rev:[],daily:{day:'',n:0},sound:true,ok:0,bad:0,autoGen:false,hidden:[],avgSec:30,cases:[],genCases:[],casePhrases:[],activeCase:null});
 const LSK='sinapse.v1';
 let ST=DEF();
 try{const raw=localStorage.getItem(LSK);if(raw)ST=Object.assign(DEF(),JSON.parse(raw))}catch(e){}
@@ -776,16 +860,11 @@ async function flush(){if(!docRef||saving||!dirty)return;if(!navigator.onLine)re
 async function initCloud(){try{if(!window.claude||!window.claude.use)return;const[db,user]=await Promise.all([window.claude.use('db'),window.claude.use('user')]);if(!db||!user)return;const id=await user.id();if(!id)return;
   colRef=db.collection('data/users/'+id);docRef=colRef.doc('sinapse');const snap=await docRef.get();if(snap.exists){const r=snap.data()||{};if((r.xp||0)>ST.xp){ST=Object.assign(DEF(),JSON.parse(JSON.stringify(r)));try{localStorage.setItem(LSK,JSON.stringify(ST))}catch(e){}hud(false)}else if(ST.xp>(r.xp||0)){dirty=true;flush()}}else if(ST.xp>0){dirty=true;flush()}cloudState='nuvem';await loadCloudGen()}catch(e){}}
 let sampler=null;
-async function initAI(){try{if(!window.claude||!window.claude.use)return;const s=await window.claude.use('sample');if(s){sampler=s;document.body.classList.add('ai-on');refreshGenUI();maybeGen()}}catch(e){}}
+async function initAI(){try{if(!window.claude||!window.claude.use)return;const s=await window.claude.use('sample');if(s){sampler=s;document.body.classList.add('ai-on');refreshGenUI();maybeGen();if(!$('#cases').hidden)renderCases()}}catch(e){}}
 
 /* ================= geração contínua com Claude ================= */
 /* Ementa por trilha: o gerador escolhe sempre os temas menos cobertos, para varrer os requisitos das vagas. */
-const SYL={
-  ana:['SQL: JOINs e cardinalidade','SQL: window functions','SQL: CTEs e subqueries','SQL: agregação e GROUP BY','Excel/Planilhas: PROCX, tabela dinâmica','Power BI: DAX e contexto de filtro','Power BI: modelagem e relacionamentos','Modelagem dimensional (estrela, fato, dimensão)','KPIs e definição de métricas','Funil de conversão','Análise de coorte e retenção','Estatística descritiva e dispersão','Percentis e SLA','Visualização: escolha do gráfico certo','Storytelling com dados para gestores','Qualidade e limpeza de dados','pandas: groupby, merge, pivot','pandas: datas e séries temporais','ETL/ELT e pipelines','dbt e camadas (staging, marts)','Git para analistas','Granularidade e duplicidade em relatórios'],
-  ds:['Probabilidade condicional','Distribuições (normal, binomial, Poisson)','Teste de hipótese e p-valor','Intervalo de confiança','Desenho de teste A/B e poder estatístico','Teorema de Bayes','Correlação x causalidade e confundidores','Inferência causal (diff-in-diff, grupo de controle)','Amostragem e vieses','Regressão linear: interpretação de coeficientes','Multicolinearidade','Feature engineering','EDA na prática','Dados faltantes e imputação','Outliers','Séries temporais: tendência e sazonalidade','Pipelines do scikit-learn','Data leakage','Interpretabilidade (SHAP, importância de features)','Álgebra linear aplicada (vetores, produto escalar)','Métricas de negócio vs métricas de modelo'],
-  ml:['Regressão logística','Árvores de decisão','Random Forest e bagging','Gradient boosting (XGBoost, LightGBM)','KNN e escala das features','SVM e margem','Naive Bayes','K-means e escolha de k','DBSCAN e clustering por densidade','PCA e redução de dimensionalidade','Métricas de classificação','Métricas de regressão (MAE, RMSE, R²)','Curva ROC e PR','Validação cruzada','Tuning de hiperparâmetros','Classes desbalanceadas','Regularização L1/L2','Gradiente descendente e learning rate','Viés x variância','MLOps: MLflow e versionamento de modelos','Deploy de modelo com API (FastAPI)','Monitoramento e data drift','Sistemas de recomendação','Previsão de séries temporais com ML'],
-  ia:['Redes neurais e funções de ativação','Backpropagation e otimizadores (SGD, Adam)','CNNs para imagem','RNN e LSTM','Transformers e atenção','Tokenização','Embeddings e similaridade','Pré-treino, instruction tuning e RLHF','Prompt engineering','RAG: chunking e indexação','Bancos vetoriais e pgvector','Busca híbrida e reranking','Agentes e tool use','Avaliação de LLMs','Fine-tuning e LoRA','Quantização e modelos locais (Ollama)','Segurança: prompt injection','Custo, latência e tokens','Alucinação e grounding','LGPD, PII e ética em IA','Visão computacional na prática','LLMs em produção: cache, fallback e observabilidade']
-};
+const SYL={"dados":["SQL: JOINs, grão e cardinalidade","SQL: window functions e CTEs","Python e pandas para dados","Análise exploratória e qualidade de dados","Git, testes e código reprodutível","Docker e ambientes","Dados em escala: warehouse e Spark","Nuvem para dados (AWS, GCP, Azure)","Pipelines e orquestração (dbt, Airflow)","Modelo em produção: API e batch","Monitoramento, drift e retreino","Arquitetura de plataforma de dados e ML"],"estat":["Estatística descritiva e distribuições","Probabilidade e Bayes","Intervalo de confiança e p-valor","Teste A/B: desenho e poder","Armadilhas de A/B (peeking, SRM, novidade)","Causalidade e confundidores","Diff-in-diff e quase-experimentos","Validação: treino, validação, teste e CV","Data leakage","Métricas de classificação e threshold","Métricas de regressão e calibração","Amostragem e vieses"],"modelo":["Regressão linear e logística","Árvores, random forest e boosting","Feature engineering","Séries temporais","Clustering e PCA","Desbalanceamento de classes","Interpretabilidade (SHAP)","Viés e fairness em modelos","Redes neurais e deep learning","Embeddings e busca vetorial","RAG: construção e avaliação","LLMs em produção: custo, latência e segurança","Agentes e tool use"],"negocio":["Definir KPIs e métricas de negócio","Visualização e storytelling","Formular o problema certo","Comunicação com executivos","Traduzir modelo em dinheiro","Conhecimento de domínio (varejo, crédito, saúde, SaaS)","LGPD e governança de dados","Gestão de stakeholders e expectativas","Priorização e dizer não","Direção técnica e roadmap","Revisão de código e de análises","Mentoria e desenvolvimento do time","Influência sem autoridade","Medir o impacto do trabalho de dados"]};
 /* Guia de escrita dos cards: o mesmo padrão que ROUTINE.md usa na rotina diária */
 const GEN_GUIDE=`Objetivo: que o conteúdo vire óbvio pela repetição em situações reais. Todo card parte de uma cena concreta de trabalho no Brasil (varejo, banco, fintech, telecom, saúde, e-commerce, SaaS de suporte), com números realistas, e termina numa frase que o aluno pode repetir em reunião ou entrevista.
 
@@ -818,16 +897,16 @@ function validChart(ch){if(!ch||typeof ch!=='object')return null;const type=['ba
 const MODES=['reuniao','entrevista','trabalho','codigo','conceito','bolso'];
 function vctx(x){if(!x||typeof x!=='object')return null;const who=sstr(x.who,40),say=sstr(x.say,320);return who&&say?{who,say}:null}
 function vstep(o){if(!o||typeof o!=='object')return null;const q=sstr(o.q,420),why=sstr(o.why,900),opts=(Array.isArray(o.opts)?o.opts:[]).map(x=>sstr(x,320)).filter(Boolean);return q&&why&&opts.length>=3&&opts.length<=4&&new Set(opts).size===opts.length?{q,opts,why}:null}
-function validCard(o,track,b,topic){if(!o||typeof o!=='object')return null;const id='g'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);const base={id,track,gen:1,b,topic};
+function validCard(o,track,b,topic){if(!o||typeof o!=='object')return null;const id='g'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);const base={id,cat:track,gen:1,b,topic};
   const extra={};if(MODES.includes(o.mode))extra.mode=o.mode;const cx=vctx(o.ctx);if(cx)extra.ctx=cx;const pro=sstr(o.pro,300);if(pro)extra.pro=pro;
   if(o.kind==='flip'){const q=sstr(o.q,260),ans=sstr(o.ans,900);return q&&ans?{...base,...extra,kind:'flip',q,ans}:null}
   if(o.kind==='chain'){const steps=(Array.isArray(o.steps)?o.steps:[]).slice(0,4).map(vstep);if(steps.length<2||steps.some(s=>!s))return null;return{...base,mode:'entrevista',...extra,kind:'chain',steps,q:cx?cx.say:steps[0].q}}
   const s=vstep(o);if(!s)return null;
   const c={...base,...extra,kind:'quiz',...s};const code=sstr(o.code,900);if(code)c.code=code;const ch=validChart(o.chart);if(ch){c.chart=ch;c.viz='gchart'}return c}
-function chooseTopic(track){const cnt={};SYL[track].forEach(t=>cnt[t]=0);GEN.forEach(c=>{if(c.track===track&&c.topic in cnt)cnt[c.topic]++});const low=SYL[track].slice().sort((a,b)=>cnt[a]-cnt[b]).slice(0,4);return low[Math.floor(Math.random()*low.length)]}
-function trackAcc(track){let ok=0,bad=0;QUIZ.forEach(c=>{if(c.track!==track)return;const a=ST.ans[c.id];if(a){ok+=a.ok;bad+=a.bad}});return ok+bad>=6?ok/(ok+bad):null}
-const unseenFor=tr=>QUIZ.filter(c=>(tr==='all'||c.track===tr)&&!ST.seen[c.id]).length;
-const balancedTrack=()=>['ana','ds','ml','ia'].sort((a,b)=>unseenFor(a)-unseenFor(b))[0];
+function chooseTopic(track){const cnt={};SYL[track].forEach(t=>cnt[t]=0);QUIZ.forEach(c=>{if(catOf(c)===track&&c.topic in cnt)cnt[c.topic]++});const low=SYL[track].slice().sort((a,b)=>cnt[a]-cnt[b]).slice(0,4);return low[Math.floor(Math.random()*low.length)]}
+function trackAcc(track){let ok=0,bad=0;QUIZ.forEach(c=>{if(catOf(c)!==track)return;const a=ST.ans[c.id];if(a){ok+=a.ok;bad+=a.bad}});return ok+bad>=6?ok/(ok+bad):null}
+const unseenFor=tr=>QUIZ.filter(c=>(tr==='all'||catOf(c)===tr)&&!ST.seen[c.id]).length;
+const balancedTrack=()=>CAT_KEYS.slice().sort((a,b)=>unseenFor(a)-unseenFor(b))[0];
 const pickGenTrack=()=>filter!=='all'?filter:balancedTrack();
 /* Reserva offline: mantém ~40 min de cards não vistos, medidos pelo seu próprio ritmo por card */
 const RESERVE_MIN=40;
@@ -837,12 +916,12 @@ const reserveMin=()=>Math.round(unseenFor('all')*secPerCard()/60);
 function maybeGen(){if(!sampler||gen.busy||!ST.autoGen||Date.now()<gen.backoff||gen.batches>=60)return;if(!navigator.onLine)return;
   const tabLow=filter!=='all'&&unseenFor(filter)<12;if(!tabLow&&unseenFor('all')>=reserveTarget())return;generate(tabLow?filter:balancedTrack())}
 let chipT=null;function genChip(msg,hideAfter){const el=$('#genchip');clearTimeout(chipT);if(!msg){el.hidden=true;return}el.className=hideAfter?'idle':'';el.innerHTML='<i></i><span></span>';el.querySelector('span').textContent=msg;el.hidden=false;if(hideAfter)chipT=setTimeout(()=>el.hidden=true,hideAfter)}
-async function generate(track){if(!sampler||gen.busy)return;gen.busy=true;refreshGenUI();genChip(reserveMin()<RESERVE_MIN?`Montando reserva offline: ~${reserveMin()} de ${RESERVE_MIN} min…`:'Claude está escrevendo cards novos de '+TRACKS[track]+'…');
+async function generate(track){if(!sampler||gen.busy)return;gen.busy=true;refreshGenUI();genChip(reserveMin()<RESERVE_MIN?`Montando reserva offline: ~${reserveMin()} de ${RESERVE_MIN} min…`:'Claude está escrevendo cards novos de '+CATS[track]+'…');
   const topic=chooseTopic(track),acc=trackAcc(track),level=acc===null?'iniciante a intermediário':acc>.8?'intermediário a avançado (o aluno acerta mais de 80%)':acc<.5?'iniciante, com exemplos bem concretos':'intermediário';
-  const existing=QUIZ.filter(c=>c.track===track).slice(-35).map(c=>'- '+c.q.slice(0,90)).join('\n');
+  const existing=QUIZ.filter(c=>catOf(c)===track).slice(-35).map(c=>'- '+c.q.slice(0,90)).join('\n');
   const prompt=`Você escreve cards de estudo para um app no formato de feed (estilo TikTok) que prepara pessoas para vagas de dados no Brasil: Analista de Dados/BI, Cientista de Dados, ML Engineer e AI Engineer. O aluno aprende melhor com código, casos reais de empresa e exemplos do que com fórmulas.
 
-Trilha: ${TRACKS[track]==='ML'?'Machine Learning':TRACKS[track]==='IA'?'Inteligência Artificial / LLMs':TRACKS[track]}
+Categoria: ${CATS[track]}
 Tema deste lote: ${topic}
 Nível: ${level}
 
@@ -881,8 +960,8 @@ async function exportOffline(btn,msg){btn.disabled=true;msg.textContent='Montand
 /* Modo app (PWA no GitHub Pages): cards diários vêm de content/cards.json, que o service worker guarda para uso offline */
 const PWA=!!document.querySelector('link[rel="manifest"]');
 let remoteMeta=null;
-function importCard(o){if(!o||typeof o.id!=='string'||!/^[\w-]{3,64}$/.test(o.id)||byId[o.id]||ST.hidden.includes(o.id))return false;if(!['ana','ds','ml','ia'].includes(o.track))return false;
-  const c=validCard(o,o.track,null,sstr(o.topic,80)||'');if(!c)return false;c.id=o.id;return registerCard(c)}
+function importCard(o){if(!o||typeof o.id!=='string'||!/^[\w-]{3,64}$/.test(o.id)||byId[o.id]||ST.hidden.includes(o.id))return false;const cat=CAT_KEYS.includes(o.cat)?o.cat:TRACK2CAT[o.track];if(!cat)return false;
+  const c=validCard(o,cat,null,sstr(o.topic,80)||'');if(!c)return false;c.id=o.id;if(!CAT_KEYS.includes(o.cat)){c.track=o.track;c.cat=o.mode==='reuniao'?'negocio':cat}return registerCard(c)}
 async function loadRemoteCards(){try{const r=await fetch('content/cards.json',{cache:'no-cache'});if(!r.ok)return;const j=await r.json();let n=0;(Array.isArray(j.cards)?j.cards:[]).forEach(o=>{if(importCard(o))n++});remoteMeta={updated:sstr(j.updated,20)||'',n}}catch(e){}}
 
 /* Abrindo a versão offline: junta os cards e o progresso que vieram dentro do arquivo */
@@ -940,9 +1019,9 @@ function hl(code){return esc(code).replace(/(#.*$)/gm,'<span class="c">$1</span>
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function railHTML(c,extra=''){const on=ST.saved.includes(c.id);return `<div class="rail"><button class="rbtn save${on?' on':''}" type="button" aria-pressed="${on}">${ICON.save}<span>${on?'Salvo':'Salvar'}</span></button><button class="rbtn ai-btn" type="button">${ICON.spark}<span>Explica de outro jeito</span></button>${extra}<span class="sp"></span><span class="nexthint">${ICON.down.replace('<svg','<svg width="14" height="14"')}deslize</span></div><div class="ai-out" hidden></div>`}
 
-function mount(item){const c=item.c,el=document.createElement('section');el.className='card t-'+(c.track||'neuro')+(item.gold?' gold':'');el.setAttribute('aria-roledescription','card');item.el=el;
-  const metaKind=c.mode?MODE_LABEL[c.mode]:c.kind==='quiz'&&c.code?KIND.code:c.track==='neuro'&&c.kind==='sim'?KIND.neuro:KIND[c.kind]||'';
-  const meta=`<div class="meta"><span class="chip">${TRACKS[c.track]||''}</span><span>${metaKind}</span>${item.review==='spaced'?`<span class="tag-spaced">revisão espaçada · nível ${(ST.ans[c.id]||{}).box||0}</span>`:item.review?'<span class="tag-rev">revisão · você errou esta</span>':''}${c.gen?'<span class="tag-ai">gerado pelo Claude</span>':''}<span class="tag-gold">card dourado ×3</span></div>`;
+function mount(item){const c=item.c,el=document.createElement('section');el.className='card t-'+catOf(c)+(item.gold?' gold':'');el.setAttribute('aria-roledescription','card');item.el=el;
+  const metaKind=c.mode?MODE_LABEL[c.mode]:c.kind==='quiz'&&c.code?KIND.code:catOf(c)==='neuro'&&c.kind==='sim'?KIND.neuro:KIND[c.kind]||'';
+  const meta=`<div class="meta"><span class="chip">${CAT_LABEL[catOf(c)]||''}</span><span>${metaKind}</span>${item.review==='spaced'?`<span class="tag-spaced">revisão espaçada · nível ${(ST.ans[c.id]||{}).box||0}</span>`:item.review?'<span class="tag-rev">revisão · você errou esta</span>':''}${c.gen?'<span class="tag-ai">gerado pelo Claude</span>':''}<span class="tag-gold">card dourado ×3</span></div>`;
   const report=c.gen?'<button class="rbtn report" type="button">Reportar erro</button>':'';
   let body='';
   if(c.kind==='intro')body=introHTML();
@@ -1022,7 +1101,7 @@ async function explain(item,out,btn){if(!sampler)return;const c=item.c;btn.disab
 /* ================= feed / agenda ================= */
 let feedList=[],filter='all',fc=0,sinceBreak=0,recent=[],pendingFollow=null,sessRev=[],cur=null,dwellT=null,curStart=0;
 ST.rev.forEach((id,i)=>{if(byId[id])sessRev.push({id,at:2+i*3})});
-const eligible=c=>c&&c.kind!=='intro'&&c.kind!=='break'&&(filter==='all'||c.track===filter);
+const eligible=c=>c&&c.kind!=='intro'&&c.kind!=='break'&&(filter==='all'||catOf(c)===filter);
 function pick(){
   if(sinceBreak>=25){sinceBreak=0;return{c:{id:'break'+fc,kind:'break',track:'neuro'}}}
   if(pendingFollow){const c=byId[pendingFollow];pendingFollow=null;if(eligible(c)&&!recent.includes(c.id))return{c,gold:Math.random()<.12}}
@@ -1053,15 +1132,255 @@ function initViz(it){const host=it.el.querySelector('.viz');if(!host)return;cons
 let lastT=performance.now();
 function loop(t){const dt=Math.min(64,t-lastT);lastT=t;if(cur&&cur.viz){try{cur.viz.draw(t,dt)}catch(e){}}drawBg();if(parts.length)drawFx();else if(fx._dirty!==false){fctx.clearRect(0,0,innerWidth,innerHeight);fx._dirty=false}if(parts.length)fx._dirty=true;requestAnimationFrame(loop)}
 
+/* ================= Casos: simulações com personagens interpretados pelo Claude ================= */
+const CASES=[
+{id:'c1',title:'O número que não bate',level:'Júnior',cat:'dados',setting:'Primeira semana · social e tático',company:'Rede de farmácias com 120 lojas',player:'Você é analista de dados júnior, na sua primeira semana na empresa.',
+ cast:[{name:'Paulo',role:'Gerente de BI, seu gestor',style:'direto e apressado; valoriza quem traz causa e número, não desculpa'},{name:'Carla',role:'Analista financeira',style:'defensiva com os números dela, colabora se for tratada com respeito'},{name:'Jonas',role:'Engenheiro de dados',style:'sobrecarregado, responde curto, ajuda quando a pergunta é específica'}],
+ situation:'O relatório de vendas de setembro do BI mostra R$ 48,2 milhões. O financeiro fechou R$ 44,9 milhões. A diretoria vê os dois números na quinta.',
+ objective:'Descobrir por que os números diferem, alinhar uma definição com o financeiro e explicar ao Paulo antes de quinta.',
+ stages:['Entender o que cada relatório mede','Investigar a causa com dados','Alinhar a definição com a Carla','Comunicar ao Paulo com números e próximo passo'],
+ hidden:['O BI usa a data do pedido; o financeiro usa a data de faturamento.','O BI não desconta pedidos cancelados: R$ 1,9 mi em setembro.','R$ 1,4 mi são pedidos feitos em 29 e 30/set e faturados em outubro.','Jonas sabe que existe a tabela de cancelamentos, mas ninguém pediu para cruzar.'],
+ opening:[{who:'narrador',text:'Segunda, 9h12. Você mal configurou o notebook quando chega uma mensagem no Slack.'},{who:'Paulo',text:'Bom dia! Missão rápida pra você: nosso relatório de setembro diz 48,2 mi e o financeiro diz 44,9. Quinta a diretoria vê os dois. Descobre o que tá acontecendo?'}]},
+{id:'c2',title:'Entrevista com o gestor técnico',level:'Entrevista',cat:'negocio',setting:'Entrevista · etapa do gestor',company:'Fintech de crédito com 300 funcionários',player:'Você é candidato a Analista de Dados / Cientista de Dados Júnior, na etapa com o gestor técnico.',
+ cast:[{name:'Marcelo',role:'Gestor de Ciência de Dados',style:'cordial mas cava fundo; faz follow-up em toda resposta vaga; valoriza honestidade sobre erros e impacto em números'},{name:'Lívia',role:'Cientista de dados sênior, segunda entrevistadora',style:'técnica, testa SQL e validação de modelo com perguntas curtas'}],
+ situation:'Entrevista de 45 minutos. Eles leram seu currículo e vão pedir que você conte um projeto seu, depois aprofundar.',
+ objective:'Explicar um projeto real com contexto, decisão, trade-off e resultado, responder aos follow-ups técnicos sem enrolar e fazer boas perguntas no final.',
+ stages:['Apresentar um projeto com clareza (contexto, ação, resultado)','Aguentar os follow-ups técnicos (validação, métricas, dados)','Admitir um erro ou limitação e o que aprendeu','Fazer perguntas inteligentes sobre o time'],
+ hidden:['Marcelo reprova quem não sabe dizer como validou o modelo.','Lívia vai perguntar como evitar vazamento de dados e como escolher o threshold.','Eles valorizam muito quem traduz resultado em dinheiro ou horas.','Se o candidato inventar números, Marcelo pergunta como foram medidos.'],
+ opening:[{who:'narrador',text:'Videochamada, 14h. Duas câmeras abertas.'},{who:'Marcelo',text:'Oi, tudo bem? Obrigado pelo tempo. Eu sou o Marcelo, gestor do time de dados, e essa é a Lívia. Pra começar: me conta um projeto seu de que você se orgulha. O problema, o que você fez e o que mudou depois.'}]},
+{id:'c3',title:'O A/B deu positivo… será?',level:'Pleno',cat:'estat',setting:'Reunião de produto · tático',company:'E-commerce de moda',player:'Você é cientista de dados pleno do time de produto.',
+ cast:[{name:'Thiago',role:'Product manager',style:'animado, quer lançar logo, fica na defensiva se sentir que estão "barrando" o produto'},{name:'Fernanda',role:'Head de produto',style:'pragmática, quer uma recomendação clara de sim ou não com risco explicado'}],
+ situation:'O teste do novo checkout rodou 3 dias e o dashboard mostra +8% de conversão. Thiago quer liberar para 100% hoje.',
+ objective:'Avaliar se o resultado é confiável, explicar sem destruir a relação com o Thiago e dar uma recomendação clara para a Fernanda.',
+ stages:['Levantar como o teste foi feito','Encontrar os problemas de validade','Explicar os riscos em linguagem de negócio','Propor um plano e decidir com a Fernanda'],
+ hidden:['O teste começou na quinta e pegou um fim de semana com campanha de frete grátis.','A divisão saiu 54% / 46% em vez de 50/50 (desbalanceamento de amostra).','Com o tráfego atual, seriam necessários 12 dias para detectar 3% com 80% de poder.','Thiago já olhou o resultado várias vezes e queria parar no primeiro dia positivo.'],
+ opening:[{who:'narrador',text:'Sala de reunião, 10h. Thiago já está com o dashboard no telão.'},{who:'Thiago',text:'Gente, olha isso: +8% de conversão em 3 dias! Já falei com a engenharia, dá pra subir pra todo mundo hoje à tarde. Você valida rapidinho?'},{who:'Fernanda',text:'Se estiver certo é ótimo. Mas quero entender o risco antes. O que você acha?'}]},
+{id:'c4',title:'Incidente às 7h',level:'Pleno',cat:'dados',setting:'Incidente · pressão e comunicação',company:'SaaS de atendimento ao cliente',player:'Você é analista de dados pleno e mantém o dashboard executivo.',
+ cast:[{name:'Rosana',role:'Sua gestora, no Slack',style:'calma, mas precisa de uma resposta curta para a diretoria'},{name:'Diego',role:'Engenheiro de plantão',style:'acabou de acordar, prático, sabe dos deploys da noite'},{name:'Alice',role:'Assistente do CEO',style:'educada e insistente; o CEO apresenta às 9h'}],
+ situation:'O dashboard executivo amanheceu com a receita de ontem zerada. O CEO usa esse número numa reunião com investidores às 9h.',
+ objective:'Diagnosticar a causa, comunicar com escopo e prazo, e garantir um número correto ou um plano B antes das 9h.',
+ stages:['Avisar rápido e com escopo','Diagnosticar a causa','Corrigir ou contornar a tempo','Propor como evitar que se repita'],
+ hidden:['Às 23h40 a API de pagamentos renomeou a coluna amount para amount_cents.','A carga não falhou: gravou nulos, que o dashboard soma como zero.','O valor em centavos precisa ser dividido por 100.','Não existe nenhuma checagem de nulos ou de queda brusca no pipeline.'],
+ opening:[{who:'narrador',text:'Terça, 7h04. O celular vibra três vezes seguidas.'},{who:'Alice',text:'Bom dia! O Fábio pediu pra confirmar: a receita de ontem no painel tá zerada. É isso mesmo? Ele apresenta às 9h pros investidores.'},{who:'Rosana',text:'Viu isso? Me manda em 15 min o que a gente sabe, nem que seja pouco.'}]},
+{id:'c5',title:'A diretora quer IA em tudo',level:'Sênior',cat:'modelo',setting:'Reunião com diretoria · expectativa e escopo',company:'Empresa de software de gestão com suporte de 80 atendentes',player:'Você é cientista de dados sênior e a pessoa de referência em IA da empresa.',
+ cast:[{name:'Renata',role:'Diretora de atendimento',style:'entusiasmada, prometeu ao CEO um chatbot com IA em 30 dias'},{name:'Leo',role:'Tech lead',style:'cético, preocupado com segurança e manutenção'},{name:'Bia',role:'Supervisora de suporte',style:'conhece a operação, desconfia que o robô vai irritar clientes'}],
+ situation:'Renata quer um chatbot que responda todos os clientes sozinho em 30 dias, para reduzir a fila.',
+ objective:'Transformar a promessa em um escopo viável com métrica, risco controlado e um primeiro resultado em 30 dias.',
+ stages:['Entender a dor real e os números da fila','Descobrir onde a IA ajuda e onde atrapalha','Propor um escopo de 30 dias com métrica','Fechar o acordo com Renata, Leo e Bia'],
+ hidden:['40% dos tickets são de 3 tipos: segunda via de boleto, reset de senha e status de nota fiscal.','A base de conhecimento está desatualizada há 8 meses.','Os tickets têm CPF e dados de clientes.','Bia sabe que clientes com problema fiscal ficam muito irritados com respostas automáticas.'],
+ opening:[{who:'narrador',text:'Quarta, 15h. Reunião marcada pela Renata com o título "IA no atendimento".'},{who:'Renata',text:'Pessoal, prometi pro CEO: em 30 dias a gente tem um chatbot com IA respondendo os clientes e a fila cai pela metade. Quero saber do que vocês precisam.'},{who:'Leo',text:'Respondendo sozinho, sem ninguém revisar? Isso me preocupa.'}]},
+{id:'c6',title:'O comitê de crédito',level:'Sênior',cat:'negocio',setting:'Comitê executivo · defesa de modelo',company:'Banco digital',player:'Você é cientista de dados sênior e criou o novo modelo de concessão de crédito.',
+ cast:[{name:'Henrique',role:'CFO',style:'quer o impacto em reais e o risco de perda'},{name:'Patrícia',role:'Head de risco',style:'técnica e exigente, conhece inadimplência a fundo'},{name:'Sérgio',role:'Jurídico',style:'preocupado com LGPD e discriminação'}],
+ situation:'Você apresenta o novo modelo de crédito, que aprova mais clientes com a mesma inadimplência projetada.',
+ objective:'Defender o modelo com números de negócio, responder às dúvidas de risco e tratar o problema de viés antes que vire bloqueio.',
+ stages:['Apresentar o impacto em reais','Responder às perguntas de risco e validação','Tratar o risco de discriminação','Sair com aprovação condicionada e plano'],
+ hidden:['O modelo usa CEP, que funciona como proxy de renda e de raça em algumas regiões.','No piloto, aprovou 18% mais clientes com a mesma inadimplência (3,1%).','A validação foi feita com dados de antes de uma mudança de política de juros.','Sem o CEP, a AUC cai de 0,79 para 0,76.'],
+ opening:[{who:'narrador',text:'Sala do comitê, 16h. Você tem 20 minutos.'},{who:'Henrique',text:'Vamos direto: quanto esse modelo novo coloca no caixa e quanto pode nos custar se der errado?'}]},
+{id:'c7',title:'A crítica no canal',level:'Pleno',cat:'negocio',setting:'Social · conflito entre colegas',company:'Varejista de eletrônicos',player:'Você é analista de dados pleno.',
+ cast:[{name:'Rafael',role:'Cientista de dados sênior de outro time',style:'brilhante e seco; critica em público, mas respeita quem argumenta com dados'},{name:'Juliana',role:'Sua gestora',style:'evita conflito, quer que você resolva com maturidade'}],
+ situation:'Rafael escreveu no canal geral de dados que a sua análise de churn "mistura causa e correlação e não deveria ter ido para a diretoria". 40 pessoas viram.',
+ objective:'Responder sem brigar, entender o que procede na crítica, corrigir o que for preciso e sair com a relação melhor.',
+ stages:['Responder no canal sem escalar','Conversar 1:1 com o Rafael','Separar o que procede do que não procede','Combinar a correção e o próximo passo'],
+ hidden:['A crítica procede em parte: a análise diz que clientes que usam o app cancelam menos, e o texto sugere que o app causa a retenção.','Os números da análise estão certos.','Rafael já passou por algo parecido e acabou exposto numa diretoria.','Juliana vai perguntar como você está e o que vai fazer.'],
+ opening:[{who:'narrador',text:'Quinta, 11h20. Uma notificação do canal #dados-geral.'},{who:'Rafael',text:'Sobre a análise de churn que foi pra diretoria ontem: ela mistura causa com correlação. "Usar o app reduz o churn" não sai desses dados. Não deveria ter subido assim.'},{who:'narrador',text:'Já aparecem 6 reações e uma mensagem privada da sua gestora: "Viu isso? Me liga quando puder."'}]},
+{id:'c8',title:'O kickoff da logística',level:'Sênior',cat:'negocio',setting:'Kickoff · formular o problema',company:'Operador logístico com 2 mil entregas por dia',player:'Você é cientista de dados sênior e vai liderar o projeto.',
+ cast:[{name:'Gustavo',role:'Gerente de logística',style:'prático, fala em problemas da operação, impaciente com teoria'},{name:'Kátia',role:'Coordenadora do centro de distribuição',style:'conhece cada gargalo, desconfia de "modelo de computador"'}],
+ situation:'Gustavo pediu "um modelo que preveja quais entregas vão atrasar". É a primeira reunião.',
+ objective:'Descobrir o problema real, a ação que a previsão vai disparar, a capacidade de agir e a métrica de sucesso, antes de falar de modelo.',
+ stages:['Descobrir a decisão por trás do pedido','Entender capacidade e restrições','Definir a métrica de sucesso em negócio','Propor um primeiro passo simples'],
+ hidden:['Atrasos custam multa contratual de R$ 35 por pedido em 3 grandes clientes.','A operação consegue antecipar no máximo 60 pedidos por dia.','70% dos atrasos vêm de 2 rotas e de pedidos que chegam depois das 16h.','Uma regra simples por rota e horário já resolveria boa parte do problema.'],
+ opening:[{who:'narrador',text:'Segunda, 14h. Sala pequena perto da doca. Barulho de empilhadeira ao fundo.'},{who:'Gustavo',text:'Então, a ideia é simples: quero um modelo de IA que diga quais entregas vão atrasar. Quanto tempo leva pra ficar pronto?'}]},
+{id:'c9',title:'Priorizando o backlog',level:'Líder técnico',cat:'negocio',setting:'Liderança · priorização e pressão',company:'Rede de academias',player:'Você é tech lead de um time de dados com 3 pessoas.',
+ cast:[{name:'Marina',role:'Head de marketing',style:'carismática e insistente; diz que tudo dela é urgente'},{name:'Otávio',role:'Gerente comercial',style:'objetivo, tem um pedido parado há 1 mês'},{name:'Camila',role:'Diretora, sua chefe',style:'quer que você resolva entre as áreas sem trazer briga para ela'}],
+ situation:'Chegaram 5 pedidos de 4 áreas para o próximo mês. O time só dá conta de 2. Marina quer o modelo de propensão dela na frente de todos.',
+ objective:'Criar um critério de priorização transparente, negociar com as áreas e sair com um acordo que Camila apoie.',
+ stages:['Levantar impacto e esforço dos pedidos','Propor um critério transparente','Negociar com Marina e Otávio','Fechar e comunicar o acordo'],
+ hidden:['O pedido do Otávio (alerta de cancelamento) protege cerca de R$ 120 mil por mês e leva 1 semana.','O modelo da Marina leva 5 semanas e o ganho é incerto.','Uma versão simples por regras atende 70% do que a Marina quer em 1 semana.','Camila valoriza ganho de receita no trimestre.'],
+ opening:[{who:'narrador',text:'Sexta, 17h. Mensagem da Marina no privado.'},{who:'Marina',text:'Oi! Preciso do modelo de propensão pra campanha de novembro. É prioridade máxima, já combinei com a Camila. Consegue começar segunda?'}]},
+{id:'c10',title:'Mentorando quem vazou o teste',level:'Líder técnico',cat:'negocio',setting:'1:1 · mentoria e padrão de qualidade',company:'Plataforma de telemedicina',player:'Você é tech lead e mentora de uma cientista de dados júnior.',
+ cast:[{name:'Ana',role:'Cientista de dados júnior',style:'esforçada, insegura, muito orgulhosa do resultado'},{name:'Roberto',role:'Gerente de produto',style:'já espera a apresentação amanhã com o modelo de AUC 0,96'}],
+ situation:'Ana treinou um modelo de no-show de consultas com AUC 0,96 e vai apresentar ao Roberto amanhã. Revisando o código, você suspeita de vazamento.',
+ objective:'Confirmar o problema, ajudar Ana a corrigir sem humilhá-la, ensinar a lição e combinar o que dizer ao Roberto.',
+ stages:['Confirmar a suspeita com a Ana','Fazer ela mesma encontrar o vazamento','Recalcular e reenquadrar o resultado','Combinar a conversa com o Roberto'],
+ hidden:['A feature "minutos_de_espera" só existe depois que o paciente chega, então vaza o resultado.','Sem ela, a AUC real é 0,74, que ainda gera economia.','Cada no-show custa R$ 90 de horário ocioso; são 1.200 por mês.','Ana já fez as contas da apresentação com 0,96 e está nervosa.'],
+ opening:[{who:'narrador',text:'Quarta, 18h. 1:1 semanal.'},{who:'Ana',text:'Oi! Viu meu resultado? AUC 0,96! Amanhã apresento pro Roberto. Achei que você ia ficar feliz.'}]},
+{id:'c11',title:'Construir ou comprar',level:'Staff',cat:'dados',setting:'Decisão de arquitetura · liderança',company:'Varejista com 40 cientistas e analistas de dados',player:'Você é staff data scientist e precisa recomendar a plataforma de ML da empresa.',
+ cast:[{name:'Cláudio',role:'CTO',style:'quer uma recomendação fundamentada em custo e risco, em 2 semanas'},{name:'Priscila',role:'Engenheira de ML',style:'prefere construir com open source e tem orgulho do protótipo dela'},{name:'Vendedor',role:'Executivo de uma plataforma de ML paga',style:'simpático, promete tudo, evita falar de preço por uso'}],
+ situation:'Cada time faz deploy de modelo de um jeito. A empresa vai escolher entre comprar uma plataforma (R$ 900 mil por ano) ou construir sobre o protótipo da Priscila.',
+ objective:'Levantar os custos e riscos reais, comparar as opções com critérios explícitos e recomendar ao CTO uma decisão defensável e reversível.',
+ stages:['Mapear necessidades e dores atuais','Levantar o custo total das duas opções','Comparar riscos (lock-in, manutenção, tempo até valor)','Recomendar com plano de piloto'],
+ hidden:['O protótipo da Priscila exigiria 3 engenheiros dedicados (cerca de R$ 1,1 mi por ano).','O contrato da plataforma cobra por hora de GPU acima de uma cota.','Só 4 dos 25 modelos em produção têm requisito de tempo real.','O time de segurança exige que os dados fiquem na conta de nuvem da empresa.'],
+ opening:[{who:'narrador',text:'Segunda, 9h. E-mail do CTO.'},{who:'Cláudio',text:'Preciso da sua recomendação em duas semanas: compramos a plataforma ou seguimos com o que a Priscila construiu? Quero custo, risco e o que você faria no meu lugar.'}]}
+];
+const PALETTE=()=>[C.ana,C.ds,C.ml,C.ia,C.neuro,C.gold];
+const LEVELS=['Júnior','Pleno','Sênior','Líder técnico','Entrevista'];
+const SETTINGS=['Social (relação com colegas)','Tático (resolver um problema com dados)','Liderança (decisão, time, prioridade)','Entrevista de emprego'];
+let caseView='list',caseBusy=false,genCaseOpt={level:1,cat:0,setting:1};
+
+function caseSetup(d){return `Você é o motor de uma simulação imersiva de trabalho que treina um profissional de dados no Brasil. Você interpreta TODOS os personagens do caso e um narrador. O jogador é a pessoa do outro lado: nunca escreva falas, decisões ou pensamentos do jogador.
+
+CASO: ${d.title} (${d.level} · ${d.setting})
+Empresa: ${d.company}
+Papel do jogador: ${d.player}
+Situação: ${d.situation}
+Objetivo do jogador: ${d.objective}
+Etapas: ${d.stages.map((s,i)=>`${i+1}. ${s}`).join(' | ')}
+Personagens: ${d.cast.map(p=>`${p.name} (${p.role}): ${p.style}`).join(' | ')}
+Fatos ocultos (revele só quando o jogador investigar, perguntar ou pedir os dados certos; nunca entregue de graça): ${d.hidden.join(' | ')}
+
+Como conduzir:
+- Realismo de empresa brasileira: cada pessoa tem agenda, pressa, humor e interesses próprios; interrompe, pede números, resiste a mudanças, muda de assunto, elogia quando merecido. Linguagem natural de chat e de reunião, em português do Brasil.
+- Reaja à ação do jogador de forma coerente. Boas ações (perguntar a decisão, checar dados, propor número e próximo passo, respeitar as pessoas) destravam informação e confiança. Ações fracas (jargão sem tradução, prometer o impossível, culpar alguém, chutar) trazem consequências realistas, mas sempre dão chance de recuperar.
+- Quando o jogador pedir dados, consultas ou arquivos, entregue artefatos plausíveis dentro do texto: resultado de SQL como tabela curta com linhas começando por "|", trecho de log, número de dashboard, mensagem encaminhada.
+- Mude de cena quando fizer sentido (reunião, 1:1, canal do Slack, dia seguinte) usando o narrador. Personagens podem conversar entre si.
+- "stage" é a etapa em andamento (1 a ${d.stages.length}). Avance quando o objetivo da etapa atual for cumprido. "done": true quando todas as etapas forem cumpridas ou quando o caso fracassar de forma irreversível (explique pelo narrador).
+- Se a mensagem do jogador for "[DICA]", responda só com o "mentor": uma dica curta e socrática (uma pergunta ou um empurrão), sem dar a resposta pronta. O mentor está fora da cena.
+- Mensagens curtas como chat real: 1 a 4 mensagens por turno, cada uma com até 3 frases (artefatos podem ser maiores).
+
+Responda SEMPRE só com JSON neste formato:
+{"msgs":[{"who":"nome do personagem, ou narrador, ou mentor","text":"..."}],"stage":1,"done":false}`}
+
+function validCase(o){if(!o||typeof o!=='object')return null;const s=(v,n)=>sstr(v,n);const arr=(v,n,m)=>(Array.isArray(v)?v:[]).map(x=>s(x,n)).filter(Boolean).slice(0,m);
+  const cast=(Array.isArray(o.cast)?o.cast:[]).map(p=>p&&s(p.name,30)&&s(p.role,80)?{name:s(p.name,30),role:s(p.role,80),style:s(p.style,200)||''}:null).filter(Boolean).slice(0,5);
+  const d={id:'cg'+Date.now().toString(36),title:s(o.title,70),level:s(o.level,20)||'Pleno',cat:CAT_KEYS.includes(o.cat)?o.cat:'negocio',setting:s(o.setting,80)||'',company:s(o.company,120)||'',player:s(o.player,200),cast,situation:s(o.situation,600),objective:s(o.objective,400),stages:arr(o.stages,140,6),hidden:arr(o.hidden,300,6),opening:vmsgs(o.opening),gen:1};
+  return d.title&&d.player&&d.situation&&d.objective&&cast.length&&d.stages.length>=2&&d.hidden.length&&d.opening.length?d:null}
+function vmsgs(v){return(Array.isArray(v)?v:[]).map(m=>m&&sstr(m.who,40)&&sstr(m.text,1500)?{who:sstr(m.who,40),text:sstr(m.text,1500)}:null).filter(Boolean).slice(0,5)}
+
+function personColor(d,who){const i=d.cast.findIndex(p=>p.name===who);return PALETTE()[(i<0?5:i)%6]}
+function fmtMsg(t){const lines=t.split('\n'),out=[];let buf=[],code=false;const flush=()=>{if(buf.length){out.push(`<pre class="art">${esc(buf.join('\n'))}</pre>`);buf=[]}};
+  for(const l of lines){if(l.trim().startsWith('```')){if(code){flush();code=false}else code=true;continue}if(code||l.trim().startsWith('|')){buf.push(l);continue}flush();out.push(esc(l))}flush();
+  return out.join('\n').replace(/\n?(<pre)/g,'$1').replace(/(<\/pre>)\n?/g,'$1')}
+function msgHTML(d,m){if(m.me)return`<div class="m me"><div class="b">${esc(m.text)}</div></div>`;const w=(m.who||'').toLowerCase();
+  if(w==='narrador')return`<div class="m nar">${fmtMsg(m.text)}</div>`;
+  if(w==='mentor')return`<div class="m men"><div class="b"><span class="nm" style="--pc:var(--ia)">Mentor</span>${fmtMsg(m.text)}</div></div>`;
+  if(w==='sistema')return`<div class="m sys">${esc(m.text)}</div>`;
+  const p=d.cast.find(x=>x.name===m.who);return`<div class="m" style="--pc:${personColor(d,m.who)}"><span class="av" aria-hidden="true">${esc(initials(m.who||'?'))}</span><div class="b"><span class="nm">${esc(m.who)}${p?' · '+esc(p.role):''}</span>${fmtMsg(m.text)}</div></div>`}
+
+function openCases(){$('#cases').hidden=false;renderCases()}
+function closeCases(){$('#cases').hidden=true}
+function renderCases(){const box=$('#cases');if(caseView==='chat'&&ST.activeCase)return renderChat();caseView='list';
+  const done={};(ST.cases||[]).forEach(h=>{done[h.id]=Math.max(done[h.id]||0,h.nota)});
+  const ac=ST.activeCase,can=!!sampler;
+  const card=d=>`<button class="case t-${d.cat}" type="button" data-case="${d.id}" ${can?'':'disabled'}><span class="row"><span class="chip">${CATS[d.cat]}</span><span>${esc(d.level)}</span><span>· ${esc(d.setting)}</span>${done[d.id]!=null?`<span class="score">nota ${done[d.id]}</span>`:''}</span><b>${esc(d.title)}</b><p>${esc(d.situation)}</p></button>`;
+  box.innerHTML=`<div class="cs"><div class="cs-h"><button class="icon-btn" id="csBack" aria-label="Voltar ao feed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>Casos</b><span>simulações com pessoas da empresa, interpretadas pelo Claude</span></div></div>
+  <div class="cs-body">
+   <p class="cs-intro">Você entra no personagem e resolve o problema conversando: perguntas, pedidos de dados, reuniões, Slack. Cada pessoa tem agenda própria e reage ao que você faz. No final você recebe nota por competência, o que um sênior faria e frases prontas.</p>
+   ${can?'':'<div class="note">Os casos usam o Claude para interpretar os personagens. Abra o Sinapse pelo link do Claude, com internet, para jogar.</div>'}
+   ${ac&&!ac.done?`<div class="cs-sec">Em andamento</div>${`<button class="case t-${ac.def.cat}" type="button" id="csResume" ${can?'':'disabled'}><span class="row"><span class="chip">${CATS[ac.def.cat]}</span><span>etapa ${ac.stage} de ${ac.def.stages.length}</span></span><b>Continuar: ${esc(ac.def.title)}</b><p>${esc(ac.def.objective)}</p></button>`}`:''}
+   <div class="cs-sec">Caso sob medida</div>
+   <div class="genform t-negocio"><div class="seg" id="gLevel"><span>Nível</span>${LEVELS.map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.level}">${l}</button>`).join('')}</div>
+    <div class="seg" id="gCat"><span>Foco</span>${['Aleatório',...Object.values(CATS)].map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.cat}">${l}</button>`).join('')}</div>
+    <div class="seg" id="gSet"><span>Situação</span>${SETTINGS.map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.setting}">${l.split(' (')[0]}</button>`).join('')}</div>
+    <button class="btn primary" type="button" id="gGo" ${can&&!caseBusy?'':'disabled'} style="--tc:var(--spark)">${caseBusy?'Criando o caso…':'Criar caso novo com o Claude'}</button></div>
+   <div class="cs-sec">Do júnior ao líder técnico</div>${CASES.map(card).join('')}
+   ${(ST.genCases||[]).length?`<div class="cs-sec">Criados para você</div>${ST.genCases.slice(-8).reverse().map(card).join('')}`:''}
+  </div></div>`;
+  $('#csBack').addEventListener('click',closeCases);
+  box.querySelectorAll('[data-case]').forEach(b=>b.addEventListener('click',()=>{const d=CASES.find(x=>x.id===b.dataset.case)||(ST.genCases||[]).find(x=>x.id===b.dataset.case);if(d)startCase(d)}));
+  const rs=$('#csResume');if(rs)rs.addEventListener('click',()=>{caseView='chat';renderChat()});
+  [['#gLevel','level'],['#gCat','cat'],['#gSet','setting']].forEach(([sel,k])=>box.querySelectorAll(sel+' button').forEach(b=>b.addEventListener('click',()=>{genCaseOpt[k]=+b.dataset.i;box.querySelectorAll(sel+' button').forEach(x=>x.setAttribute('aria-pressed',x===b))})));
+  $('#gGo').addEventListener('click',genCase)}
+
+async function genCase(){if(!sampler||caseBusy)return;caseBusy=true;renderCases();
+  const lvl=LEVELS[genCaseOpt.level],cat=genCaseOpt.cat?CAT_KEYS[genCaseOpt.cat-1]:CAT_KEYS[Math.floor(Math.random()*4)],set=SETTINGS[genCaseOpt.setting];
+  const prev=[...CASES,...(ST.genCases||[])].map(c=>'- '+c.title).join('\n');
+  const prompt=`Crie um caso de simulação de trabalho para treinar um profissional de dados no Brasil.
+Nível do jogador: ${lvl}. Foco de competência: ${CATS[cat]}. Tipo de situação: ${set}.
+O caso precisa ser realista e do dia a dia: empresa brasileira plausível (setor variado), problema concreto com números, 2 a 4 personagens com personalidades e interesses diferentes (pelo menos um com algum conflito ou resistência), 3 a 5 etapas que levam ao objetivo, e 3 a 5 fatos ocultos que o jogador só descobre investigando ou perguntando bem. A abertura tem 1 mensagem do narrador situando a cena e 1 ou 2 falas de personagens que já colocam o problema.
+Não repita estes casos:
+${prev}
+Responda só com JSON:
+{"title":"...","level":"${lvl}","cat":"${cat}","setting":"...","company":"...","player":"Você é ...","cast":[{"name":"...","role":"...","style":"..."}],"situation":"...","objective":"...","stages":["..."],"hidden":["..."],"opening":[{"who":"narrador","text":"..."},{"who":"<nome de um personagem>","text":"..."}]}`;
+  try{const o=await sampler.json(prompt,{modelTier:'default',cache:false});const d=validCase(o);if(!d)throw{code:'invalid'};ST.genCases=[...(ST.genCases||[]),d].slice(-20);save();caseBusy=false;startCase(d)}
+  catch(e){caseBusy=false;genChip(e&&e.code==='rate_limited'?'Limite de uso do Claude. Tente de novo em alguns minutos.':'Não consegui criar o caso agora. Tente de novo.',3500);renderCases()}}
+
+function startCase(d){const opening=d.opening.map(m=>({...m}));
+  ST.activeCase={def:d,stage:1,done:false,log:opening.map(m=>({who:m.who,text:m.text})),api:[{role:'user',content:caseSetup(d)+'\n\nA cena começa com as mensagens abaixo (já mostradas ao jogador). Depois disso, aguarde a ação do jogador.'},{role:'assistant',content:JSON.stringify({msgs:opening,stage:1,done:false})}],debrief:null};
+  save();caseView='chat';renderChat();sfx.tick()}
+
+function renderChat(){const a=ST.activeCase,d=a.def,box=$('#cases');caseView='chat';
+  box.innerHTML=`<div class="cs t-${d.cat}"><div class="cs-h"><button class="icon-btn" id="cvBack" aria-label="Voltar para a lista de casos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>${esc(d.title)}</b><span id="cvStage"></span></div><button class="rbtn" id="cvObjBtn" type="button" aria-expanded="false">Objetivo</button></div>
+   <div class="stagebar" id="cvBar"></div>
+   <div class="cv-obj" id="cvObj" hidden><div><b>Você:</b> ${esc(d.player)}</div><div><b>Situação:</b> ${esc(d.situation)}</div><div><b>Objetivo:</b> ${esc(d.objective)}</div><ol id="cvSteps"></ol></div>
+   <div class="cs-body" id="cvLog" aria-live="polite"></div>
+   <div class="cv-in"><textarea id="cvText" rows="1" placeholder="Fale, pergunte, peça dados…" aria-label="Sua mensagem"></textarea><button class="send" id="cvSend" aria-label="Enviar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+   <div class="cv-act"><button class="rbtn" id="cvHint" type="button">Pedir dica ao mentor</button><button class="rbtn" id="cvEnd" type="button">Encerrar e receber avaliação</button><span class="sp"></span><button class="rbtn" id="cvRestart" type="button">Recomeçar</button></div></div>`;
+  const log=$('#cvLog');log.innerHTML=a.log.map(m=>msgHTML(d,m)).join('');if(a.debrief)log.insertAdjacentHTML('beforeend',debriefHTML(a.debrief));
+  updStage();log.scrollTop=log.scrollHeight;
+  $('#cvBack').addEventListener('click',()=>{caseView='list';renderCases()});
+  $('#cvObjBtn').addEventListener('click',e=>{const o=$('#cvObj');o.hidden=!o.hidden;e.currentTarget.setAttribute('aria-expanded',!o.hidden)});
+  const ta=$('#cvText');ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=Math.min(140,ta.scrollHeight)+'px'});
+  ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendCase(ta.value)}});
+  $('#cvSend').addEventListener('click',()=>sendCase(ta.value));
+  $('#cvHint').addEventListener('click',()=>sendCase('[DICA]',true));
+  $('#cvEnd').addEventListener('click',endCase);
+  const rs=$('#cvRestart');let armed=false;rs.addEventListener('click',()=>{if(!armed){armed=true;rs.textContent='Toque de novo para recomeçar';setTimeout(()=>{if(rs.isConnected){armed=false;rs.textContent='Recomeçar'}},3500);return}startCase(d)});
+  lockChat(caseBusy||a.done)}
+function updStage(){const a=ST.activeCase;if(!a)return;const d=a.def,n=d.stages.length,st=Math.min(a.stage,n);
+  const s=$('#cvStage');if(s)s.textContent=a.done?'caso encerrado':`etapa ${st} de ${n} · ${d.stages[st-1]}`;
+  const bar=$('#cvBar');if(bar)bar.innerHTML=d.stages.map((_,i)=>`<i class="${a.done||i<st-1?'on':''}"></i>`).join('');
+  const ol=$('#cvSteps');if(ol)ol.innerHTML=d.stages.map((x,i)=>`<li class="${i<st-1||a.done?'done':i===st-1?'now':''}">${esc(x)}</li>`).join('')}
+function lockChat(on){['#cvSend','#cvHint','#cvEnd'].forEach(s=>{const e=$(s);if(e)e.disabled=on});const ta=$('#cvText');if(ta){ta.disabled=on;ta.placeholder=ST.activeCase&&ST.activeCase.done?'Caso encerrado':'Fale, pergunte, peça dados…'}}
+function addLog(m){const a=ST.activeCase,log=$('#cvLog');a.log.push(m);if(a.log.length>120)a.log.shift();if(log&&caseView==='chat'){log.insertAdjacentHTML('beforeend',msgHTML(a.def,m));log.scrollTop=log.scrollHeight}}
+function typing(who){const log=$('#cvLog');if(!log)return null;const d=ST.activeCase.def;const el=document.createElement('div');el.className='m typing';el.style.setProperty('--pc',personColor(d,who));el.innerHTML=`<span class="av">${esc(initials(who||'?'))}</span><div class="b"><i></i><i></i><i></i></div>`;log.appendChild(el);log.scrollTop=log.scrollHeight;return el}
+
+async function sendCase(text,hint){const a=ST.activeCase;if(!a||a.done||caseBusy||!sampler)return;text=(text||'').trim();if(!text)return;
+  const ta=$('#cvText');if(ta&&!hint){ta.value='';ta.style.height='auto'}
+  if(!hint)addLog({me:true,text});caseBusy=true;lockChat(true);
+  a.api.push({role:'user',content:hint?'[DICA]':text});
+  const tip=typing(hint?'Mentor':(a.def.cast[0]||{}).name);
+  try{const r=await sampler.json(a.api,{modelTier:'default',cache:false});if(tip)tip.remove();
+    const msgs=vmsgs(r&&r.msgs);if(!msgs.length)throw{code:'empty'};
+    a.api.push({role:'assistant',content:JSON.stringify({msgs,stage:r.stage,done:!!r.done})});
+    for(const m of msgs){const w=m.who.toLowerCase();if(w!=='narrador'&&w!=='mentor'&&!reduced){const t=typing(m.who);await new Promise(res=>setTimeout(res,Math.min(2200,500+m.text.length*12)));if(t)t.remove()}addLog(m);sfx.tick()}
+    const ns=clamp(parseInt(r.stage,10)||a.stage,1,a.def.stages.length);if(ns>a.stage){award(15*(ns-a.stage),$('#cvStage'));fire(C.spark)}a.stage=Math.max(a.stage,ns);
+    if(r.done){a.done=true;updStage();save();caseBusy=false;await endCase();return}
+    updStage();save()}
+  catch(e){if(tip)tip.remove();a.api.pop();if(!hint){a.log.pop();const log=$('#cvLog');if(log&&log.lastElementChild)log.lastElementChild.remove();if(ta)ta.value=text}
+    addLog({who:'sistema',text:e&&e.code==='rate_limited'?'Limite de uso do Claude. Espere um pouco e envie de novo.':'A cena não respondeu. Sua mensagem voltou para a caixa; envie de novo.'});a.log.pop()}
+  caseBusy=false;lockChat(a.done)}
+
+async function endCase(){const a=ST.activeCase;if(!a||caseBusy||!sampler)return;if(a.debrief){renderChat();return}caseBusy=true;lockChat(true);
+  const tip=typing('Mentor');const d=a.def;
+  const transcript=a.log.filter(m=>m.who!=='sistema').map(m=>m.me?`JOGADOR: ${m.text}`:`${m.who}: ${m.text}`).join('\n').slice(-14000);
+  const prompt=`Você é um mentor sênior de ciência de dados avaliando como um profissional se saiu numa simulação de trabalho. Seja honesto, específico e construtivo, citando momentos do diálogo.
+Caso: ${d.title} (${d.level}). Objetivo: ${d.objective}
+Etapas: ${d.stages.join(' | ')}
+Fatos ocultos que podiam ser descobertos: ${d.hidden.join(' | ')}
+Transcrição:
+${transcript}
+
+Responda só com JSON:
+{"nota":0-10,"resumo":"2 frases sobre o desempenho","fortes":["até 3 acertos concretos"],"melhorar":["até 3 pontos concretos, cada um com o que dizer ou fazer em vez disso"],"senior":"como um profissional sênior teria conduzido o caso, em até 70 palavras","frases":["2 ou 3 frases prontas que o jogador pode usar em situações parecidas"],"comp":{"dados":0-5 ou null,"estat":0-5 ou null,"modelo":0-5 ou null,"negocio":0-5 ou null}}
+Use null nas competências que o caso não exercitou.`;
+  try{const r=await sampler.json(prompt,{modelTier:'default',cache:false});if(tip)tip.remove();
+    const nota=clamp(Math.round(+r.nota||0),0,10),list=(v,n)=>(Array.isArray(v)?v:[]).map(x=>sstr(x,400)).filter(Boolean).slice(0,n);
+    const comp={};CAT_KEYS.forEach(k=>{const v=r.comp&&r.comp[k];comp[k]=v==null||!isFinite(v)?null:clamp(Math.round(+v),0,5)});
+    a.debrief={nota,resumo:sstr(r.resumo,500)||'',fortes:list(r.fortes,3),melhorar:list(r.melhorar,3),senior:sstr(r.senior,700)||'',frases:list(r.frases,3),comp};a.done=true;
+    ST.cases=[...(ST.cases||[]),{id:d.id,title:d.title,cat:d.cat,nota,date:today()}].slice(-40);
+    ST.casePhrases=[...a.debrief.frases.map(t=>({t,cat:d.cat})),...(ST.casePhrases||[])].slice(0,40);
+    award(40+nota*8,$('#cvStage'));if(nota>=7){confetti();sfx.lvl()}touchDay();save();
+    const log=$('#cvLog');if(log){log.insertAdjacentHTML('beforeend',debriefHTML(a.debrief));log.scrollTop=log.scrollHeight}updStage()}
+  catch(e){if(tip)tip.remove();addLog({who:'sistema',text:'Não consegui gerar a avaliação agora. Toque em "Encerrar e receber avaliação" de novo.'});a.log.pop()}
+  caseBusy=false;lockChat(a.done)}
+function debriefHTML(r){const comp=CAT_KEYS.filter(k=>r.comp[k]!=null);return`<div class="debrief"><h5>Avaliação do mentor</h5><div style="display:flex;align-items:baseline;gap:10px"><span class="nota">${r.nota}</span><span style="color:var(--muted)">de 10</span></div><p style="margin:0">${esc(r.resumo)}</p>
+  ${comp.length?`<div class="mastery">${comp.map(k=>`<div class="mrow t-${k}"><span>${CATS[k]}</span><div class="mbar"><i style="width:${r.comp[k]*20}%"></i></div><output>${r.comp[k]}/5</output></div>`).join('')}</div>`:''}
+  ${r.fortes.length?`<h5>O que funcionou</h5><ul>${r.fortes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
+  ${r.melhorar.length?`<h5>Para a próxima</h5><ul>${r.melhorar.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
+  ${r.senior?`<h5>Como um sênior conduziria</h5><p style="margin:0">${esc(r.senior)}</p>`:''}
+  ${r.frases.length?`<div class="pro" style="--tc:var(--spark)"><span class="lab">Frases prontas</span>${r.frases.map(esc).join('<br>')}</div>`:''}</div>`}
+$('#openCases').addEventListener('click',openCases);
+
 /* ================= perfil ================= */
 function openSheet(){const li=levelInfo(ST.xp),tot=ST.ok+ST.bad,phr=QUIZ.filter(c=>c.pro&&(ST.ans[c.id]||{}).ok>0).reverse();
-  const tracks=['ana','ds','ml','ia'].map(k=>{const qs=QUIZ.filter(c=>c.track===k),m=qs.filter(c=>(ST.ans[c.id]||{}).box>=2).length;return{k,m,n:qs.length}});
-  const item=id=>{const c=byId[id];if(!c)return'';const txt=c.q||c.title;return `<div class="li t-${c.track}"><span class="chip">${TRACKS[c.track]}</span><span>${esc(txt)}</span>${c.why?`<small>${esc(c.why)}</small>`:c.ans?`<small>${esc(c.ans)}</small>`:''}</div>`};
+  const tracks=CAT_KEYS.map(k=>{const qs=QUIZ.filter(c=>catOf(c)===k),m=qs.filter(c=>(ST.ans[c.id]||{}).box>=2).length;return{k,m,n:qs.length}});
+  const item=id=>{const c=byId[id];if(!c)return'';const txt=c.q||c.title;return `<div class="li t-${catOf(c)}"><span class="chip">${CAT_LABEL[catOf(c)]}</span><span>${esc(txt)}</span>${c.why?`<small>${esc(c.why)}</small>`:c.ans?`<small>${esc(c.ans)}</small>`:''}</div>`};
   $('#sheet').innerHTML=`<div class="sheet-in" role="dialog" aria-label="Seu progresso">
    <div class="sheet-head"><h3>Nível ${li.L} · ${esc(rankOf(li.L))}</h3><button class="icon-btn" id="closeSheet" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
    <div class="statgrid"><div class="stat"><b>${ST.xp.toLocaleString('pt-BR')}</b><span>XP total</span></div><div class="stat"><b>${tot?pct(ST.ok/tot,0):'–'}</b><span>acertos (${tot})</span></div><div class="stat"><b>${ST.best}</b><span>maior combo</span></div></div>
-   <div><h4>Domínio por trilha (acertou 2× seguidas)</h4><div class="mastery">${tracks.map(t=>`<div class="mrow t-${t.k}"><span>${TRACKS[t.k]}</span><div class="mbar"><i style="width:${t.n?t.m/t.n*100:0}%"></i></div><output>${t.m}/${t.n}</output></div>`).join('')}</div></div>
-   <div><h4>Frases prontas (${phr.length})</h4><div class="list">${phr.length?phr.slice(0,25).map(c=>`<div class="li t-${c.track}"><span class="chip">${MODE_LABEL[c.mode]||TRACKS[c.track]}</span><span>${esc(c.pro)}</span></div>`).join(''):'<p class="empty">Cada card que você acerta deixa aqui uma frase pronta para reunião e entrevista. Releia antes de entrar numa.</p>'}</div></div>
+   <div><h4>Domínio por categoria (acertou 2× seguidas)</h4><div class="mastery">${tracks.map(t=>`<div class="mrow t-${t.k}"><span>${CATS[t.k]}</span><div class="mbar"><i style="width:${t.n?t.m/t.n*100:0}%"></i></div><output>${t.m}/${t.n}</output></div>`).join('')}</div></div>
+   <div><h4>Frases prontas (${phr.length})</h4><div class="list">${phr.length?phr.slice(0,25).map(c=>`<div class="li t-${catOf(c)}"><span class="chip">${MODE_LABEL[c.mode]||CAT_LABEL[catOf(c)]}</span><span>${esc(c.pro)}</span></div>`).join(''):'<p class="empty">Cada card que você acerta deixa aqui uma frase pronta para reunião e entrevista. Releia antes de entrar numa.</p>'}</div></div>
+   ${(ST.casePhrases||[]).length?`<div><h4>Frases dos casos (${ST.casePhrases.length})</h4><div class="list">${ST.casePhrases.slice(0,15).map(p=>`<div class="li t-${p.cat}"><span class="chip">${CATS[p.cat]||'Caso'}</span><span>${esc(p.t)}</span></div>`).join('')}</div></div>`:''}
    <div><h4>Caderno de erros (${ST.errs.length})</h4><div class="list">${ST.errs.length?ST.errs.slice(0,15).map(item).join(''):'<p class="empty">Nada aqui ainda. O que você errar entra aqui com a explicação.</p>'}</div></div>
    <div><h4>Salvos (${ST.saved.length})</h4><div class="list">${ST.saved.length?ST.saved.map(item).join(''):'<p class="empty">Toque em Salvar num card para guardar aqui.</p>'}</div></div>
    <div><h4>Conteúdo novo e uso offline</h4><p class="hook" style="margin-bottom:10px"><span class="gen-count">${GEN.length}</span> cards gerados pelo Claude, somando ${CARDS.length} no total. Reserva de cards ainda não vistos: <b class="reserve-min">~${Math.min(reserveMin(),RESERVE_MIN)}</b> de ${RESERVE_MIN} min (no seu ritmo de ~${Math.round(secPerCard())} s por card). A geração só roda com internet. Para estudar sem conexão, baixe o arquivo: ele leva todos os cards e seu progresso e abre em qualquer navegador.</p>
@@ -1076,8 +1395,8 @@ function closeSheet(){$('#sheet').hidden=true}
 $('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet()});
 $('#lvlBtn').addEventListener('click',openSheet);
 $('#soundBtn').addEventListener('click',()=>{ST.sound=!ST.sound;save();hud(false);sfx.tick()});
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.f===filter)return;filter=b.dataset.f;document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===b));resetFeed()}));
-addEventListener('keydown',e=>{if(!$('#sheet').hidden){if(e.key==='Escape')closeSheet();return}if(e.target.tagName==='INPUT')return;const f=$('#feed');
+document.querySelectorAll('.tab[data-f]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.f===filter)return;filter=b.dataset.f;document.querySelectorAll('.tab[data-f]').forEach(x=>x.setAttribute('aria-selected',x===b));resetFeed()}));
+addEventListener('keydown',e=>{if(!$('#cases').hidden){if(e.key==='Escape'&&e.target.tagName!=='TEXTAREA')closeCases();return}if(!$('#sheet').hidden){if(e.key==='Escape')closeSheet();return}if(e.target.tagName==='INPUT')return;const f=$('#feed');
   if(e.key==='ArrowDown'||e.key==='j'||e.key==='J'||e.key===' '){e.preventDefault();f.scrollBy({top:f.clientHeight})}
   else if(e.key==='ArrowUp'||e.key==='k'||e.key==='K'){e.preventDefault();f.scrollBy({top:-f.clientHeight})}
   else if(/^[1-4]$/.test(e.key)&&cur&&cur.c.kind==='quiz'&&!cur.done){const b=cur.el.querySelectorAll('.opt')[+e.key-1];if(b)b.click()}

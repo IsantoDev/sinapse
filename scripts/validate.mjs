@@ -38,8 +38,10 @@ cards.forEach((c, i) => {
   if (!c || typeof c !== 'object') return errs.push(`${where}: não é objeto`);
   if (typeof c.id !== 'string' || !/^[\w-]{3,64}$/.test(c.id)) errs.push(`${where}: id inválido`);
   if (ids.has(c.id)) errs.push(`${where}: id repetido`); ids.add(c.id);
-  if (!SYL[c.track]) errs.push(`${where}: track deve ser ana, ds, ml ou ia`);
-  else if (!SYL[c.track].includes(c.topic)) errs.push(`${where}: topic fora da ementa de ${c.track}`);
+  if (c.cat !== undefined) {
+    if (!SYL[c.cat]) errs.push(`${where}: cat deve ser dados, estat, modelo ou negocio`);
+    else if (!SYL[c.cat].includes(c.topic)) errs.push(`${where}: topic fora da ementa de ${c.cat}`);
+  } else if (!['ana', 'ds', 'ml', 'ia'].includes(c.track)) errs.push(`${where}: informe cat (dados, estat, modelo, negocio)`);
   const qk = String(c.kind === 'chain' ? (c.ctx ? c.ctx.say : (c.steps && c.steps[0] && c.steps[0].q) || '') : c.q || '').trim().toLowerCase();
   if (qs.has(qk)) errs.push(`${where}: pergunta repetida`); qs.add(qk);
   if (c.mode !== undefined && !MODES.includes(c.mode)) errs.push(`${where}: mode deve ser um de ${MODES.join(', ')}`);
@@ -60,5 +62,5 @@ cards.forEach((c, i) => {
 });
 
 if (errs.length) { console.error(`${errs.length} problema(s):\n- ` + errs.slice(0, 60).join('\n- ')); process.exit(1); }
-const by = {}; cards.forEach((c) => { by[c.track] = (by[c.track] || 0) + 1; });
+const by = {}; cards.forEach((c) => { const k = c.cat || c.track; by[k] = (by[k] || 0) + 1; });
 console.log(`OK: ${cards.length} cards`, by);

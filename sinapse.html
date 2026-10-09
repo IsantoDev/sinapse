@@ -212,6 +212,12 @@ body.immersive .cv-in{padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))
 .tile{border:1px solid var(--line)}
 .why.miss{border-color:color-mix(in srgb,var(--bad) 35%,var(--line))}
 .why.good{border-color:color-mix(in srgb,var(--ok) 35%,var(--line))}
+.nstrip{display:flex;gap:5px;align-items:center;flex:none}
+.nstrip i{width:calc(8px + var(--ns,0)*8px);height:calc(8px + var(--ns,0)*8px);border-radius:50%;background:var(--nc);box-shadow:0 0 calc(var(--ns,0)*10px) var(--nc);transition:all .4s}
+.nstrip i.off{background:transparent;border:1.5px dashed color-mix(in srgb,var(--nc) 60%,transparent);box-shadow:none;width:9px;height:9px}
+.nstrip i.fire{animation:fire .9s ease-out}
+@keyframes fire{0%{transform:scale(1)}30%{transform:scale(1.9);box-shadow:0 0 18px var(--nc)}100%{transform:scale(1)}}
+.tm-toast.sig{border:1px solid color-mix(in srgb,var(--pc) 50%,var(--line));pointer-events:none}
 .nmap{background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--spark) 8%,transparent),transparent 60%),var(--bg2);border:1px solid var(--line);border-radius:16px;padding:6px}
 .nmap svg{display:block;width:100%;height:auto;max-height:260px}
 .spark7{display:flex;align-items:flex-end;gap:5px;height:56px;padding-top:4px}
@@ -1571,9 +1577,10 @@ Como conduzir:
 - "stage" é a etapa em andamento (1 a ${d.stages.length}). Avance quando o objetivo da etapa atual for cumprido. "done": true quando todas as etapas forem cumpridas ou quando o caso fracassar de forma irreversível (explique pelo narrador).
 - Se a mensagem do jogador for "[DICA]", responda só com {"who":"mentor","where":"mentor","text":"..."}: uma dica curta e socrática, sem dar a resposta pronta. O mentor está fora da cena.
 - Mensagens curtas como chat real: 1 a 4 mensagens por turno, cada uma com até 3 frases (artefatos podem ser maiores). Em reunião, até 5 falas.
+- AVALIAÇÃO SILENCIOSA (o jogador não vê): avalie SÓ a última ação do jogador (mensagem, consulta trazida, entregável, ligação, reunião convocada). Em "aval", para cada competência que essa ação exercitou, dê 0 (prejudicou: chute, culpa, jargão, conclusão errada), 1 (fraca), 2 (adequada) ou 3 (de sênior); use null para o que não foi exercitado. dados = SQL, dados, qualidade e engenharia; estat = raciocínio estatístico, causalidade, validação; modelo = modelagem e IA; negocio = comunicação, pessoas, canal certo, decisão, prioridade. Em "obs", uma frase curta e concreta sobre o raciocínio dessa jogada (ex.: "Pediu a definição de receita antes de investigar"). Para "[DICA]", use "aval":null e "obs":"".
 
 Responda SEMPRE só com JSON neste formato:
-{"msgs":[{"who":"nome do personagem, narrador ou mentor","where":"nome do personagem, grupo, reuniao ou mentor","text":"..."}],"stage":1,"done":false,"scene":null}`}
+{"msgs":[{"who":"nome do personagem, narrador ou mentor","where":"nome do personagem, grupo, reuniao ou mentor","text":"..."}],"stage":1,"done":false,"scene":null,"aval":{"dados":null,"estat":null,"modelo":null,"negocio":2},"obs":"..."}`}
 
 function vscene(d,s){if(!s||typeof s!=='object')return null;if(s.mode==='chat')return{mode:'chat'};if(s.mode!=='meeting')return null;
   const ps=(Array.isArray(s.participants)?s.participants:[]).map(n=>{const p=d.cast.find(x=>x.name.toLowerCase()===String(n).toLowerCase());return p&&p.name}).filter(Boolean);
@@ -1712,12 +1719,12 @@ function toolsHTML(){return`<button class="rbtn" id="cvHyp" type="button">${ICO.
 function renderTeams(){const a=ST.activeCase,d=a.def,box=$('#cases');if(a.thread===DATA&&!dataOf(d))a.thread=GROUP;const th=a.thread,isP=d.cast.some(p=>p.name===th);
   const head=th===MENTOR?{name:'Mentor',role:'fora da cena: pede uma dica quando travar',col:C.ia,ini:'M'}:th===DATA?{name:'Dados do caso',role:'SQL de verdade (SQLite) · envie o resultado para alguém',col:C.ds,ini:'DB'}:th===GROUP?{name:groupName(d),role:d.cast.map(p=>p.name).join(', '),col:C.spark,ini:'#'}:{name:th,role:roleOf(d,th),col:personColor(d,th),ini:initials(th)};
   box.innerHTML=`<div class="tm t-${d.cat} ${a.view==='list'?'show-list':'show-thread'}">
-   <aside class="tm-side"><div class="cs-h"><button class="icon-btn" id="cvBack" aria-label="Voltar para a lista de casos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>${esc(d.title)}</b><span id="cvStage"></span></div></div>
+   <aside class="tm-side"><div class="cs-h"><button class="icon-btn" id="cvBack" aria-label="Voltar para a lista de casos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>${esc(d.title)}</b><span id="cvStage"></span></div><div class="nstrip" aria-label="Leitura do seu raciocínio neste caso"></div></div>
     <div class="stagebar" id="cvBar"></div>
     <div class="tm-tools"><button class="rbtn" id="cvObjBtn" type="button" aria-expanded="false">Objetivo</button><button class="rbtn" id="cvEnd" type="button">Encerrar e avaliar</button><span class="sp"></span><button class="rbtn" id="cvRestart" type="button">Recomeçar</button></div>
     <div class="cv-obj" id="cvObj" hidden><div><b>Você:</b> ${esc(d.player)}</div><div><b>Situação:</b> ${esc(d.situation)}</div><div><b>Objetivo:</b> ${esc(d.objective)}</div><ol id="cvSteps"></ol>${a.hyps.length?`<div><b>Suas hipóteses:</b> ${a.hyps.map(h=>`${esc(h.t)} (${h.conf}%)`).join(' · ')}</div>`:''}</div>
     <div class="tm-list" id="tmList">${listHTML(a)}</div></aside>
-   <section class="tm-main"><div class="tm-mh" style="--pc:${head.col}"><button class="icon-btn tm-back" id="tmBack" aria-label="Ver conversas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><span class="av" aria-hidden="true">${esc(head.ini)}</span><div class="t"><b>${esc(head.name)}</b><span>${esc(head.role)}</span></div><span class="sp"></span>
+   <section class="tm-main"><div class="tm-mh" style="--pc:${head.col}"><button class="icon-btn tm-back" id="tmBack" aria-label="Ver conversas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><span class="av" aria-hidden="true">${esc(head.ini)}</span><div class="t"><b>${esc(head.name)}</b><span>${esc(head.role)}</span></div><span class="sp"></span><div class="nstrip" aria-label="Leitura do seu raciocínio neste caso"></div>
      ${isP?`<button class="rbtn call" id="tmCall" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Ligar</button>`:th===GROUP?`<button class="rbtn call" id="tmMeet" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>Reunião agora</button>`:''}</div>
     ${th===DATA?`<div class="cs-body tm-log" id="sqlPane"></div>`:`<div class="cs-body tm-log" id="cvLog" aria-live="polite"></div>`}
     ${th===MENTOR?`<div class="cv-in"><button class="btn primary" id="cvHint" type="button" style="--tc:var(--ia);flex:1">Pedir uma dica ao mentor${hintCost(d)?` (−${hintCost(d)} XP)`:''}</button></div>`:th===DATA?'':`<div class="cv-act">${toolsHTML()}</div><div class="cv-in"><textarea id="cvText" rows="1" enterkeyhint="send" autocapitalize="sentences" placeholder="Mensagem para ${esc(head.name)}" aria-label="Sua mensagem"></textarea><button class="send" id="cvSend" aria-label="Enviar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>`}
@@ -1797,7 +1804,7 @@ function openDeliv(){const a=ST.activeCase;if(!a||a.done)return;const d=a.def,in
 /* ---------- reunião ao vivo ---------- */
 function renderMeeting(){const a=ST.activeCase,d=a.def,sc=a.scene,box=$('#cases');
   const tile=(n,me)=>`<div class="tile${me?' me':''}" data-who="${esc(n)}" style="--pc:${me?C.spark:personColor(d,n)}"><span class="av big" aria-hidden="true">${me?'VC':esc(initials(n))}</span><b>${me?'Você':esc(n)}</b><small>${me?'':esc(roleOf(d,n))}</small></div>`;
-  box.innerHTML=`<div class="mt t-${d.cat}"><div class="mt-top"><span class="live">ao vivo</span><div class="t"><b>${esc(sc.title)}</b><span id="cvStage"></span></div><span class="clock" id="mtClock">00:00</span></div>
+  box.innerHTML=`<div class="mt t-${d.cat}"><div class="mt-top"><span class="live">ao vivo</span><div class="t"><b>${esc(sc.title)}</b><span id="cvStage"></span></div><div class="nstrip" aria-label="Leitura do seu raciocínio neste caso"></div><span class="clock" id="mtClock">00:00</span></div>
    <div class="stagebar" id="cvBar"></div>
    <div class="mt-grid n${Math.min(sc.participants.length+1,6)}">${sc.participants.map(n=>tile(n)).join('')}${tile('Você',true)}</div>
    <div class="mt-cap" id="cvLog" aria-live="polite"></div>
@@ -1852,6 +1859,7 @@ async function sendCase(text,kind='msg',opt={}){const a=ST.activeCase;if(!a||a.d
   const tip=kind==='hint'&&!inMeet&&a.thread!==MENTOR?null:typing(who);
   try{const r=await sampler.json(a.api,{modelTier:'default',cache:false});if(tip)tip.remove();
     const msgs=vmsgs(r&&r.msgs),sc=vscene(a.def,r&&r.scene);if(!msgs.length&&!sc)throw{code:'empty'};
+    if(kind!=='hint')recordSignal(a,r&&r.aval,r&&r.obs);
     a.api.push({role:'assistant',content:JSON.stringify({msgs,stage:r.stage,done:!!r.done,scene:sc})});
     if(kind==='hint'&&!inMeet&&a.thread!==MENTOR){a.thread=MENTOR;a.view='thread';renderTeams()}
     if(sc&&sc.mode==='meeting'&&!inMeet)await enterMeeting(sc);
@@ -1866,7 +1874,20 @@ async function sendCase(text,kind='msg',opt={}){const a=ST.activeCase;if(!a||a.d
     addLog(note);a.log.splice(a.log.indexOf(note),1)}
   caseBusy=false;lockChat(a.done)}
 
-function updStage(){const a=ST.activeCase;if(!a)return;const d=a.def,n=d.stages.length,st=Math.min(a.stage,n);
+/* ---------- leitura contínua do raciocínio ---------- */
+function liveSkill(k){const l=(ST.live||{})[k];return l&&l.n?l.v:skillAvg(k)}
+function feedLive(k,v5,w){ST.live=ST.live||{};const l=ST.live[k]||{v:v5,n:0,last:0};l.v=l.n?l.v*(1-w)+v5*w:v5;l.n++;l.last=Date.now();ST.live[k]=l}
+function recordSignal(a,av,obs){if(!av||typeof av!=='object')return;const got=[];CAT_KEYS.forEach(k=>{const v=av[k];if(v==null||!isFinite(v))return;const x=clamp(Math.round(+v),0,3);got.push([k,x]);feedLive(k,x*5/3,.22)});if(!got.length)return;
+  const o=sstr(obs,200)||'';a.signals=a.signals||[];a.signals.push({t:Date.now(),s:Object.fromEntries(got),o,stage:a.stage});if(a.signals.length>80)a.signals.shift();
+  const top=got.slice().sort((x,y)=>Math.abs(y[1]-1.5)-Math.abs(x[1]-1.5))[0];
+  ST.liveLog=[{k:top[0],v:top[1],o,case:a.def.title,date:today()},...(ST.liveLog||[])].slice(0,30);save();
+  if(caseView==='chat'){renderStrip(top[0]);if(o)signalToast(top[0],top[1],o)}}
+function caseAvg(a,k){const xs=(a.signals||[]).map(s=>s.s[k]).filter(v=>v!=null);return xs.length?xs.reduce((p,c)=>p+c,0)/xs.length:null}
+function renderStrip(pulse){const a=ST.activeCase,els=document.querySelectorAll('.nstrip');if(!a||!els.length)return;const col={dados:'var(--cat-dados)',estat:'var(--cat-estat)',modelo:'var(--cat-modelo)',negocio:'var(--cat-negocio)'};
+  const html=CAT_KEYS.map(k=>{const v=caseAvg(a,k);return`<i class="${k===pulse?'fire':''}${v==null?' off':''}" style="--nc:${col[k]};--ns:${v==null?0:(v/3)}" title="${CATS[k]}: ${v==null?'ainda sem sinal neste caso':['prejudicou','fraco','adequado','de sênior'][Math.round(v)]}"></i>`}).join('');els.forEach(el=>el.innerHTML=html)}
+function signalToast(k,v,o){const box=$('#cases');if(!box)return;const el=document.createElement('div');el.className='tm-toast sig';el.style.setProperty('--pc',`var(--cat-${k})`);
+  el.innerHTML=`<b>${v>=2?'↑':v===1?'→':'↓'} ${esc(CATS[k])} · ${['prejudicou','fraco','adequado','de sênior'][v]}</b><span>${esc(o)}</span>`;box.appendChild(el);setTimeout(()=>el.remove(),3600)}
+function updStage(){const a=ST.activeCase;if(!a)return;renderStrip();const d=a.def,n=d.stages.length,st=Math.min(a.stage,n);
   const s=$('#cvStage');if(s)s.textContent=a.done?'caso encerrado':`etapa ${st} de ${n} · ${d.stages[st-1]}`;
   const bar=$('#cvBar');if(bar)bar.innerHTML=d.stages.map((_,i)=>`<i class="${a.done||i<st-1?'on':''}"></i>`).join('');
   const ol=$('#cvSteps');if(ol)ol.innerHTML=d.stages.map((x,i)=>`<li class="${i<st-1||a.done?'done':i===st-1?'now':''}">${esc(x)}</li>`).join('')}
@@ -1882,6 +1903,7 @@ Caso: ${d.title} (${d.level}). Objetivo: ${d.objective}
 Etapas: ${d.stages.join(' | ')}
 Fatos ocultos que podiam ser descobertos: ${d.hidden.join(' | ')}
 ${factsOf(d).length?'Números verdadeiros dos dados: '+factsOf(d).join(' | '):''}
+Leitura jogada a jogada feita durante o caso (0 a 3): ${(a.signals||[]).slice(-20).map(x=>Object.entries(x.s).map(([k,v])=>k+'='+v).join(',')+(x.o?' ('+x.o+')':'')).join(' | ')||'nenhuma'}
 Hipóteses que o jogador registrou (em ordem): ${a.hyps.length?a.hyps.map((h,i)=>`${i}. "${h.t}" (${h.conf}% de confiança, etapa ${h.stage})`).join(' | '):'nenhuma'}
 Transcrição (entre colchetes, onde cada coisa aconteceu):
 ${transcript}
@@ -1903,7 +1925,7 @@ Use null nas competências que o caso não exercitou. Gere 2 lições.`;
     a.debrief={nota,resumo:sstr(r.resumo,500)||'',fortes:list(r.fortes,3),melhorar:list(r.melhorar,3),senior:sstr(r.senior,700)||'',frases:list(r.frases,3),comp,ent,hyps,star:st,lessons:0,promo:null,repd:null};a.done=true;
     ST.cases=[...(ST.cases||[]),{id:d.id,title:d.title,cat:d.cat,nota,date:today()}].slice(-60);
     ST.casePhrases=[...a.debrief.frases.map(t=>({t,cat:d.cat})),...(ST.casePhrases||[])].slice(0,40);
-    ST.skill=ST.skill||{};CAT_KEYS.forEach(k=>{if(comp[k]!=null){const s=ST.skill[k]||{s:0,n:0};s.s+=comp[k];s.n++;ST.skill[k]=s}});
+    CAT_KEYS.forEach(k=>{if(comp[k]!=null)feedLive(k,comp[k],.45)});ST.skill=ST.skill||{};CAT_KEYS.forEach(k=>{if(comp[k]!=null){const s=ST.skill[k]||{s:0,n:0};s.s+=comp[k];s.n++;ST.skill[k]=s}});
     ST.calib=ST.calib||{};hyps.forEach(h=>{if(h.acertou==null)return;const c=ST.calib[h.conf]||[0,0];c[0]+=h.acertou?1:0;c[1]++;ST.calib[h.conf]=c});
     if(st)ST.stories=[{title:d.title,cat:d.cat,date:today(),...st},...(ST.stories||[])].slice(0,30);
     (Array.isArray(r.licoes)?r.licoes:[]).slice(0,2).forEach(o=>{const c=validCard({...o,kind:'quiz',mode:'conceito'},d.cat,'case',sstr(d.title,60));if(c){c.fromCase=d.title;if(registerCard(c)){GEN.push(c);sessRev.push({id:c.id,at:fc+3});a.debrief.lessons++}}});persistGen();cloudSaveBatch('case');
@@ -1979,15 +2001,19 @@ if(window.visualViewport){const kb=()=>{const v=window.visualViewport,k=Math.max
 function copyText(t,btn){const done=()=>{if(btn){const o=btn.textContent;btn.textContent='Copiado';setTimeout(()=>btn.textContent=o,1600)}};try{navigator.clipboard.writeText(t).then(done,()=>{})}catch(e){}}
 function showXfer(msg,text,copy){const x=$('#xfer');x.innerHTML=`<p class="sync" style="margin:8px 0">${esc(msg)}</p><textarea id="xfTxt" rows="7" readonly>${esc(text)}</textarea>${copy?'<div class="btnrow"><button class="btn primary" id="xfCopy" type="button">Copiar</button></div>':''}`;const ta=$('#xfTxt');ta.addEventListener('focus',()=>ta.select());const c=$('#xfCopy');if(c)c.addEventListener('click',()=>{copyText(text,c);ta.select()})}
 /* Mapa neural: você no centro, cada categoria é um neurônio; a sinapse engrossa e acende com o domínio real (cards acertados 2× seguidas) */
+function ringSVG(n,col){const x=n.x.toFixed(1),y=n.y.toFixed(1);if(n.sk==null)return'<circle cx="'+x+'" cy="'+y+'" r="26" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="2 4"/>';
+  const C2=2*Math.PI*26,fr=clamp(n.sk/5,0,1);let o='<circle cx="'+x+'" cy="'+y+'" r="26" fill="none" stroke="var(--line)" stroke-width="3"/><circle cx="'+x+'" cy="'+y+'" r="26" fill="none" stroke="'+col+'" stroke-width="3" stroke-linecap="round" stroke-dasharray="'+(C2*fr).toFixed(1)+' '+C2.toFixed(1)+'" transform="rotate(-90 '+x+' '+y+')"/>';
+  if(n.hot)o+='<circle cx="'+x+'" cy="'+y+'" r="30" fill="none" stroke="'+col+'" stroke-width="1.5"><animate attributeName="r" values="28;38;28" dur="1.8s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values=".7;0;.7" dur="1.8s" repeatCount="indefinite"/></circle>';return o}
 function neuralMap(tracks){const W=340,H=260,cx=W/2,cy=H/2+2,R=86,cols={dados:'var(--cat-dados)',estat:'var(--cat-estat)',modelo:'var(--cat-modelo)',negocio:'var(--cat-negocio)'},ang=[-135,-45,45,135];
-  const nodes=tracks.map((t,i)=>{const a=ang[i]*Math.PI/180,p=t.n?t.m/t.n:0,sk=skillAvg(t.k);return{...t,p,sk,x:cx+Math.cos(a)*R*1.25,y:cy+Math.sin(a)*R*.82,a}});
+  const nodes=tracks.map((t,i)=>{const a=ang[i]*Math.PI/180,p=t.n?t.m/t.n:0,sk=liveSkill(t.k),lv=(ST.live||{})[t.k],hot=lv&&Date.now()-lv.last<36e5*24;return{...t,p,sk,hot,x:cx+Math.cos(a)*R*1.25,y:cy+Math.sin(a)*R*.82,a}});
   const dend=n=>{let out='';const k=12,lit=Math.round(n.p*k);for(let j=0;j<k;j++){const b=n.a+(j-(k-1)/2)*0.16,r1=24,r2=24+10+(j%3)*5;const x1=n.x+Math.cos(b)*r1,y1=n.y+Math.sin(b)*r1,x2=n.x+Math.cos(b)*r2,y2=n.y+Math.sin(b)*r2;out+=`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${j<lit?cols[n.k]:'var(--line)'}" stroke-width="2" stroke-linecap="round"/><circle cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="2" fill="${j<lit?cols[n.k]:'var(--line)'}"/>`}return out};
   return`<div><h4>Seu mapa neural</h4><div class="nmap"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Mapa de domínio por categoria: ${nodes.map(n=>`${CATS[n.k]} ${Math.round(n.p*100)}%`).join(', ')}">
    ${nodes.map(n=>`<line x1="${cx}" y1="${cy}" x2="${n.x.toFixed(1)}" y2="${n.y.toFixed(1)}" stroke="${cols[n.k]}" stroke-opacity="${(0.18+n.p*0.82).toFixed(2)}" stroke-width="${(1.5+n.p*7).toFixed(1)}" stroke-linecap="round"/>`).join('')}
    ${nodes.map(n=>dend(n)).join('')}
+   ${nodes.map(n=>ringSVG(n,cols[n.k])).join('')}
    ${nodes.map(n=>`<circle cx="${n.x.toFixed(1)}" cy="${n.y.toFixed(1)}" r="20" fill="var(--bg2)" stroke="${cols[n.k]}" stroke-width="2.5"/><text x="${n.x.toFixed(1)}" y="${(n.y+5).toFixed(1)}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12.5" font-weight="700" fill="var(--fg)">${Math.round(n.p*100)}%</text><text x="${n.x.toFixed(1)}" y="${(n.y+(n.y<cy?-46:56)).toFixed(1)}" text-anchor="middle" font-family="Figtree, sans-serif" font-size="11" font-weight="600" fill="${cols[n.k]}">${CATS[n.k].split(' ')[0]}${n.sk!=null?` · casos ${num(n.sk,1)}/5`:''}</text>`).join('')}
    <circle cx="${cx}" cy="${cy}" r="17" fill="var(--spark)"/><circle cx="${cx}" cy="${cy}" r="25" fill="none" stroke="var(--spark)" stroke-opacity=".35" stroke-width="2"><animate attributeName="r" values="19;29;19" dur="2.4s" repeatCount="indefinite"/><animate attributeName="stroke-opacity" values=".5;0;.5" dur="2.4s" repeatCount="indefinite"/></circle><text x="${cx}" y="${cy+4}" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-size="12" font-weight="800" fill="var(--bg)">você</text></svg></div>
-   <p class="empty" style="margin-top:4px">Cada dendrito aceso é um pedaço da categoria dominado. A sinapse engrossa conforme você domina; a nota dos casos aparece ao lado.</p></div>`}
+   <p class="empty" style="margin-top:4px">Dendritos e sinapse: domínio nos cards. Anel externo: seu raciocínio nos casos, lido jogada a jogada, inclusive com caso em andamento; ele pulsa quando houve atividade nas últimas 24 h.</p>${(ST.liveLog||[]).length?`<h4 style="margin-top:12px">Raciocínio nos casos</h4><div class="list">${ST.liveLog.slice(0,6).map(x=>`<div class="li t-${x.k}"><span class="chip">${x.v>=2?'↑':x.v===1?'→':'↓'} ${esc(CATS[x.k])}</span><span>${esc(x.o||'—')}</span><small>${esc(x.case)}${ST.activeCase&&!ST.activeCase.done&&ST.activeCase.def.title===x.case?' · em andamento':''}</small></div>`).join('')}</div>`:''}</div>`}
 function weekSpark(){const ds=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=dayStr(d),x=(ST.days||{})[k];ds.push({k,xp:x?Math.max(0,x.xp):0,d})}const mx=Math.max(1,...ds.map(d=>d.xp)),tot=ds.reduce((a,d)=>a+d.xp,0),wd=['D','S','T','Q','Q','S','S'];
   return`<div><h4>Últimos 7 dias · ${tot.toLocaleString('pt-BR')} XP</h4><div class="spark7" role="img" aria-label="XP por dia nos últimos 7 dias">${ds.map((d,i)=>`<i class="${i===6?'today':''}" style="height:${Math.max(5,d.xp/mx*100)}%" title="${d.k}: ${d.xp} XP"></i>`).join('')}</div><div class="spark7-lab">${ds.map((d,i)=>`<span>${i===6?'hoje':wd[d.d.getDay()]}</span>`).join('')}</div></div>`}
 function calibHTML(){const c=ST.calib||{},ks=[50,70,90].filter(k=>c[k]&&c[k][1]);if(!ks.length)return'';return`<div><h4>Calibração das suas hipóteses</h4><div class="mastery">${ks.map(k=>{const[o,n]=c[k],p=o/n;return`<div class="mrow"><span>Quando diz ${k}% (${n})</span><div class="mbar calib" style="overflow:visible"><i style="width:${Math.round(p*100)}%;background:${Math.abs(p*100-k)<=12?'var(--ok)':'var(--gold)'}"></i><span class="exp" style="left:${k}%" title="ideal"></span></div><output>${Math.round(p*100)}%</output></div>`}).join('')}</div><p class="empty" style="margin-top:6px">Bem calibrado é acertar perto do que você diz. Acerta menos do que diz: excesso de confiança. Acerta mais: confie mais no seu raciocínio.</p></div>`}

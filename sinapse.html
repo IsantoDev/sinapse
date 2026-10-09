@@ -2024,9 +2024,10 @@ function renderDebrief(){document.body.classList.remove('immersive');const a=ST.
   ${r.star?`<h5>Sua história para entrevista</h5><div class="star"><p><b>Situação.</b> ${esc(r.star.s)}</p><p><b>Tarefa.</b> ${esc(r.star.t)}</p><p><b>Ação.</b> ${esc(r.star.a)}</p><p><b>Resultado.</b> ${esc(r.star.r)}</p><small>Salva em Perfil → Histórias para entrevista.</small></div>`:''}
   ${r.lessons?`<p class="note">${r.lessons} lições deste caso entraram no seu feed e voltam na revisão espaçada.</p>`:''}
   ${r.frases.length?`<div class="pro" style="--tc:var(--spark)"><span class="lab">Frases prontas</span>${r.frases.map(esc).join('<br>')}</div>`:''}</div>
-  <div class="btnrow"><button class="btn" id="dbConv" type="button">Rever a conversa</button>${d.career?`<button class="btn primary" id="dbNext" type="button" style="--tc:var(--spark)">Próximo dia de trabalho</button>`:`<button class="btn primary" id="dbAgain" type="button" style="--tc:var(--spark)">Jogar de novo</button>`}<button class="btn" id="dbList" type="button">Outros casos</button></div></div></div>`;
+  <div class="btnrow"><button class="btn ai-only" id="dbPost" type="button" style="--tc:#0a66c2;border-color:#0a66c2">Post para LinkedIn</button><button class="btn" id="dbConv" type="button">Rever a conversa</button>${d.career?`<button class="btn primary" id="dbNext" type="button" style="--tc:var(--spark)">Próximo dia de trabalho</button>`:`<button class="btn primary" id="dbAgain" type="button" style="--tc:var(--spark)">Jogar de novo</button>`}<button class="btn" id="dbList" type="button">Outros casos</button></div></div></div>`;
   $('#dbBack').addEventListener('click',()=>{caseView='list';renderCases()});$('#dbList').addEventListener('click',()=>{caseView='list';renderCases()});
   $('#dbConv').addEventListener('click',()=>{a.scene={mode:'chat'};if(a.thread===DATA)a.thread=GROUP;caseView='chat';renderTeams()});
+  const pb=$('#dbPost');if(pb)pb.addEventListener('click',()=>postOverlay('caso',{d,r}));
   const ag=$('#dbAgain');if(ag)ag.addEventListener('click',()=>startCase(d));const nx=$('#dbNext');if(nx)nx.addEventListener('click',()=>{caseView='list';genCareerCase()})}
 $('#openCases').addEventListener('click',openCases);
 
@@ -2044,7 +2045,7 @@ function openSheet(){if(!$('#cases').hidden)closeCases(true);setNav('profile');a
    ${(ST.casePhrases||[]).length?`<div><h4>Frases dos casos (${ST.casePhrases.length})</h4><div class="list">${ST.casePhrases.slice(0,15).map(p=>`<div class="li t-${p.cat}"><span class="chip">${CATS[p.cat]||'Caso'}</span><span>${esc(p.t)}</span></div>`).join('')}</div></div>`:''}
    ${calibHTML()}
    ${(ST.stories||[]).length?`<div><h4>Histórias para entrevista (${ST.stories.length})</h4><div class="list">${ST.stories.slice(0,10).map((h,i)=>`<div class="li t-${h.cat}"><span class="chip">${CATS[h.cat]||'Caso'}</span><b>${esc(h.title)}</b><small><b>Situação.</b> ${esc(h.s)} <b>Tarefa.</b> ${esc(h.t)} <b>Ação.</b> ${esc(h.a)} <b>Resultado.</b> ${esc(h.r)}</small><button class="rbtn cp" type="button" data-story="${i}">Copiar</button></div>`).join('')}</div></div>`:''}
-   <div><h4>Resumo e outras contas</h4><div class="btnrow"><button class="btn" id="wkBtn" type="button">Resumo da semana</button><button class="btn" id="exBtn" type="button">Levar progresso para outra conta</button><button class="btn" id="imBtn" type="button">Trazer progresso</button></div><div id="xfer"></div></div>
+   <div><h4>Resumo e outras contas</h4><div class="btnrow"><button class="btn" id="wkBtn" type="button">Resumo da semana</button><button class="btn ai-only" id="wkPost" type="button">Post da semana para LinkedIn</button><button class="btn" id="exBtn" type="button">Levar progresso para outra conta</button><button class="btn" id="imBtn" type="button">Trazer progresso</button></div><div id="xfer"></div></div>
    <div><h4>Caderno de erros (${ST.errs.length})</h4><div class="list">${ST.errs.length?ST.errs.slice(0,15).map(item).join(''):'<p class="empty">Nada aqui ainda. O que você errar entra aqui com a explicação.</p>'}</div></div>
    <div><h4>Salvos (${ST.saved.length})</h4><div class="list">${ST.saved.length?ST.saved.map(item).join(''):'<p class="empty">Toque em Salvar num card para guardar aqui.</p>'}</div></div>
    <div><h4>Conteúdo novo e uso offline</h4><p class="hook" style="margin-bottom:10px"><span class="gen-count">${GEN.length}</span> cards gerados pelo Claude, somando ${CARDS.length} no total. Reserva de cards ainda não vistos: <b class="reserve-min">~${Math.min(reserveMin(),RESERVE_MIN)}</b> de ${RESERVE_MIN} min (no seu ritmo de ~${Math.round(secPerCard())} s por card). A geração só roda com internet. Para estudar sem conexão, baixe o arquivo: ele leva todos os cards e seu progresso e abre em qualquer navegador.</p>
@@ -2054,11 +2055,43 @@ function openSheet(){if(!$('#cases').hidden)closeCases(true);setNav('profile');a
   $('#sheet').hidden=false;$('#closeSheet').addEventListener('click',closeSheet);refreshGenUI();
   $('#genNow').addEventListener('click',()=>{gen.backoff=0;generate(pickGenTrack())});
   document.querySelectorAll('[data-story]').forEach(b=>b.addEventListener('click',()=>{const h=ST.stories[+b.dataset.story];copyText(`Situação: ${h.s}\nTarefa: ${h.t}\nAção: ${h.a}\nResultado: ${h.r}`,b)}));
+  $('#wkPost').addEventListener('click',()=>postOverlay('semana',{}));
   $('#wkBtn').addEventListener('click',()=>showXfer('Resumo da semana: mande para um mentor, um colega ou poste. Alguém de fora acompanhando faz você voltar.',weekSummary(),true));
   $('#exBtn').addEventListener('click',()=>showXfer('Copie este código e cole em "Trazer progresso" na outra conta ou aparelho.',exportCode(),true));
   $('#imBtn').addEventListener('click',()=>{const x=$('#xfer');x.innerHTML='<textarea id="imTxt" rows="4" placeholder="Cole aqui o código de progresso"></textarea><div class="btnrow"><button class="btn primary" id="imGo" type="button">Trazer progresso</button></div><p class="sync" id="imMsg"></p>';$('#imGo').addEventListener('click',()=>importCode($('#imTxt').value,$('#imMsg')))});
   $('#dlOffline').addEventListener('click',e=>exportOffline(e.currentTarget,$('#dlMsg')));
   const rb=$('#resetBtn');let armed=false,tmr;rb.addEventListener('click',()=>{if(!armed){armed=true;rb.textContent='Toque de novo para apagar tudo';tmr=setTimeout(()=>{armed=false;rb.textContent='Zerar progresso'},4000);return}clearTimeout(tmr);const snd=ST.sound;ST=DEF();ST.sound=snd;sessRev=[];combo=0;lastLevel=1;save();hud(false);closeSheet();resetFeed()})}
+/* ---------- Post para LinkedIn: rascunho honesto, você revisa e publica ---------- */
+const POST_RULES=`Regras do post:
+- Português do Brasil, primeira pessoa, tom humilde e concreto, como um profissional em transição para dados que estuda em público.
+- Deixe claro que foi um caso SIMULADO de estudo (ex.: "Hoje pratiquei um caso simulado em que..."). Nunca apresente como experiência profissional real, nunca invente empresa, cliente, cargo ou resultado real.
+- Não cite a empresa onde a pessoa trabalha, nomes de pessoas nem dados pessoais. Os nomes do caso são fictícios: não use.
+- Estrutura: 1 linha de gancho concreta; o problema em 1 a 2 frases; o raciocínio ou a técnica que destravou, explicado de forma simples (um termo técnico no máximo, explicado); 1 dica prática que outra pessoa pode usar amanhã; uma pergunta curta para os comentários.
+- Até 1.100 caracteres, parágrafos curtos, no máximo 2 emojis, 3 a 5 hashtags no final (ex.: #dados #sql #cienciadedados).
+- Proibido clichê de LinkedIn ("animado em anunciar", "jornada incrível", "gratidão"). Sem markdown.
+Responda só com o texto do post.`;
+function postPrompt(kind,ctx){if(kind==='caso'){const{d,r}=ctx;return`Escreva um post de LinkedIn a partir de um caso simulado que a pessoa acabou de praticar num app de estudo.
+Caso: ${d.title} (${d.setting}). Problema: ${d.situation}
+O que ela fez bem: ${r.fortes.join(' | ')}
+O que aprendeu para a próxima: ${r.melhorar.join(' | ')}
+Como um sênior conduziria: ${r.senior}
+Frases que ela quer usar: ${r.frases.join(' | ')}
+${r.star?`O que ela fez de fato: ${r.star.a} Resultado no caso: ${r.star.r}`:''}
+${POST_RULES}`}
+  return`Escreva um post de LinkedIn de "estudo em público" sobre a semana de estudos de dados da pessoa, a partir deste resumo:
+${weekSummary()}
+Frases que ela aprendeu: ${(ST.casePhrases||[]).slice(0,3).map(p=>p.t).join(' | ')}
+Escolha UM aprendizado concreto da semana como centro do post; números só os do resumo.
+${POST_RULES}`}
+function postOverlay(kind,ctx){if(!sampler)return;const host=kind==='caso'?$('#cases'):document.body;const old=$('#postOv');if(old)old.remove();
+  host.insertAdjacentHTML('beforeend',`<div class="ov" id="postOv" style="position:fixed;z-index:60"><div class="ov-in"><h3>Rascunho para o LinkedIn</h3><p class="cs-intro">Revise, coloque do seu jeito e publique você mesmo. O texto deixa claro que foi um caso simulado de estudo: assim ele trabalha a seu favor na entrevista, em vez de virar algo que você precisa sustentar.</p><textarea id="postTxt" rows="12" placeholder="Escrevendo…"></textarea><div class="btnrow"><button class="btn primary" id="postCopy" type="button" style="--tc:#0a66c2" disabled>Copiar texto</button><button class="btn" id="postAgain" type="button" disabled>Outra versão</button><button class="btn" id="postClose" type="button">Fechar</button></div><p class="sync" id="postMsg">Abra o LinkedIn, comece um post e cole.</p></div></div>`);
+  const ov=$('#postOv'),ta=$('#postTxt'),cp=$('#postCopy'),ag=$('#postAgain');
+  const close=()=>ov.remove();$('#postClose').addEventListener('click',close);ov.addEventListener('click',e=>{if(e.target===ov)close()});
+  const gen=async v=>{cp.disabled=ag.disabled=true;ta.value='';ta.placeholder='Escrevendo…';
+    try{const r=await sampler(postPrompt(kind,ctx)+(v?`\n\nEscreva uma versão diferente da anterior (outro gancho e outro ângulo). Variação ${v}.`:''),{modelTier:'default',cache:false,onText:({text})=>{ta.value=text}});ta.value=(r.text||ta.value).trim()}
+    catch(e){ta.placeholder=e&&e.code==='rate_limited'?'Limite de uso do Claude. Tente de novo em instantes.':'Não consegui escrever agora. Toque em Outra versão.'}
+    cp.disabled=!ta.value;ag.disabled=false};
+  let v=0;gen(v);ag.addEventListener('click',()=>gen(++v));cp.addEventListener('click',()=>{copyText(ta.value,cp);ta.select();$('#postMsg').textContent='Copiado. Abra o LinkedIn, comece um post e cole.'})}
 function closeSheet(keep){$('#sheet').hidden=true;if(!keep)setNav($('#cases').hidden?'feed':'cases')}
 function setNav(k){[['feed','#navFeed'],['cases','#openCases'],['profile','#navProfile']].forEach(([n,sel])=>{const b=$(sel);if(!b)return;b.classList.toggle('on',n===k);if(n===k)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
 /* Botão voltar do Android: fecha a camada de cima (sobreposição, conversa, casos, perfil) em vez de sair do app */

@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 
 const src = readFileSync('sinapse.html', 'utf8');
 const head = `<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#071012">
 <meta name="description" content="Feed de estudo de Análise de Dados, Ciência de Dados, ML e IA.">
 <link rel="manifest" href="manifest.webmanifest">

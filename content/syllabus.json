@@ -9,6 +9,7 @@
     "Dados em escala: warehouse e Spark",
     "Nuvem para dados (AWS, GCP, Azure)",
     "Pipelines e orquestração (dbt, Airflow)",
+    "Séries temporais de sensores e historiadores (PI, Seeq)",
     "Modelo em produção: API e batch",
     "Monitoramento, drift e retreino",
     "Arquitetura de plataforma de dados e ML"
@@ -40,7 +41,9 @@
     "Embeddings e busca vetorial",
     "RAG: construção e avaliação",
     "LLMs em produção: custo, latência e segurança",
-    "Agentes e tool use"
+    "Agentes e tool use",
+    "Soft sensors e modelos híbridos (física + ML)",
+    "Manutenção preditiva e detecção de anomalias"
   ],
   "negocio": [
     "Definir KPIs e métricas de negócio",
@@ -56,6 +59,8 @@
     "Revisão de código e de análises",
     "Mentoria e desenvolvimento do time",
     "Influência sem autoridade",
-    "Medir o impacto do trabalho de dados"
+    "Medir o impacto do trabalho de dados",
+    "Consultoria: cliente, escopo e documentação técnica",
+    "Inglês técnico e status report"
   ]
 }

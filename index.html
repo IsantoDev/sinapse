@@ -1,5 +1,5 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#071012">
 <meta name="description" content="Feed de estudo de Análise de Dados, Ciência de Dados, ML e IA.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -41,7 +41,7 @@ button:focus-visible,input:focus-visible,.card-in:focus-visible{outline:2px soli
 .lvl svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
 .lvl circle{fill:none;stroke-width:3.5}
 .hud-mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
-.rank{font:700 15px/1.1 var(--f-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em}
+.rank{font:600 12.5px/1.1 var(--f-body);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em}
 .xpline{font:11px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
 .pills{display:flex;gap:6px;flex:none}
 .pill{display:inline-flex;align-items:center;gap:5px;padding:6px 9px;border-radius:999px;background:var(--surface);font:600 12px var(--f-mono);font-variant-numeric:tabular-nums;border:1px solid transparent;white-space:nowrap}
@@ -181,6 +181,43 @@ body.ai-on .ai-btn{display:inline-flex!important}
 #lvlup .s{color:var(--muted);font:12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
 @keyframes zoom{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
 [hidden]{display:none!important}
+/* App shell Android: barra inferior, áreas de toque, teclado, splash */
+:root{--nav-h:64px;--nav-total:calc(var(--nav-h) + env(safe-area-inset-bottom,0px))}
+html,body{overscroll-behavior:none}
+body{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button,.tab,.bn,.opt,.case,.tm-item{-webkit-user-select:none;user-select:none}
+button:active:not(:disabled){transform:scale(.97)}
+.opt:active:not(:disabled){transform:scale(.985)}
+#app{padding-bottom:var(--nav-total)}
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;justify-content:center;gap:4px;padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--bg2) 92%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+.bn{flex:1;max-width:150px;min-height:52px;border:0;background:transparent;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font:600 12px var(--f-body);cursor:pointer}
+.bn .pill{width:58px;height:30px;border-radius:99px;display:grid;place-items:center;transition:background .2s;background:transparent;padding:0;border:0;gap:0;font:inherit}
+.bn svg{width:22px;height:22px}
+.bn.on{color:var(--fg)}
+.bn.on .pill{background:color-mix(in srgb,var(--spark) 26%,transparent);color:var(--spark)}
+body.immersive .bnav{display:none}
+body.immersive #app{padding-bottom:0}
+#cases{bottom:var(--nav-total)!important;padding-bottom:0!important}
+body.immersive #cases{bottom:var(--kb,0px)!important}
+.sheet{bottom:var(--nav-total);background:var(--bg)!important;align-items:stretch!important}
+.sheet-in{max-height:100%!important;height:100%;border-radius:0!important;border:0!important;background:var(--bg)!important;padding-top:calc(16px + env(safe-area-inset-top,0px))!important;animation:none!important}
+.tab{min-height:36px}
+.rbtn,.icon-btn{min-height:40px}
+.icon-btn{min-width:40px}
+.seg button{min-height:38px}
+textarea,select,input{font-size:16px!important}
+.sqlin{font-size:14px!important}
+.cs-h{padding-top:calc(12px + env(safe-area-inset-top,0px))}
+.mt-top{padding-top:calc(12px + env(safe-area-inset-top,0px))}
+body.immersive .cv-in{padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+#splash{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;transition:opacity .35s ease}
+#splash .sp-in{display:flex;flex-direction:column;align-items:center;gap:12px;animation:zoom .5s cubic-bezier(.2,1.4,.4,1)}
+#splash b{font:800 30px var(--f-display);letter-spacing:-.04em}
+#splash.gone{opacity:0;pointer-events:none}
+.brand{font:800 18px/1 var(--f-display);letter-spacing:-.04em;display:flex;align-items:center;gap:6px}
+.brand i{width:9px;height:9px;border-radius:50%;background:var(--spark);box-shadow:0 0 12px var(--spark)}
+@media (max-width:420px){.pills .pill:nth-child(3){display:none}.hud{padding-inline:12px}.card{padding-inline:10px}.card-in{padding:14px 14px 10px;border-radius:22px}}
+@media (min-width:900px){.bnav{left:50%;right:auto;transform:translateX(-50%);width:560px;border:1px solid var(--line);border-bottom:0;border-radius:20px 20px 0 0}}
 .t-dados{--tc:var(--ana)} .t-estat{--tc:var(--ds)} .t-modelo{--tc:var(--ia)} .t-negocio{--tc:var(--ml)}
 .tab-cases{background:var(--spark);border-color:var(--spark);color:var(--bg);font-weight:700}
 /* Casos: lista + chat de simulação */
@@ -263,7 +300,7 @@ body.ai-on .ai-btn{display:inline-flex!important}
 .tm-toast{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:5;width:min(92%,420px);display:flex;flex-direction:column;gap:2px;text-align:left;background:var(--surface2);border:1px solid var(--line);border-left:0;box-shadow:0 10px 30px rgba(0,0,0,.5);border-radius:14px;padding:10px 14px;cursor:pointer;animation:rise .25s ease-out}
 .tm-toast b{font:600 12.5px var(--f-body);color:var(--pc)}
 .tm-toast span{font-size:13.5px}
-#cases{position:fixed}
+
 /* Reunião ao vivo */
 .mt{position:relative;width:100%;max-width:1040px;height:100%;display:flex;flex-direction:column;min-height:0;background:#04090a}
 .mt-top{display:flex;align-items:center;gap:10px;padding:12px 56px 8px 16px}
@@ -294,6 +331,47 @@ body.ai-on .ai-btn{display:inline-flex!important}
 .rbtn.leave{color:var(--bad)}
 .mt-join{position:absolute;inset:0;display:grid;place-items:center;background:#04090a;z-index:6;font:700 18px var(--f-display);animation:rise .3s ease-out}
 .mt .cv-obj{max-height:30%}
+/* Carreira, dados, entregáveis, hipóteses */
+.career{display:flex;flex-direction:column;gap:8px;background:linear-gradient(150deg,color-mix(in srgb,var(--spark) 14%,var(--surface)),var(--surface));border:1px solid color-mix(in srgb,var(--spark) 40%,var(--line));border-radius:18px;padding:14px}
+.career>b{font:800 20px/1.1 var(--f-display)}
+.career p{margin:0;font-size:13.5px;color:var(--muted)}
+.career .row{display:flex;gap:8px;align-items:center;font:600 11px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.career .co{display:flex;flex-direction:column;gap:8px}
+.rep{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px}
+.rp{display:grid;grid-template-columns:72px 1fr;gap:8px;align-items:center;font-size:12.5px}
+.rp .mbar{height:6px}
+.dtag{color:var(--ds)}
+.repd{display:flex;gap:8px;flex-wrap:wrap;font:600 12.5px var(--f-mono)}
+.repd .up{color:var(--ok)}.repd .down{color:var(--bad)}
+.ov{position:absolute;inset:0;z-index:8;background:color-mix(in srgb,#000 60%,transparent);display:flex;align-items:flex-end;justify-content:center}
+.ov-in{width:100%;max-width:640px;max-height:92%;overflow-y:auto;background:var(--bg2);border:1px solid var(--line);border-bottom:0;border-radius:22px 22px 0 0;padding:16px 16px calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;animation:rise .25s ease-out}
+.ov-in h3{margin:0;font:700 19px var(--f-display)}
+.ov-in textarea,.genform textarea,#xfer textarea,.sqlin{width:100%;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:14.5px/1.45 var(--f-body);resize:vertical}
+.sqlin,#xfer textarea{font:13px/1.5 var(--f-mono)}
+.sendto{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.sendto select{background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:7px 9px;font:13px var(--f-body);max-width:100%}
+.sqlx{display:flex;flex-direction:column;gap:10px}
+.schema{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.sch{flex:none;max-width:260px;text-align:left;display:flex;flex-direction:column;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px;cursor:pointer}
+.sch b{font:600 12.5px var(--f-mono);color:var(--ds)}
+.sch span{font:11px/1.4 var(--f-mono);color:var(--muted);white-space:normal}
+.sch small{font-size:11px;color:var(--muted)}
+.qh{text-align:left;border:0;cursor:pointer;width:100%}
+.qh code{font:11.5px var(--f-mono);white-space:pre-wrap;color:var(--fg)}
+.m.me.deliv .b{background:color-mix(in srgb,var(--spark) 12%,var(--surface));border:1px solid var(--spark);border-radius:14px}
+.cv-act svg,.rbtn svg{width:16px;height:16px;flex:none}
+.hyps{list-style:none;padding:0!important}
+.hyps li{padding:8px 10px;border-radius:10px;background:var(--bg2);display:flex;flex-direction:column;gap:2px}
+.hyps li.ok b{color:var(--ok)}.hyps li.bad b{color:var(--bad)}
+.hyps small{color:var(--muted)}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.cmp>div{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px;white-space:pre-wrap;overflow-wrap:anywhere;min-width:0}
+.cmp .sr{border-color:var(--ok)}
+.cmp .lab{display:block;font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.cmp .sr .lab{color:var(--ok)}
+.star{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;display:flex;flex-direction:column;gap:4px}
+.star p{margin:0}.star small{color:var(--muted)}
+.li .cp{align-self:flex-start;padding:4px 0}
 .ctx{display:flex;gap:10px;align-items:flex-start}
 .ctx .av{width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1.5px solid var(--tc);display:grid;place-items:center;font:700 12px var(--f-mono);color:var(--tc);flex:none}
 .ctx .bub{background:var(--bg2);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:9px 13px;font-size:15px;line-height:1.4;min-width:0}
@@ -332,7 +410,7 @@ body.ai-on .ai-only{display:flex!important}
         <svg viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="20" stroke="var(--line)"/><circle id="lvlRing" cx="23" cy="23" r="20" stroke="var(--spark)" stroke-linecap="round" stroke-dasharray="125.66" stroke-dashoffset="125.66"/></svg>
         <span id="lvlNum">1</span>
       </button>
-      <div class="hud-mid">
+      <div class="hud-mid"><span class="brand"><i></i>sinapse</span>
         <div class="rank" id="rankName">Estagiário de Dados</div>
         <div class="xpline" id="xpLine">0 / 80 XP</div>
       </div>
@@ -344,8 +422,7 @@ body.ai-on .ai-only{display:flex!important}
       <button class="icon-btn" id="soundBtn" aria-label="Som ligado"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path id="sndWave" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg></button>
     </div>
     <nav class="tabs" role="tablist" aria-label="Categorias">
-      <button class="tab tab-cases" type="button" id="openCases">Casos</button>
-      <button class="tab" role="tab" data-f="all" aria-selected="true">Aleatório</button>
+            <button class="tab" role="tab" data-f="all" aria-selected="true">Aleatório</button>
       <button class="tab t-dados" role="tab" data-f="dados" aria-selected="false"><i></i>Dados e Engenharia</button>
       <button class="tab t-estat" role="tab" data-f="estat" aria-selected="false"><i></i>Estatística</button>
       <button class="tab t-modelo" role="tab" data-f="modelo" aria-selected="false"><i></i>Modelagem e IA</button>
@@ -358,6 +435,12 @@ body.ai-on .ai-only{display:flex!important}
 <div data-shell id="sheet" class="sheet" hidden></div><div data-shell id="genchip" hidden></div>
 <div data-shell id="lvlup" hidden></div>
 <div data-shell id="cases" hidden></div>
+<nav data-shell class="bnav" id="bnav" aria-label="Navegação principal">
+  <button type="button" class="bn on" id="navFeed" aria-current="page"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span><span>Feed</span></button>
+  <button type="button" class="bn" id="openCases"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M19 9h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1v3l-4-3h-3"/></svg></span><span>Casos</span></button>
+  <button type="button" class="bn" id="navProfile"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span>Perfil</span></button>
+</nav>
+<div data-shell id="splash" aria-hidden="true"><div class="sp-in"><svg viewBox="0 0 64 64" width="72" height="72"><g stroke="#4fd1c5" stroke-width="3" stroke-linecap="round"><path d="M32 32L14 16M32 32L50 14M32 32L54 40M32 32L36 56M32 32L10 44"/></g><g fill="#4fd1c5"><circle cx="14" cy="16" r="5"/><circle cx="50" cy="14" r="5"/><circle cx="54" cy="40" r="5"/><circle cx="36" cy="56" r="5"/><circle cx="10" cy="44" r="5"/></g><circle cx="32" cy="32" r="10" fill="#ff7a45"/></svg><b>sinapse</b></div></div>
 
 <script data-shell>
 "use strict";
@@ -881,6 +964,15 @@ const CARDS=[
 {id:'k13',cat:'negocio',track:'ml',kind:'flip',mode:'entrevista',q:'“Como você decide entre construir uma solução interna ou comprar uma ferramenta?”',ans:'Comparo o custo total: licença contra pessoas, manutenção e infraestrutura por 2 a 3 anos. Construo o que diferencia o negócio e compro o que é commodity. Pesa também o tempo até gerar valor, o risco de ficar preso ao fornecedor e se o time tem capacidade de manter. Quando dá, faço um piloto curto com critério de sucesso definido antes, e prefiro decisões reversíveis.',pro:'Construo o que diferencia o negócio; compro o que é commodity.'},
 {id:'k14',cat:'negocio',track:'ana',kind:'flip',mode:'entrevista',q:'“Me conta de uma vez que você discordou de um stakeholder.”',ans:'Situação: o gestor queria um dashboard com 30 métricas para a diretoria. Tarefa: entregar algo que fosse usado. Ação: perguntei quais decisões seriam tomadas, mostrei um protótipo com 4 KPIs e deixei o resto numa aba de detalhe. Resultado: a diretoria passou a usar o painel toda semana e os pedidos de novas métricas caíram. Aprendi a discordar trazendo uma alternativa pronta.',pro:'Eu discordo trazendo uma alternativa pronta, não só uma objeção.'},
 
+/* ---- empresas-alvo: indústria (consultoria), fintech e delivery ---- */
+{id:'x1',cat:'dados',track:'ana',kind:'quiz',mode:'bolso',q:'Uma tag de temperatura grava 1 ponto por segundo no historiador. Quantos pontos por ano, e o que fazer antes de levar para o notebook?',opts:['Cerca de 31,5 milhões; agregar ou reamostrar no servidor (média por minuto, por exemplo) antes de puxar','Cerca de 365 mil; puxar tudo cru','Cerca de 3 bilhões; impossível analisar','Cerca de 86 mil; não precisa tratar'],why:'86.400 por dia × 365 ≈ 31,5 milhões por tag. Com centenas de tags, puxar cru trava tudo. Historiadores e ferramentas como Seeq fazem a agregação perto do dado.',pro:'Em dado de sensor, eu agrego no historiador e trago só a resolução que a pergunta precisa.'},
+{id:'x2',cat:'estat',track:'ds',kind:'quiz',mode:'trabalho',q:'Modelo de falha de bombas: com split aleatório a AUC é 0,95; com split por tempo cai para 0,78. Qual está certo?',opts:['O split por tempo: no aleatório, leituras quase iguais de horas vizinhas caem no treino e no teste, e o modelo “cola”','O aleatório, porque usa mais dados','Os dois estão errados','A diferença é ruído'],why:'Série temporal tem autocorrelação: o ponto das 10h se parece muito com o das 11h. Avaliação honesta treina no passado e testa no futuro, como vai ser em produção.',pro:'Em série temporal de sensor, eu valido treinando no passado e testando no futuro.'},
+{id:'x3',cat:'negocio',track:'ml',kind:'quiz',mode:'reuniao',ctx:{who:'Engenheiro de processo do cliente',say:'Esse modelo de vocês é caixa-preta. Eu confio é no balanço de massa.'},q:'Resposta de quem trabalha em consultoria industrial:',opts:['“Faz sentido partir da física. O modelo híbrido usa o balanço de massa como base e o ML corrige o que ela não captura; te mostro o peso de cada variável e onde ele erra.”','“O ML é mais preciso que a física.”','“Não tem como explicar, mas funciona.”','“Se preferir, a gente desliga o modelo.”'],why:'Na indústria, confiança vem de respeitar o conhecimento do engenheiro. Modelos híbridos (física + ML) e explicações em variáveis de processo são o que destrava a adoção.',pro:'Na indústria, o ML entra corrigindo a física, não substituindo.'},
+{id:'x4',cat:'dados',track:'ana',kind:'quiz',mode:'trabalho',q:'A leitura de pressão ficou exatamente em 31,20 bar por 6 horas seguidas, sem nenhuma variação. O que isso indica?',opts:['Provável sensor travado (valor congelado): tratar como falha de instrumento e confirmar com a instrumentação','Processo extremamente estável, ótimo sinal','Erro de arredondamento do historiador','Nada, é normal'],why:'Processo real sempre tem ruído. Valor idêntico por horas é assinatura de sensor congelado ou comunicação perdida. Usar isso no modelo ensina um comportamento falso.',pro:'Sinal sem nenhum ruído por horas, eu trato como falha de sensor até provar o contrário.'},
+{id:'x5',cat:'negocio',track:'ml',kind:'quiz',mode:'trabalho',q:'Fim da alocação no cliente. O que não pode faltar na documentação do modelo entregue?',opts:['Tags de entrada, premissas físicas, como foi validado, faixa de operação em que vale, como monitorar e quando retreinar','Só o código no repositório','Um slide com a acurácia','O notebook de exploração'],why:'O cliente vai operar o modelo sem você. Sem faixa de validade e plano de monitoramento, a primeira mudança de processo quebra o modelo e a confiança.',pro:'Modelo entregue sem documentação de validade e monitoramento é um problema adiado.'},
+{id:'x6',cat:'negocio',track:'ml',kind:'flip',mode:'entrevista',q:'“Explain data leakage in English, in three sentences.”',ans:'Data leakage happens when information that would not be available at prediction time ends up in the training data. The model looks great in validation but fails in production. To prevent it, I split the data before any processing, respect time order, and ask whether each feature would exist at the moment of the decision.',pro:'Would this feature exist at the moment of the decision?'},
+{id:'x7',cat:'negocio',track:'ml',kind:'flip',mode:'entrevista',q:'“Como você explicaria um projeto de ML para um engenheiro de processo que não confia em modelos?”',ans:'Começo pelo problema dele, em unidades da planta, não pelo algoritmo. Mostro que o modelo parte da física que ele conhece e que o ML só corrige o que a física não captura. Apresento onde o modelo acerta e onde erra, com a faixa de operação em que ele vale. E proponho rodar em paralelo com o laboratório por algumas semanas antes de qualquer decisão.',pro:'Eu explico em unidades da planta e proponho rodar em paralelo antes de confiar.'},
+
 /* ---- entrevista (flip) ---- */
 {id:'f1',track:'ml',kind:'flip',q:'“Explique overfitting para alguém do negócio.”',ans:'É quando o modelo decora o passado em vez de aprender o padrão. Como um aluno que memoriza as respostas da prova antiga: tira 10 nela e vai mal na prova nova. Eu detecto comparando o desempenho em dados que o modelo nunca viu e corrijo simplificando o modelo, regularizando ou trazendo mais dados.'},
 {id:'f2',track:'ml',kind:'flip',q:'“Como você escolheria o threshold de um classificador?”',ans:'Pelo custo de cada erro, não pelo 0,5 padrão. Levanto quanto custa um falso positivo e um falso negativo, calculo o custo esperado para vários thresholds no conjunto de validação e escolho o menor. Depois confirmo uma única vez no teste e monitoro em produção.'},
@@ -898,7 +990,7 @@ const QUIZ=CARDS.filter(c=>c.kind==='quiz'||c.kind==='flip'||c.kind==='chain');
 
 /* ================= estado ================= */
 const RANKS=[[1,'Estagiário de Dados'],[3,'Analista Jr'],[5,'Analista Pleno'],[8,'Cientista de Dados Jr'],[11,'ML Engineer'],[15,'AI Engineer'],[20,'Arquiteto de IA'],[30,'Sinapse Lendária']];
-const DEF=()=>({v:1,xp:0,streak:0,lastDay:'',best:0,ans:{},seen:{},saved:[],errs:[],rev:[],daily:{day:'',n:0},sound:true,ok:0,bad:0,autoGen:false,hidden:[],avgSec:30,cases:[],genCases:[],casePhrases:[],activeCase:null});
+const DEF=()=>({v:1,xp:0,streak:0,lastDay:'',best:0,ans:{},seen:{},saved:[],errs:[],rev:[],daily:{day:'',n:0},sound:true,ok:0,bad:0,autoGen:false,hidden:[],avgSec:30,cases:[],genCases:[],casePhrases:[],activeCase:null,career:null,skill:{},calib:{},stories:[],days:{}});
 const LSK='sinapse.v1';
 let ST=DEF();
 try{const raw=localStorage.getItem(LSK);if(raw)ST=Object.assign(DEF(),JSON.parse(raw))}catch(e){}
@@ -922,9 +1014,9 @@ async function initAI(){try{if(!window.claude||!window.claude.use)return;const s
 
 /* ================= geração contínua com Claude ================= */
 /* Ementa por trilha: o gerador escolhe sempre os temas menos cobertos, para varrer os requisitos das vagas. */
-const SYL={"dados":["SQL: JOINs, grão e cardinalidade","SQL: window functions e CTEs","Python e pandas para dados","Análise exploratória e qualidade de dados","Git, testes e código reprodutível","Docker e ambientes","Dados em escala: warehouse e Spark","Nuvem para dados (AWS, GCP, Azure)","Pipelines e orquestração (dbt, Airflow)","Modelo em produção: API e batch","Monitoramento, drift e retreino","Arquitetura de plataforma de dados e ML"],"estat":["Estatística descritiva e distribuições","Probabilidade e Bayes","Intervalo de confiança e p-valor","Teste A/B: desenho e poder","Armadilhas de A/B (peeking, SRM, novidade)","Causalidade e confundidores","Diff-in-diff e quase-experimentos","Validação: treino, validação, teste e CV","Data leakage","Métricas de classificação e threshold","Métricas de regressão e calibração","Amostragem e vieses"],"modelo":["Regressão linear e logística","Árvores, random forest e boosting","Feature engineering","Séries temporais","Clustering e PCA","Desbalanceamento de classes","Interpretabilidade (SHAP)","Viés e fairness em modelos","Redes neurais e deep learning","Embeddings e busca vetorial","RAG: construção e avaliação","LLMs em produção: custo, latência e segurança","Agentes e tool use"],"negocio":["Definir KPIs e métricas de negócio","Visualização e storytelling","Formular o problema certo","Comunicação com executivos","Traduzir modelo em dinheiro","Conhecimento de domínio (varejo, crédito, saúde, SaaS)","LGPD e governança de dados","Gestão de stakeholders e expectativas","Priorização e dizer não","Direção técnica e roadmap","Revisão de código e de análises","Mentoria e desenvolvimento do time","Influência sem autoridade","Medir o impacto do trabalho de dados"]};
+const SYL={"dados":["SQL: JOINs, grão e cardinalidade","SQL: window functions e CTEs","Python e pandas para dados","Análise exploratória e qualidade de dados","Git, testes e código reprodutível","Docker e ambientes","Dados em escala: warehouse e Spark","Nuvem para dados (AWS, GCP, Azure)","Pipelines e orquestração (dbt, Airflow)","Séries temporais de sensores e historiadores (PI, Seeq)","Modelo em produção: API e batch","Monitoramento, drift e retreino","Arquitetura de plataforma de dados e ML"],"estat":["Estatística descritiva e distribuições","Probabilidade e Bayes","Intervalo de confiança e p-valor","Teste A/B: desenho e poder","Armadilhas de A/B (peeking, SRM, novidade)","Causalidade e confundidores","Diff-in-diff e quase-experimentos","Validação: treino, validação, teste e CV","Data leakage","Métricas de classificação e threshold","Métricas de regressão e calibração","Amostragem e vieses"],"modelo":["Regressão linear e logística","Árvores, random forest e boosting","Feature engineering","Séries temporais","Clustering e PCA","Desbalanceamento de classes","Interpretabilidade (SHAP)","Viés e fairness em modelos","Redes neurais e deep learning","Embeddings e busca vetorial","RAG: construção e avaliação","LLMs em produção: custo, latência e segurança","Agentes e tool use","Soft sensors e modelos híbridos (física + ML)","Manutenção preditiva e detecção de anomalias"],"negocio":["Definir KPIs e métricas de negócio","Visualização e storytelling","Formular o problema certo","Comunicação com executivos","Traduzir modelo em dinheiro","Conhecimento de domínio (varejo, crédito, saúde, SaaS)","LGPD e governança de dados","Gestão de stakeholders e expectativas","Priorização e dizer não","Direção técnica e roadmap","Revisão de código e de análises","Mentoria e desenvolvimento do time","Influência sem autoridade","Medir o impacto do trabalho de dados","Consultoria: cliente, escopo e documentação técnica","Inglês técnico e status report"]};
 /* Guia de escrita dos cards: o mesmo padrão que ROUTINE.md usa na rotina diária */
-const GEN_GUIDE=`Objetivo: que o conteúdo vire óbvio pela repetição em situações reais. Todo card parte de uma cena concreta de trabalho no Brasil (varejo, banco, fintech, telecom, saúde, e-commerce, SaaS de suporte), com números realistas, e termina numa frase que o aluno pode repetir em reunião ou entrevista.
+const GEN_GUIDE=`Objetivo: que o conteúdo vire óbvio pela repetição em situações reais. Contexto do aluno: ele mira principalmente uma consultoria de engenharia e software para indústria pesada (séries temporais de sensores, soft sensors, manutenção preditiva, historiadores tipo PI, Seeq, clientes engenheiros, documentação, inglês) e, depois, fintech de crédito para PMEs e delivery AI-first. Em cerca de 1 a cada 3 cards, use cenas desses mundos. Todo card parte de uma cena concreta de trabalho no Brasil (varejo, banco, fintech, telecom, saúde, e-commerce, SaaS de suporte), com números realistas, e termina numa frase que o aluno pode repetir em reunião ou entrevista.
 
 Gere exatamente 6 cards, todos sobre o tema:
 1. 2 "quiz" com "mode":"reuniao" ou "trabalho": "ctx" é a fala de uma pessoa real (diretor, PM, CFO, gestor no Slack, engenheiro de dados). As alternativas são respostas possíveis. A certa responde com número, trade-off e próximo passo, em linguagem de negócio; as erradas são as respostas comuns de júnior (concordar sem checar, jargão sem tradução, "não dá", "vou investigar").
@@ -1062,7 +1154,8 @@ function hud(celebrate=true){const li=levelInfo(ST.xp);$('#lvlNum').textContent=
   if(celebrate&&li.L>lastLevel)levelUp(li.L);lastLevel=li.L}
 function levelUp(L){const o=$('#lvlup');const old=rankOf(L-1),nw=rankOf(L);o.innerHTML=`<div class="box"><div class="s">subiu de nível</div><div class="n">${L}</div><div class="t">${esc(nw)}</div>${old!==nw?'<div class="s">novo cargo desbloqueado</div>':''}<div class="s" style="margin-top:14px">toque para continuar</div></div>`;o.hidden=false;confetti();sfx.lvl();buzz([30,40,60]);for(let i=0;i<6;i++)setTimeout(()=>fire(C.gold,9),i*120);setTimeout(()=>o.hidden=true,3200)}
 $('#lvlup').addEventListener('click',()=>$('#lvlup').hidden=true);
-function award(xp,el,gold){touchDay();ST.xp+=xp;sess.xp+=xp;save();if(el){const r=el.getBoundingClientRect();floatXP(r.left+r.width/2,r.top,'+'+xp+' XP',gold)}hud()}
+function dayLog(){const t=today();ST.days=ST.days||{};const k=Object.keys(ST.days);if(k.length>70)k.sort().slice(0,k.length-70).forEach(x=>delete ST.days[x]);return ST.days[t]||(ST.days[t]={xp:0,ok:0,bad:0,cases:0})}
+function award(xp,el,gold){touchDay();ST.xp=Math.max(0,ST.xp+xp);sess.xp+=xp;dayLog().xp+=xp;save();if(el){const r=el.getBoundingClientRect();floatXP(r.left+r.width/2,r.top,(xp>=0?'+':'')+xp+' XP',gold)}hud()}
 function countDaily(){const t=today();if(ST.daily.day!==t)ST.daily={day:t,n:0};ST.daily.n++;if(ST.daily.n===10){setTimeout(()=>{confetti();sfx.lvl();floatXP(innerWidth/2,innerHeight*.4,'Meta do dia batida!',true)},500)}}
 
 /* ================= render dos cards ================= */
@@ -1079,7 +1172,7 @@ function railHTML(c,extra=''){const on=ST.saved.includes(c.id);return `<div clas
 
 function mount(item){const c=item.c,el=document.createElement('section');el.className='card t-'+catOf(c)+(item.gold?' gold':'');el.setAttribute('aria-roledescription','card');item.el=el;
   const metaKind=c.mode?MODE_LABEL[c.mode]:c.kind==='quiz'&&c.code?KIND.code:catOf(c)==='neuro'&&c.kind==='sim'?KIND.neuro:KIND[c.kind]||'';
-  const meta=`<div class="meta"><span class="chip">${CAT_LABEL[catOf(c)]||''}</span><span>${metaKind}</span>${item.review==='spaced'?`<span class="tag-spaced">revisão espaçada · nível ${(ST.ans[c.id]||{}).box||0}</span>`:item.review?'<span class="tag-rev">revisão · você errou esta</span>':''}${c.gen?'<span class="tag-ai">gerado pelo Claude</span>':''}<span class="tag-gold">card dourado ×3</span></div>`;
+  const meta=`<div class="meta"><span class="chip">${CAT_LABEL[catOf(c)]||''}</span><span>${metaKind}</span>${item.review==='spaced'?`<span class="tag-spaced">revisão espaçada · nível ${(ST.ans[c.id]||{}).box||0}</span>`:item.review?'<span class="tag-rev">revisão · você errou esta</span>':''}${c.fromCase?`<span class="tag-ai">lição do caso “${esc(c.fromCase)}”</span>`:c.gen?'<span class="tag-ai">gerado pelo Claude</span>':''}<span class="tag-gold">card dourado ×3</span></div>`;
   const report=c.gen?'<button class="rbtn report" type="button">Reportar erro</button>':'';
   let body='';
   if(c.kind==='intro')body=introHTML();
@@ -1138,7 +1231,7 @@ const IVL=[0,1,3,7,16,35];
 const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return dayStr(d)};
 const sessShown=new Set();
 const dueCards=()=>QUIZ.filter(c=>{const a=ST.ans[c.id];return a&&a.ok>0&&(a.due||'0000-00-00')<=today()&&!ST.rev.includes(c.id)&&!sessShown.has(c.id)});
-function record(c,ok){const a=ST.ans[c.id]||{ok:0,bad:0,box:0};if(ok){a.ok++;a.box=Math.min(5,a.box+1);ST.ok++;sess.ok++;ST.rev=ST.rev.filter(id=>id!==c.id)}else{a.bad++;a.box=0;ST.bad++;sess.bad++;if(!ST.rev.includes(c.id))ST.rev.push(c.id);ST.errs=[c.id,...ST.errs.filter(x=>x!==c.id)].slice(0,60);sessRev.push({id:c.id,at:fc+4})}a.due=ok?addDays(IVL[a.box]):today();ST.ans[c.id]=a;sessShown.add(c.id);ST.seen[c.id]=1;save()}
+function record(c,ok){const a=ST.ans[c.id]||{ok:0,bad:0,box:0};const dl=dayLog();if(ok)dl.ok++;else dl.bad++;if(ok){a.ok++;a.box=Math.min(5,a.box+1);ST.ok++;sess.ok++;ST.rev=ST.rev.filter(id=>id!==c.id)}else{a.bad++;a.box=0;ST.bad++;sess.bad++;if(!ST.rev.includes(c.id))ST.rev.push(c.id);ST.errs=[c.id,...ST.errs.filter(x=>x!==c.id)].slice(0,60);sessRev.push({id:c.id,at:fc+4})}a.due=ok?addDays(IVL[a.box]):today();ST.ans[c.id]=a;sessShown.add(c.id);ST.seen[c.id]=1;save()}
 
 function answer(item,btn){if(item.done)return;item.done=true;const c=item.c,el=item.el,oi=+btn.dataset.oi,ok=oi===0;
   el.querySelectorAll('.opt').forEach(b=>{b.disabled=true;const i=+b.dataset.oi;if(i===0)b.classList.add('ok');else if(b===btn)b.classList.add('bad');else b.classList.add('dim')});
@@ -1270,17 +1363,137 @@ const CASES=[
  hidden:['O protótipo da Priscila exigiria 3 engenheiros dedicados (cerca de R$ 1,1 mi por ano).','O contrato da plataforma cobra por hora de GPU acima de uma cota.','Só 4 dos 25 modelos em produção têm requisito de tempo real.','O time de segurança exige que os dados fiquem na conta de nuvem da empresa.'],
  opening:[{who:'narrador',text:'Segunda, 9h. E-mail do CTO.'},{who:'Cláudio',text:'Preciso da sua recomendação em duas semanas: compramos a plataforma ou seguimos com o que a Priscila construiu? Quero custo, risco e o que você faria no meu lugar.'}]}
 ];
+/* Casos do mundo das empresas-alvo: consultoria industrial, fintech de PMEs e delivery */
+CASES.push(
+{id:'c12',title:'O soft sensor que mentia',level:'Pleno',cat:'modelo',setting:'Consultoria industrial · cliente engenheiro',company:'Vértice Engenharia Digital, alocado numa refinaria cliente',player:'Você é cientista de dados pleno da consultoria, alocado no projeto de soft sensor de enxofre da refinaria.',
+ cast:[{name:'Marcos',role:'Engenheiro de processo do cliente',style:'experiente e cético com ML; confia em balanço de massa e em física; respeita quem fala a língua da planta'},{name:'Beatriz',role:'Gerente de projeto da consultoria, sua líder',style:'organizada; quer o cliente tranquilo e tudo documentado'},{name:'Davi',role:'Técnico de instrumentação do cliente',style:'conhece cada transmissor; responde curto e só o que foi perguntado'}],
+ situation:'Desde meados de setembro o soft sensor de enxofre está acima do resultado de laboratório. O Marcos diz que "o modelo de vocês quebrou" e ameaça desligar.',
+ objective:'Achar a causa com os dados, explicar em linguagem de processo para o Marcos, propor a correção e um monitoramento para não repetir, e documentar.',
+ stages:['Quantificar o desvio contra o laboratório','Achar a causa no processo','Explicar para o Marcos em termos físicos','Propor correção, monitoramento e documentação'],
+ hidden:['O desvio começa em 14/09 e é constante (cerca de +8 ppm).','Em 14/09 o Davi trocou o módulo do transmissor TT-101; a leitura ganhou offset de +4 °C.','O modelo usa a temperatura com peso de 2 ppm por °C.','Não existe alarme comparando soft sensor e laboratório.'],
+ opening:[{who:'narrador',text:'Terça, 8h40. Você abre o chat do projeto na refinaria.'},{who:'Marcos',text:'Bom dia. O soft sensor de vocês tá dando enxofre alto há semanas e o laboratório diz outra coisa. Se não tiver explicação até quinta, eu desligo e volto pro laboratório de 8 em 8 horas.'}]},
+{id:'c13',title:'Quando parar a bomba?',level:'Sênior',cat:'estat',setting:'Consultoria industrial · decisão com custo',company:'Vértice Engenharia Digital, projeto de manutenção preditiva numa mineradora',player:'Você é cientista de dados sênior e responsável pelo modelo de manutenção preditiva das bombas.',
+ cast:[{name:'Helena',role:'Gerente de manutenção do cliente',style:'pragmática; reclama que o modelo "dá alarme demais" e quer menos inspeções'},{name:'Beatriz',role:'Gerente de projeto da consultoria',style:'quer renovar o contrato; evita conflito com a cliente'},{name:'Lúcia',role:'Cientista de dados sênior da consultoria',style:'revisa seu raciocínio e cobra que a decisão seja por custo, não por intuição'}],
+ situation:'O cliente usa o modelo com threshold 0,8 para disparar inspeções. A Helena quer subir ainda mais para reduzir alarmes. Paradas não planejadas continuam acontecendo.',
+ objective:'Mostrar com os dados qual threshold minimiza o custo total e convencer a Helena, tratando a preocupação dela com excesso de inspeções.',
+ stages:['Entender os custos e a preocupação da Helena','Calcular o custo por threshold com os dados','Recomendar um threshold e o trade-off','Fechar o combinado e o que monitorar'],
+ hidden:['Parada não planejada custa R$ 180 mil; inspeção custa R$ 4 mil.','Com threshold 0,8 quase todas as falhas passam sem alerta.','O menor custo total fica num threshold bem mais baixo, com mais inspeções.','A equipe da Helena tem capacidade para cerca de 15 inspeções por semana.'],
+ opening:[{who:'narrador',text:'Quarta, 10h. Mensagem da cliente no grupo do projeto.'},{who:'Helena',text:'Pessoal, a equipe tá cansada de inspeção à toa. Quero subir o corte do modelo pra 0,9. Alguma objeção?'}]},
+{id:'c14',title:'Status report em inglês',level:'Pleno',cat:'negocio',setting:'Consultoria internacional · inglês e status',company:'Vértice Engenharia Digital, projeto com o escritório de Houston',player:'Você é cientista de dados pleno e vai dar o status do projeto de soft sensor para a liderança internacional. A conversa é em inglês.',
+ cast:[{name:'Sarah',role:'Project lead, Houston office',style:'speaks only English; direct; wants status, risks and next steps in two minutes; asks clarifying questions'},{name:'Beatriz',role:'Gerente de projeto no Brasil',style:'apoia você, mas deixa você conduzir; fala inglês intermediário'}],
+ situation:'Call semanal com Houston. A Sarah quer saber por que o soft sensor do cliente foi questionado e o que está sendo feito.',
+ objective:'Explicar em inglês o problema, a causa, o impacto e o plano, de forma simples e estruturada, e responder às perguntas da Sarah.',
+ stages:['Give a clear status summary','Explain root cause in simple terms','Present impact, plan and risks','Agree on next steps and owners'],
+ hidden:['Sarah values a structure like: status, root cause, impact, next steps.','She will ask "what is the business impact?" and "how do we prevent it?".','She dislikes long technical detail without the bottom line first.'],
+ scene:{mode:'meeting',title:'Weekly status call · Houston',participants:['Sarah','Beatriz']},
+ opening:[{who:'narrador',text:'Quinta, 11h (9h em Houston). Câmeras ligadas.'},{who:'Sarah',text:'Hi! Thanks for joining. I heard the client questioned our soft sensor this week. Can you give me a quick status?'}]},
+{id:'c15',title:'A inadimplência subiu',level:'Pleno',cat:'estat',setting:'Fintech de PMEs · crédito e risco',company:'Ponta Pagamentos, área de crédito para PMEs',player:'Você é cientista de dados pleno no time de dados de crédito.',
+ cast:[{name:'Paula',role:'Head de risco',style:'preocupada, quer cortar crédito já; decide rápido'},{name:'Rodrigo',role:'Gerente de dados de crédito, seu gestor',style:'calmo; quer que você traga a causa antes de qualquer corte'},{name:'Caio',role:'Gerente comercial de crédito',style:'defende a campanha de crescimento; fica na defensiva'}],
+ situation:'A inadimplência acima de 90 dias foi de 5,3% na safra de março para 8,1% na de junho. A Paula quer reduzir limites para todos os clientes na segunda.',
+ objective:'Descobrir com os dados de onde vem a alta, explicar sem acusar ninguém e propor uma ação mais precisa do que cortar crédito de todos.',
+ stages:['Entender a pressão e o prazo','Quebrar a inadimplência por segmento e safra','Explicar o efeito de mix','Propor ação segmentada e como acompanhar'],
+ hidden:['Dentro de cada segmento a taxa ficou estável.','A safra de junho tem muito mais restaurantes (campanha comercial focada em alimentação).','Cortar limite de todos derrubaria bons clientes de comércio e serviços.','O Caio sabe da campanha, mas teme ser culpado.'],
+ opening:[{who:'narrador',text:'Sexta, 16h. Mensagem no grupo de crédito.'},{who:'Paula',text:'A inadimplência foi de 5,3% pra 8,1%. Segunda quero redução de limite pra carteira toda. Alguém tem algo contra?'}]},
+{id:'c16',title:'A chuva e o tempo prometido',level:'Pleno',cat:'modelo',setting:'Delivery AI-first · modelo em produção',company:'Rota Delivery, time de logística',player:'Você é cientista de dados pleno no time de dados de logística.',
+ cast:[{name:'Bruno',role:'PM de logística',style:'orientado a métrica; a nota do app caiu e ele quer resposta'},{name:'Tati',role:'ML engineer dona do modelo de ETA',style:'defende o modelo, mas é aberta a evidências'},{name:'Igor',role:'Coordenador de operações de entregadores',style:'conhece a rua; sabe que dia de chuva é caos'}],
+ situation:'As reclamações de atraso explodiram em alguns dias de setembro e a nota do app caiu. O modelo de ETA "está com a mesma métrica de sempre" no painel.',
+ objective:'Achar quando e por que o ETA erra, propor a correção no modelo e uma mitigação rápida para o produto.',
+ stages:['Quantificar o erro do ETA','Achar o padrão (quando erra)','Propor correção no modelo e mitigação imediata','Combinar como monitorar'],
+ hidden:['O erro só aparece em dias de chuva e cresce com a distância.','O modelo não tem chuva como feature.','A métrica do painel é a média do mês, que dilui os dias ruins.','O Igor tem a lista de dias de chuva forte.'],
+ opening:[{who:'narrador',text:'Segunda, 9h30. Thread no grupo de logística.'},{who:'Bruno',text:'A nota do app caiu de 4,6 pra 4,3 em setembro e o principal motivo é "chegou atrasado". O ETA tá com problema?'},{who:'Tati',text:'No painel o erro médio do mês está igual ao de agosto. Não vejo problema no modelo.'}]}
+);
+const COMPANIES={
+ vertice:{name:'Vértice Engenharia Digital',tag:'Consultoria industrial · seu alvo principal',desc:'Consultoria de engenharia, automação e software para indústria pesada (óleo e gás, energia, mineração, química), com projetos em vários países. Time de dados remote-first, alocado por projeto junto aos engenheiros do cliente. Trabalha com séries temporais de sensores, soft sensors, manutenção preditiva, historiadores de processo (tipo PI System) e plataformas de analytics industrial (tipo Seeq). Vende "inteligência híbrida": modelo físico + ML + IA generativa, com governança. Documentação técnica e inglês fazem parte do dia a dia.',
+  cast:[{name:'Beatriz',role:'Gerente de projetos, sua líder',style:'organizada, cobra documentação e prazo do cliente; defende o time'},{name:'Lúcia',role:'Cientista de dados sênior',style:'mentora exigente; revisa notebooks e cobra validação temporal'},{name:'Marcos',role:'Engenheiro de processo de um cliente',style:'confia em física, desconfia de caixa-preta; respeita quem fala a língua da planta'},{name:'Davi',role:'Técnico de instrumentação de um cliente',style:'conhece cada sensor e calibração; fala pouco'},{name:'Sarah',role:'Project lead no escritório de Houston',style:'fala só inglês, objetiva, quer status, riscos e próximos passos'},{name:'Anna',role:'Talent acquisition',style:'acompanha sua evolução e o feedback dos clientes'}]},
+ ponta:{name:'Ponta Pagamentos',tag:'Fintech para PMEs',desc:'Plataforma financeira para pequenas e médias empresas: maquininha, conta, Pix e crédito. Foco em banking e crédito, com meta agressiva de carteira. Cultura de execução e foco no cliente PME, atendimento próprio. Dados de crédito e risco, governança de dados e um núcleo de IA generativa para atendimento.',
+  cast:[{name:'Rodrigo',role:'Gerente de dados de crédito, seu gestor',style:'calmo, quer causa antes de ação'},{name:'Paula',role:'Head de risco',style:'decide rápido, aversa a perda'},{name:'Caio',role:'Gerente comercial de crédito',style:'defende crescimento, fica na defensiva'},{name:'Nathalia',role:'Designer de conversação do núcleo de IA',style:'criativa, pensa no cliente PME'},{name:'Edson',role:'Engenheiro de dados',style:'sobrecarregado, preciso'},{name:'Juliana',role:'Coordenadora de atendimento',style:'conhece a dor do lojista'}]},
+ rota:{name:'Rota Delivery',tag:'Delivery AI-first',desc:'App de delivery que virou ecossistema: restaurantes, mercado, farmácia, pet, conta digital e benefícios. AI-first: IA é competência de todos e há milhares de agentes internos. Centenas de modelos de ML em produção (tempo de entrega, logística, recomendação, crédito). Remote-first e data-driven.',
+  cast:[{name:'Bruno',role:'PM de logística',style:'orientado a métrica'},{name:'Tati',role:'ML engineer',style:'dona de modelos em produção, aberta a evidência'},{name:'Igor',role:'Coordenador de operações',style:'conhece a rua'},{name:'Mel',role:'Líder da plataforma de IA',style:'empolgada com agentes, cobra avaliação'},{name:'Vitor',role:'Gerente de dados, seu gestor',style:'dá autonomia, cobra impacto'},{name:'Clara',role:'Analista de crédito do braço financeiro',style:'cuidadosa com risco'}]}
+};
+const CAREER_LEVELS=['Analista de Dados Júnior','Analista de Dados Pleno','Cientista de Dados Sênior','Líder Técnico de Dados','Staff'];
+const LEVEL_SCOPE=['executa tarefas bem definidas, com SQL, análise e comunicação clara ao gestor; ainda aprende o contexto','resolve de ponta a ponta problemas definidos: dados, análise ou modelo, entrega e comunicação com a área','formula problemas vagos, conversa com executivos e clientes, leva modelos à produção e responde por eles','define prioridades do time, revisa o trabalho dos outros, mentora, negocia com várias áreas e decide arquitetura','define direção técnica da empresa, decisões de construir ou comprar, padrões e impacto do portfólio de dados'];
+
+/* ================= Bancos de dados dos casos (gerados no navegador, consultados com SQL de verdade) ================= */
+const dstr=(y,m,d)=>`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+const r2=x=>Math.round(x*100)/100;
+const fmtR=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+function scaleTo(ws,total){const s=ws.reduce((a,b)=>a+b,0),v=ws.map(w=>Math.floor(w/s*total*100)/100);v[v.length-1]=r2(v[v.length-1]+r2(total-v.reduce((a,b)=>a+b,0)));return v}
+const pickR=(r,arr)=>arr[Math.floor(r()*arr.length)];
+const TB=(name,cols,rows)=>({name,cols,rows});
+const DATASETS={
+c1(r){const cid=['Goiânia','Anápolis','Aparecida de Goiânia','Rio Verde','Brasília','Luziânia'],lojas=[];for(let i=1;i<=120;i++)lojas.push([i,cid[i%6],i%6>=4?'DF e entorno':'Goiás']);
+  const base=[];for(let l=1;l<=120;l++)for(let d=1;d<=30;d++)base.push({l,d,w:(0.6+r()*0.8)*(new Date(2026,8,d).getDay()===6?1.25:1)});
+  const A=scaleTo(base.map(x=>x.w),44900000),ci=base.map((_,i)=>i).filter(()=>r()<0.15),Cv=scaleTo(ci.map(()=>0.5+r()),1900000),cm={};ci.forEach((i,k)=>cm[i]=Cv[k]);
+  const late=base.map((_,i)=>i).filter(i=>base[i].d>=29),L=scaleTo(late.map(()=>0.5+r()),1400000),mot=['desistência','sem estoque','pagamento recusado','pedido duplicado'];
+  const vendas=[],canc=[];base.forEach((x,i)=>{const c=cm[i]||0;vendas.push([x.l,dstr(2026,9,x.d),dstr(2026,9,x.d),Math.round((A[i]+c)/62),r2(A[i]+c)]);if(c)canc.push([x.l,dstr(2026,9,x.d),Math.max(1,Math.round(c/70)),c,pickR(r,mot)])});
+  late.forEach((i,k)=>{const x=base[i];vendas.push([x.l,dstr(2026,9,x.d),dstr(2026,10,x.d-28),Math.round(L[k]/62),L[k]])});
+  return{tables:[TB('vendas',['loja_id','data_pedido','data_faturamento','qtd_pedidos','valor_bruto'],vendas),TB('cancelamentos',['loja_id','data_pedido','qtd','valor','motivo'],canc),TB('lojas',['loja_id','cidade','regiao'],lojas),TB('financeiro_fechamento',['mes','receita_liquida'],[['2026-08',43600000],['2026-09',44900000]])],
+   facts:['SUM(vendas.valor_bruto) com data_pedido em setembro = R$ 48,2 mi (o número do BI).','SUM(cancelamentos.valor) de setembro = R$ 1,9 mi, que o BI não desconta.','Linhas de vendas com data_pedido em 29 e 30/set e data_faturamento em outubro somam R$ 1,4 mi.','financeiro_fechamento de 2026-09 = R$ 44,9 mi. 48,2 − 1,9 − 1,4 = 44,9.']}},
+c3(r){const plan=[['A','2026-10-01','quinta',1700,51],['A','2026-10-02','sexta',1800,54],['A','2026-10-03','sábado',1900,57],['B','2026-10-01','quinta',1450,43],['B','2026-10-02','sexta',1530,46],['B','2026-10-03','sábado',1620,60]];
+  const rows=[];let id=1;plan.forEach(([g,dia,ds,n,k])=>{const conv=new Set();while(conv.size<k)conv.add(Math.floor(r()*n));for(let i=0;i<n;i++){const c=conv.has(i)?1:0;rows.push([id++,g,dia,ds,pickR(r,['app','app','site','site','site']),ds==='sábado'?1:0,c,c?r2(120+r()*140):null])}});
+  return{tables:[TB('usuarios_teste',['usuario_id','grupo','dia','dia_semana','canal','viu_frete_gratis','converteu','valor_pedido'],rows),TB('campanhas',['data','campanha'],[['2026-10-03','Frete grátis no fim de semana (banner no checkout)']])],
+   facts:['A: 5.400 usuários, 162 conversões (3,00%). B: 4.600 usuários, 149 conversões (3,24%), lift de 8%.','Divisão 54% / 46% em vez de 50/50: desbalanceamento de amostra.','Por dia, A e B são iguais na quinta e na sexta (cerca de 3,0%); toda a diferença vem do sábado, dia da campanha de frete grátis (B 3,70% contra A 3,00%).','O teste de diferença de proporções dá p ≈ 0,49: não significativo.']}},
+c4(r){const rows=[],rec=[];let id=90001;for(let d=1;d<=5;d++){const n=370+Math.floor(r()*40);let s=0;for(let i=0;i<n;i++){const v=r2(150+r()*1100),h=String(Math.floor(r()*24)).padStart(2,'0'),mi=String(Math.floor(r()*60)).padStart(2,'0');s+=v;rows.push([id++,`${dstr(2026,10,d)} ${h}:${mi}`,r()<0.04?'estornado':'aprovado',d<5?v:null,d<5?null:Math.round(v*100)])}rec.push([dstr(2026,10,d),d<5?r2(s):0])}
+  const real=r2(rows.filter(x=>x[1].startsWith('2026-10-05')).reduce((a,x)=>a+x[4],0)/100);
+  return{tables:[TB('pagamentos',['id','criado_em','status','amount','amount_cents'],rows),TB('receita_diaria',['dia','receita'],rec),TB('log_carga',['ts','etapa','mensagem'],[['2026-10-04 23:05','extracao','INFO 401 linhas lidas da API de pagamentos'],['2026-10-04 23:41','extracao','WARN campo "amount" ausente no payload; coluna preenchida com NULL'],['2026-10-04 23:41','extracao','INFO campo novo "amount_cents" detectado e adicionado'],['2026-10-05 23:58','carga','INFO carga concluída sem erros'],['2026-10-06 06:00','dashboard','INFO receita_diaria atualizada']])],
+   facts:['receita_diaria de 2026-10-05 = 0 porque amount veio NULL desde 23:41 de 04/10 (a API passou a mandar amount_cents).',`A receita real de 05/10 é SUM(amount_cents)/100 ≈ ${fmtR(real)}.`,'O log_carga tem o aviso; nenhuma checagem barrou a carga.']}},
+c5(r){const tipos=[['segunda via de boleto',17],['reset de senha',13],['status de nota fiscal',10],['erro na emissão fiscal',12],['integração bancária',10],['dúvida de relatório',9],['configuração de usuário',8],['bug no sistema',11],['outros',10]];const bag=[];tipos.forEach(([t,p])=>{for(let i=0;i<p;i++)bag.push(t)});
+  const rows=[];for(let i=1;i<=1500;i++){const t=pickR(r,bag),simple=['segunda via de boleto','reset de senha','status de nota fiscal'].includes(t);rows.push([i,dstr(2026,9,1+Math.floor(r()*30)),t,pickR(r,['chat','e-mail','telefone']),r2(simple?0.3+r()*1.5:2+r()*20),t==='erro na emissão fiscal'?2+Math.floor(r()*2):3+Math.floor(r()*3),r()<0.6?1:0])}
+  return{tables:[TB('tickets',['ticket_id','aberto_em','tipo','canal','tempo_resolucao_h','csat','tem_dado_pessoal'],rows),TB('base_conhecimento',['artigo','tipo','atualizado_em'],[['Como emitir segunda via','segunda via de boleto','2026-01-20'],['Recuperar acesso','reset de senha','2026-02-02'],['Consultar NF-e','status de nota fiscal','2025-12-11'],['Rejeição 539 na NF-e','erro na emissão fiscal','2025-11-30']])],
+   facts:['Segunda via, reset de senha e status de NF somam cerca de 40% dos tickets, todos resolvidos em menos de 2 h.','Erro na emissão fiscal tem CSAT de 2 a 3 (clientes irritados).','Cerca de 60% dos tickets têm dado pessoal.','A base de conhecimento foi atualizada pela última vez entre nov/2025 e fev/2026.']}},
+c8(r){const rotas=['R01','R02','R03','R04','R05','R06','R07','R08'],cli=['Rede Sol','Mercado Ipê','Farma Cerrado','Outros','Outros','Outros','Outros'],rows=[];let id=1;
+  for(let d=1;d<=30;d++)for(let i=0;i<67;i++){const rota=pickR(r,rotas),h=7+Math.floor(r()*12),c=pickR(r,cli);let p=0.03+(rota==='R03'||rota==='R07'?0.13:0)+(h>=16?0.12:0);const at=r()<p?1:0;rows.push([id++,dstr(2026,9,d),rota,h,c,24,at,at&&c!=='Outros'?35:0])}
+  const at=rows.filter(x=>x[6]),hot=at.filter(x=>x[2]==='R03'||x[2]==='R07'||x[3]>=16).length,multa=at.reduce((a,x)=>a+x[7],0);
+  return{tables:[TB('entregas',['pedido_id','data','rota','hora_pedido','cliente','prazo_horas','atrasou','multa_rs'],rows)],
+   facts:[`${at.length} atrasos em setembro (${pct(at.length/rows.length,1)} dos pedidos).`,`${pct(hot/at.length,0)} dos atrasos vêm das rotas R03/R07 ou de pedidos feitos depois das 16h.`,`Multas pagas em setembro: ${fmtR(multa)} (R$ 35 por atraso nos 3 grandes clientes).`]}},
+c10(r){const rows=[];for(let i=1;i<=3000;i++){const ant=Math.floor(r()*60),sms=r()<0.6?1:0,falt=Math.floor(r()*4),p=0.08+ant*0.004+(sms?0:0.12)+falt*0.06,comp=r()<p?0:1;rows.push([i,1000+Math.floor(r()*1800),pickR(r,['clínica geral','dermatologia','cardiologia','pediatria','psiquiatria']),ant,pickR(r,['manhã','tarde','noite']),pickR(r,['app','telefone','site']),sms,falt,comp?Math.round(5+r()*40):null,comp])}
+  const ns=rows.filter(x=>!x[9]).length;
+  return{tables:[TB('consultas',['consulta_id','paciente_id','especialidade','dias_antecedencia','turno','canal','confirmou_sms','faltas_anteriores','minutos_de_espera','compareceu'],rows),TB('importancia_modelo_ana',['feature','importancia'],[['minutos_de_espera',0.71],['dias_antecedencia',0.11],['faltas_anteriores',0.09],['confirmou_sms',0.06],['turno',0.03]])],
+   facts:[`No-show de ${pct(ns/rows.length,1)}.`,'minutos_de_espera só existe quando o paciente compareceu (NULL nos no-shows): é vazamento e explica a AUC de 0,96.','Sem ela, os sinais reais são dias_antecedencia, confirmou_sms e faltas_anteriores.']}},
+c12(r){const proc=[],lab=[];for(let h=0;h<30*24;h++){const day=1+Math.floor(h/24),hr=h%24,ts=`${dstr(2026,9,day)} ${String(hr).padStart(2,'0')}:00`;const tt=350+3*Math.sin(h/9)+(r()-0.5)*2,pr=30+(r()-0.5)*2,vz=120+(r()-0.5)*10;
+   const lido=tt+(day>=14?4:0),sTrue=50+2*(tt-350)-0.5*(pr-30),prev=50+2*(lido-350)-0.5*(pr-30);proc.push([ts,r2(lido),r2(pr),r2(vz),r2(prev)]);if(hr%8===2)lab.push([ts,r2(sTrue+(r()-0.5)*2)])}
+  return{tables:[TB('processo_hora',['ts','temp_reator_tt101_c','pressao_bar','vazao_m3h','soft_sensor_enxofre_ppm'],proc),TB('laboratorio',['ts','enxofre_lab_ppm'],lab),TB('manutencao',['data','tag','evento'],[['2026-09-03','PT-204','Inspeção de rotina'],['2026-09-14','TT-101','Troca do módulo do transmissor de temperatura e recalibração'],['2026-09-22','FT-310','Limpeza do medidor de vazão']])],
+   facts:['Até 13/09 o soft sensor bate com o laboratório (erro médio perto de 0).','A partir de 14/09 o soft sensor fica cerca de 8 ppm acima do laboratório, de forma constante.','No mesmo dia, a manutenção trocou o módulo do TT-101: a leitura de temperatura passou a ter offset de +4 °C (a temperatura real não mudou).','O modelo usa a temperatura com peso 2 ppm/°C, por isso 4 °C viram 8 ppm.']}},
+c13(r){const rows=[];for(let b=1;b<=40;b++)for(let w=1;w<=26;w++){const risk=r();const fail=r()<0.02+risk*0.10?1:0;const score=Math.min(0.99,Math.max(0.01,(fail?0.55:0.25)+(r()-0.5)*0.45+risk*0.15));rows.push([`B-${String(b).padStart(2,'0')}`,w,r2(score),fail])}
+  const cost=t=>{let tp=0,fp=0,fn=0;rows.forEach(x=>{const al=x[2]>=t;if(al&&x[3])tp++;else if(al)fp++;else if(x[3])fn++});return{t,custo:fn*180000+(tp+fp)*4000,alertas:tp+fp,perdidas:fn}};
+  const opts=[0.3,0.4,0.5,0.6,0.7,0.8].map(cost),best=opts.reduce((a,b)=>b.custo<a.custo?b:a);
+  return{tables:[TB('alertas_bombas',['bomba','semana','score_modelo','falhou_em_7d'],rows),TB('custos',['item','valor_rs'],[['parada não planejada',180000],['inspeção preventiva',4000]])],
+   facts:opts.map(o=>`Threshold ${num(o.t,1)}: ${o.alertas} inspeções, ${o.perdidas} falhas não previstas, custo total ${fmtR(o.custo)}.`).concat([`O menor custo é com threshold ${num(best.t,1)}; o 0,8 que o cliente usa hoje é caro porque deixa falhas passarem.`])}},
+c15(r){const rows=[];let id=1;const seg=[['comércio',0.04],['serviços',0.05],['alimentação',0.11]];const mix={'2026-03':[0.45,0.40,0.15],'2026-06':[0.30,0.30,0.40]};
+  Object.entries(mix).forEach(([safra,m])=>{for(let i=0;i<1500;i++){const u=r();const k=u<m[0]?0:u<m[0]+m[1]?1:2;rows.push([id++,safra,seg[k][0],r2(5000+r()*45000),r()<seg[k][1]?1:0])}});
+  const rate=s=>{const x=rows.filter(v=>v[1]===s);return x.filter(v=>v[4]).length/x.length};
+  return{tables:[TB('carteira_credito',['contrato_id','safra','segmento','valor_rs','atraso_90d'],rows)],
+   facts:[`Inadimplência 90d: safra 2026-03 ${pct(rate('2026-03'),1)}, safra 2026-06 ${pct(rate('2026-06'),1)}.`,'Dentro de cada segmento a taxa ficou estável (comércio cerca de 4%, serviços 5%, alimentação 11%).','A alta vem do mix: alimentação passou de 15% para 40% da safra (campanha comercial focada em restaurantes). É Paradoxo de Simpson.']}},
+c16(r){const rows=[];let id=1;for(let d=1;d<=30;d++){const chuva=[3,4,9,10,11,17,18,24,25].includes(d)?1:0;for(let i=0;i<70;i++){const km=r2(1+r()*8),eta=Math.round(18+km*3.2),real=Math.round(eta+(r()-0.5)*8+(chuva?7+km*0.9:0));rows.push([id++,dstr(2026,9,d),pickR(r,['Centro','Norte','Sul','Leste','Oeste']),chuva,km,eta,real])}}
+  const err=c=>{const x=rows.filter(v=>v[3]===c);return x.reduce((a,v)=>a+(v[6]-v[5]),0)/x.length};
+  return{tables:[TB('entregas_app',['pedido_id','data','regiao','choveu','distancia_km','eta_prometido_min','tempo_real_min'],rows)],
+   facts:[`Atraso médio contra o ETA: dias secos ${num(err(0),1)} min, dias de chuva ${num(err(1),1)} min.`,'Na chuva o erro cresce com a distância: o modelo de ETA não usa chuva como feature.','Fora da chuva o ETA está calibrado.']}}
+};
+let SQLP=null,caseDB=null,caseDBKey='';
+function loadSQL(){if(SQLP)return SQLP;SQLP=new Promise((res,rej)=>{if(window.initSqlJs)return window.initSqlJs().then(res,rej);const s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-asm.js';s.onload=()=>window.initSqlJs().then(res,rej);s.onerror=()=>{SQLP=null;rej(new Error('Não consegui carregar o motor SQL. Confira a internet.'))};document.head.appendChild(s)});return SQLP}
+function dataOf(d){if(d.data)return d.data;const g=DATASETS[d.id];if(!g)return null;const ds=g(mulberry(d.id.split('').reduce((a,c)=>a*31+c.charCodeAt(0),7)));d._facts=ds.facts;return ds}
+async function getCaseDB(d){if(caseDB&&caseDBKey===d.id)return caseDB;const ds=dataOf(d);if(!ds)return null;const SQL=await loadSQL();const db=new SQL.Database();
+  db.run('BEGIN');ds.tables.forEach(t=>{db.run(`CREATE TABLE ${t.name} (${t.cols.join(', ')})`);const st=db.prepare(`INSERT INTO ${t.name} VALUES (${t.cols.map(()=>'?').join(',')})`);t.rows.forEach(row=>st.run(row));st.free()});db.run('COMMIT');
+  if(caseDB)caseDB.close();caseDB=db;caseDBKey=d.id;return db}
+function schemaText(d){const ds=dataOf(d);return ds?ds.tables.map(t=>`${t.name}(${t.cols.join(', ')}) · ${t.rows.length} linhas`).join('\n'):''}
+function factsOf(d){const ds=dataOf(d);return ds?(ds.facts||d._facts||[]):[]}
+
 const PALETTE=()=>[C.ana,C.ds,C.ml,C.ia,C.neuro,C.gold];
 const LEVELS=['Júnior','Pleno','Sênior','Líder técnico','Entrevista'];
-const SETTINGS=['Social (relação com colegas)','Tático (resolver um problema com dados)','Liderança (decisão, time, prioridade)','Entrevista de emprego'];
-/* Casos que já começam ao vivo, em reunião ou conversa direta */
+const SETTINGS=['Social (relação com colegas)','Tático (resolver um problema com dados)','Liderança (decisão, time, prioridade)','Entrevista de emprego','Do meu trabalho (descreva)'];
 const CASE_SCENE={c2:{title:'Entrevista · etapa do gestor',participants:['Marcelo','Lívia']},c3:{title:'Reunião de produto: novo checkout',participants:['Thiago','Fernanda']},c6:{title:'Comitê de crédito',participants:['Henrique','Patrícia','Sérgio']},c8:{title:'Kickoff: previsão de atrasos',participants:['Gustavo','Kátia']},c10:{title:'1:1 com a Ana',participants:['Ana']}};
-const GROUP='grupo',MENTOR='mentor';
+const GROUP='grupo',MENTOR='mentor',DATA='_dados';
 const groupName=d=>d.group||'Equipe do projeto';
-let caseView='list',caseBusy=false,genCaseOpt={level:1,cat:0,setting:1},mtClock=null;
+let caseView='list',caseBusy=false,genCaseOpt={level:1,cat:0,setting:1,work:''},mtClock=null;
 const sleep=ms=>new Promise(r=>setTimeout(r,reduced?0:ms));
 
-function caseSetup(d,scene){return `Você é o motor de uma simulação imersiva de trabalho que treina um profissional de dados no Brasil. Você interpreta TODOS os personagens do caso e um narrador. O jogador é a pessoa do outro lado: nunca escreva falas, decisões ou pensamentos do jogador.
+/* ---------- ajuda que diminui: dificuldade e custo da dica pela sua habilidade ---------- */
+function skillAvg(cat){const s=(ST.skill||{})[cat];return s&&s.n?s.s/s.n:null}
+function tier(d){if(d.career)return Math.min(2,Math.floor((ST.career?ST.career.level:0)/1.5));const v=skillAvg(d.cat);return v==null||v<2.5?0:v<3.5?1:2}
+const TIER_TXT=['acolhedora: personagens mais pacientes, pistas um pouco mais acessíveis, o mentor ajuda bastante','realista: personagens com pressa e interesses próprios, pistas só com perguntas boas','exigente: personagens céticos e com pressão de prazo, pistas bem escondidas, cobranças por número e precisão'];
+const hintCost=d=>[0,5,15][tier(d)];
+
+function caseSetup(d,scene){const ds=dataOf(d),f=factsOf(d);return `Você é o motor de uma simulação imersiva de trabalho que treina um profissional de dados no Brasil. Você interpreta TODOS os personagens do caso e um narrador. O jogador é a pessoa do outro lado: nunca escreva falas, decisões ou pensamentos do jogador.
 
 CASO: ${d.title} (${d.level} · ${d.setting})
 Empresa: ${d.company}
@@ -1290,20 +1503,26 @@ Objetivo do jogador: ${d.objective}
 Etapas: ${d.stages.map((s,i)=>`${i+1}. ${s}`).join(' | ')}
 Personagens: ${d.cast.map(p=>`${p.name} (${p.role}): ${p.style}`).join(' | ')}
 Fatos ocultos (revele só quando o jogador investigar, perguntar ou pedir os dados certos; nunca entregue de graça): ${d.hidden.join(' | ')}
-
+Dificuldade: ${TIER_TXT[tier(d)]}.
+${d.relations?`Relação dos personagens com o jogador (0 a 100) e o que lembram dele: ${d.relations}\n`:''}${ds?`
+DADOS REAIS: o jogador tem acesso a um banco SQL de verdade com estas tabelas e roda consultas sozinho:
+${schemaText(d)}
+Números verdadeiros desses dados (use-os; nunca contradiga): ${f.join(' | ')}
+Quando o jogador pedir dados a alguém, o personagem diz onde estão (qual tabela) ou manda um recorte pequeno, como na vida real; o raciocínio e as contas são do jogador. Quando ele trouxer um resultado de consulta, reajam ao que ele mostrou.
+`:''}
 A interface: o jogador usa o chat corporativo da empresa. Existem conversas privadas entre o jogador e cada personagem, e um grupo chamado "${groupName(d)}" com todos. Toda mensagem do jogador chega marcada com o lugar: [Privado com Nome], [No grupo ...], [Na reunião], ou é um evento entre colchetes (ex.: [Você ligou para Nome], [Você convocou uma reunião com o grupo agora], [Você saiu da reunião]).
-- Cada personagem só sabe o que viu ou ouviu. O que o jogador disse em privado ao Paulo, a Carla não sabe, a menos que alguém conte.
+- Cada personagem só sabe o que viu ou ouviu. O que o jogador disse em privado a uma pessoa, as outras não sabem, a menos que alguém conte.
 - Em cada mensagem sua informe "where": o nome do personagem (é a conversa privada dele com o jogador), "grupo", ou "reuniao".
 - Personagens podem mandar mensagem por iniciativa própria em outra conversa quando fizer sentido (gestor cobrando prazo, colega respondendo mais tarde, alguém repassando informação).
-- Reunião ou conversa ao vivo: quando a história pedir (reunião marcada chegou, apresentação, conversa presencial, chamada aceita), devolva "scene":{"mode":"meeting","title":"...","participants":["nomes de quem está presente"]} e as falas com "where":"reuniao". Uma chamada pode ser recusada de forma realista ("em reunião, te ligo às 15h"). Na reunião todos os presentes ouvem tudo, conversam entre si e reagem em tempo real.
-- Quando a reunião terminar (assunto resolvido, horário acabou ou o jogador saiu), devolva "scene":{"mode":"chat"}. Sem mudança de cena, use "scene":null.
+- Reunião ou conversa ao vivo: quando a história pedir (reunião marcada chegou, apresentação, conversa presencial, chamada aceita), devolva "scene":{"mode":"meeting","title":"...","participants":["nomes de quem está presente"]} e as falas com "where":"reuniao". Uma chamada pode ser recusada de forma realista. Na reunião todos os presentes ouvem tudo, conversam entre si e reagem em tempo real.
+- Quando a reunião terminar, devolva "scene":{"mode":"chat"}. Sem mudança de cena, use "scene":null.
+- ENTREGÁVEIS: nos momentos-chave, um personagem pede algo escrito (mensagem para a diretoria, e-mail, resumo executivo, documentação técnica, comentário de revisão). O jogador manda com a marcação [Entregável: tipo para destino]. Reaja à qualidade de verdade: texto vago, sem número ou sem próximo passo gera cobrança ("qual o número?", "e o que você recomenda?"); texto claro e bem estruturado destrava a etapa e gera reconhecimento.
 ${scene&&scene.mode==='meeting'?`Cena inicial: reunião ao vivo "${scene.title}" com ${scene.participants.join(', ')}.`:'Cena inicial: chat corporativo.'}
 
 Como conduzir:
-- Realismo de empresa brasileira: cada pessoa tem agenda, pressa, humor e interesses próprios; interrompe, pede números, resiste a mudanças, muda de assunto, elogia quando merecido. Linguagem natural de chat e de reunião, em português do Brasil.
+- Realismo de empresa brasileira: cada pessoa tem agenda, pressa, humor e interesses próprios; interrompe, pede números, resiste a mudanças, muda de assunto, elogia quando merecido. Linguagem natural de chat e de reunião, em português do Brasil (personagens que falam outra língua falam nela).
 - Reaja à ação do jogador de forma coerente. Boas ações (perguntar a decisão, checar dados, propor número e próximo passo, respeitar as pessoas, falar com a pessoa certa no canal certo) destravam informação e confiança. Ações fracas (jargão sem tradução, prometer o impossível, culpar alguém em público, chutar) trazem consequências realistas, mas sempre dão chance de recuperar.
-- Quando o jogador pedir dados, consultas ou arquivos, entregue artefatos plausíveis dentro do texto: resultado de SQL como tabela curta com linhas começando por "|", trecho de log, número de dashboard, mensagem encaminhada.
-- Use o narrador ("who":"narrador") para passagem de tempo e contexto ("Duas horas depois...", "Quinta, 9h, a reunião com a diretoria começa").
+- Use o narrador ("who":"narrador") para passagem de tempo e contexto.
 - "stage" é a etapa em andamento (1 a ${d.stages.length}). Avance quando o objetivo da etapa atual for cumprido. "done": true quando todas as etapas forem cumpridas ou quando o caso fracassar de forma irreversível (explique pelo narrador).
 - Se a mensagem do jogador for "[DICA]", responda só com {"who":"mentor","where":"mentor","text":"..."}: uma dica curta e socrática, sem dar a resposta pronta. O mentor está fora da cena.
 - Mensagens curtas como chat real: 1 a 4 mensagens por turno, cada uma com até 3 frases (artefatos podem ser maiores). Em reunião, até 5 falas.
@@ -1314,10 +1533,14 @@ Responda SEMPRE só com JSON neste formato:
 function vscene(d,s){if(!s||typeof s!=='object')return null;if(s.mode==='chat')return{mode:'chat'};if(s.mode!=='meeting')return null;
   const ps=(Array.isArray(s.participants)?s.participants:[]).map(n=>{const p=d.cast.find(x=>x.name.toLowerCase()===String(n).toLowerCase());return p&&p.name}).filter(Boolean);
   return ps.length?{mode:'meeting',title:sstr(s.title,80)||'Reunião',participants:[...new Set(ps)]}:null}
+function vdata(v){if(!v||!Array.isArray(v.tables))return null;const ok=/^[a-z_][a-z0-9_]{0,30}$/;
+  const tables=v.tables.slice(0,3).map(t=>{if(!t||!ok.test(t.name||'')||!Array.isArray(t.columns))return null;const cols=t.columns.slice(0,8).map(String);if(!cols.length||!cols.every(c=>ok.test(c)))return null;
+    const rows=(Array.isArray(t.rows)?t.rows:[]).slice(0,120).filter(r=>Array.isArray(r)&&r.length===cols.length).map(r=>r.map(x=>typeof x==='number'||x===null?x:String(x).slice(0,80)));return rows.length?{name:t.name,cols,rows}:null}).filter(Boolean);
+  return tables.length?{tables,facts:(Array.isArray(v.facts)?v.facts:[]).map(x=>sstr(x,300)).filter(Boolean).slice(0,6)}:null}
 function validCase(o){if(!o||typeof o!=='object')return null;const s=(v,n)=>sstr(v,n);const arr=(v,n,m)=>(Array.isArray(v)?v:[]).map(x=>s(x,n)).filter(Boolean).slice(0,m);
   const cast=(Array.isArray(o.cast)?o.cast:[]).map(p=>p&&s(p.name,30)&&s(p.role,80)?{name:s(p.name,30),role:s(p.role,80),style:s(p.style,200)||''}:null).filter(Boolean).slice(0,5);
-  const d={id:'cg'+Date.now().toString(36),title:s(o.title,70),level:s(o.level,20)||'Pleno',cat:CAT_KEYS.includes(o.cat)?o.cat:'negocio',setting:s(o.setting,80)||'',company:s(o.company,120)||'',player:s(o.player,200),cast,group:s(o.group,40)||'',situation:s(o.situation,600),objective:s(o.objective,400),stages:arr(o.stages,140,6),hidden:arr(o.hidden,300,6),opening:vmsgs(o.opening),gen:1};
-  if(o.scene){const sc=vscene(d,o.scene);if(sc&&sc.mode==='meeting')d.scene=sc}
+  const d={id:'cg'+Date.now().toString(36),title:s(o.title,70),level:s(o.level,30)||'Pleno',cat:CAT_KEYS.includes(o.cat)?o.cat:'negocio',setting:s(o.setting,80)||'',company:s(o.company,200)||'',player:s(o.player,220),cast,group:s(o.group,40)||'',situation:s(o.situation,700),objective:s(o.objective,400),stages:arr(o.stages,140,6),hidden:arr(o.hidden,300,6),opening:vmsgs(o.opening),gen:1};
+  if(o.scene){const sc=vscene(d,o.scene);if(sc&&sc.mode==='meeting')d.scene=sc}const dt=vdata(o.data);if(dt)d.data=dt;
   return d.title&&d.player&&d.situation&&d.objective&&cast.length&&d.stages.length>=2&&d.hidden.length&&d.opening.length?d:null}
 function vmsgs(v){return(Array.isArray(v)?v:[]).map(m=>m&&sstr(m.who,40)&&sstr(m.text,1500)?{who:sstr(m.who,40),where:sstr(m.where,40)||'',text:sstr(m.text,1500)}:null).filter(Boolean).slice(0,6)}
 function normWhere(a,m){const d=a.def,w=String(m.where||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''),who=String(m.who||'').toLowerCase();
@@ -1327,93 +1550,134 @@ function normWhere(a,m){const d=a.def,w=String(m.where||'').toLowerCase().normal
   const p=d.cast.find(x=>x.name.toLowerCase()===w)||d.cast.find(x=>w&&w.includes(x.name.toLowerCase()));if(p)return p.name;
   if(a.scene.mode==='meeting')return'reuniao';
   if(who!=='narrador'){const q=d.cast.find(x=>x.name.toLowerCase()===who);if(q)return q.name}
-  return a.thread||GROUP}
+  return a.thread&&a.thread!==DATA?a.thread:GROUP}
 
 function personColor(d,who){const i=d.cast.findIndex(p=>p.name===who);return PALETTE()[(i<0?5:i)%6]}
 function fmtMsg(t){const lines=t.split('\n'),out=[];let buf=[],code=false;const flush=()=>{if(buf.length){out.push(`<pre class="art">${esc(buf.join('\n'))}</pre>`);buf=[]}};
   for(const l of lines){if(l.trim().startsWith('```')){if(code){flush();code=false}else code=true;continue}if(code||l.trim().startsWith('|')){buf.push(l);continue}flush();out.push(esc(l))}flush();
   return out.join('\n').replace(/\n?(<pre)/g,'$1').replace(/(<\/pre>)\n?/g,'$1')}
 const roleOf=(d,who)=>(d.cast.find(x=>x.name===who)||{}).role||'';
-function msgHTML(d,m,group){if(m.me)return`<div class="m me"><div class="b">${esc(m.text)}</div></div>`;const w=(m.who||'').toLowerCase();
+function msgHTML(d,m,group){if(m.me)return`<div class="m me${m.deliv?' deliv':''}"><div class="b">${m.deliv?`<span class="nm" style="--pc:var(--spark)">${esc(m.deliv)}</span>`:''}${fmtMsg(m.text)}</div></div>`;const w=(m.who||'').toLowerCase();
   if(w==='narrador'||w==='sistema')return`<div class="m nar${w==='sistema'?' sys':''}">${fmtMsg(m.text)}</div>`;
   if(w==='mentor')return`<div class="m men"><div class="b"><span class="nm" style="--pc:var(--ia)">Mentor</span>${fmtMsg(m.text)}</div></div>`;
   return`<div class="m" style="--pc:${personColor(d,m.who)}"><span class="av" aria-hidden="true">${esc(initials(m.who||'?'))}</span><div class="b">${group?`<span class="nm">${esc(m.who)}</span>`:''}${fmtMsg(m.text)}</div></div>`}
 
-function openCases(){$('#cases').hidden=false;renderCases()}
-function closeCases(){$('#cases').hidden=true;clearInterval(mtClock)}
-function renderCases(){const box=$('#cases');clearInterval(mtClock);if(caseView==='chat'&&ST.activeCase)return renderChat();if(caseView==='debrief'&&ST.activeCase&&ST.activeCase.debrief)return renderDebrief();caseView='list';
+/* ---------- lista de casos, carreira e caso sob medida ---------- */
+function openCases(){if(!$('#sheet').hidden)closeSheet(true);$('#cases').hidden=false;setNav('cases');armBack();renderCases()}
+function closeCases(keep){$('#cases').hidden=true;clearInterval(mtClock);document.body.classList.remove('immersive');if(!keep)setNav($('#sheet').hidden?'feed':'profile')}
+function careerHTML(can){const c=ST.career;
+  if(!c)return`<div class="career"><div class="row"><span class="chip" style="background:var(--spark)">Modo carreira</span></div><b>Uma empresa, uma carreira</b><p>Você é contratado como Analista de Dados Júnior e fica: os mesmos colegas, a mesma empresa, casos que se seguem. Cada pessoa lembra do que você fez, e a promoção vem por desempenho.</p>
+   <div class="co">${Object.entries(COMPANIES).map(([k,v])=>`<button class="case" type="button" data-co="${k}" ${can?'':'disabled'}><span class="row"><span>${esc(v.tag)}</span></span><b>${esc(v.name)}</b><p>${esc(v.desc.split('. ')[0])}.</p></button>`).join('')}</div></div>`;
+  const co=COMPANIES[c.co],lv=c.level,atLv=c.hist.filter(h=>h.level===lv),last3=atLv.slice(-3),avg=last3.length?last3.reduce((a,h)=>a+h.nota,0)/last3.length:0;
+  const ac=ST.activeCase&&ST.activeCase.def.career&&!ST.activeCase.done;
+  return`<div class="career"><div class="row"><span class="chip" style="background:var(--spark)">Modo carreira</span><span>${esc(co.name)}</span></div><b>${esc(CAREER_LEVELS[lv])}</b>
+   <p>${lv<CAREER_LEVELS.length-1?`Promoção: 3 casos neste nível com média ≥ 7 nos últimos três. Agora: ${atLv.length} caso${atLv.length===1?'':'s'}${last3.length?`, média ${num(avg,1)}`:''}.`:'Topo da carreira. Continue jogando para manter o padrão.'}</p>
+   <div class="rep">${co.cast.map(p=>{const v=c.rep[p.name]??50;return`<div class="rp" title="${esc(p.role)}"><span>${esc(p.name)}</span><div class="mbar"><i style="width:${v}%;background:${v>=65?'var(--ok)':v<40?'var(--bad)':'var(--gold)'}"></i></div></div>`}).join('')}</div>
+   <div class="btnrow"><button class="btn primary" id="crNext" type="button" style="--tc:var(--spark)" ${can&&!caseBusy?'':'disabled'}>${ac?'Continuar o caso atual':caseBusy?'Preparando o dia…':'Próximo dia de trabalho'}</button><button class="rbtn" id="crQuit" type="button">Trocar de empresa</button></div></div>`}
+function renderCases(){const box=$('#cases');clearInterval(mtClock);document.body.classList.toggle('immersive',caseView==='chat'&&!!ST.activeCase);if(caseView==='chat'&&ST.activeCase)return renderChat();if(caseView==='debrief'&&ST.activeCase&&ST.activeCase.debrief)return renderDebrief();caseView='list';
   const done={};(ST.cases||[]).forEach(h=>{done[h.id]=Math.max(done[h.id]||0,h.nota)});
   const ac=ST.activeCase,can=!!sampler;
-  const card=d=>`<button class="case t-${d.cat}" type="button" data-case="${d.id}" ${can?'':'disabled'}><span class="row"><span class="chip">${CATS[d.cat]}</span><span>${esc(d.level)}</span><span>· ${esc(d.setting)}</span>${done[d.id]!=null?`<span class="score">nota ${done[d.id]}</span>`:''}</span><b>${esc(d.title)}</b><p>${esc(d.situation)}</p></button>`;
+  const card=d=>`<button class="case t-${d.cat}" type="button" data-case="${d.id}" ${can?'':'disabled'}><span class="row"><span class="chip">${CATS[d.cat]}</span><span>${esc(d.level)}</span><span>· ${esc(d.setting)}</span>${DATASETS[d.id]||d.data?'<span class="dtag">dados reais</span>':''}${done[d.id]!=null?`<span class="score">nota ${done[d.id]}</span>`:''}</span><b>${esc(d.title)}</b><p>${esc(d.situation)}</p></button>`;
   box.innerHTML=`<div class="cs"><div class="cs-h"><button class="icon-btn" id="csBack" aria-label="Voltar ao feed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>Casos</b><span>simulações com pessoas da empresa, interpretadas pelo Claude</span></div></div>
   <div class="cs-body">
-   <p class="cs-intro">Você entra no personagem e resolve o problema como no trabalho: escolhe com quem falar no chat da empresa, manda mensagem no privado ou no grupo, liga, convoca reunião. Quando a história pede, o chat sai de cena e a conversa vira ao vivo. No final, nota por competência, o que um sênior faria e frases prontas.</p>
+   <p class="cs-intro">Você escolhe com quem falar no chat da empresa, investiga os dados com SQL de verdade, manda entregáveis escritos e entra em reuniões ao vivo. Antes de decidir, registre sua hipótese e sua confiança. No final: nota por competência, o que um sênior faria, sua história para entrevista e as lições que voltam no feed.</p>
    ${can?'':'<div class="note">Os casos usam o Claude para interpretar os personagens. Abra o Sinapse pelo link do Claude, com internet, para jogar.</div>'}
-   ${ac&&!ac.done?`<div class="cs-sec">Em andamento</div><button class="case t-${ac.def.cat}" type="button" id="csResume" ${can?'':'disabled'}><span class="row"><span class="chip">${CATS[ac.def.cat]}</span><span>etapa ${ac.stage} de ${ac.def.stages.length}</span>${ac.scene&&ac.scene.mode==='meeting'?'<span>· em reunião</span>':''}</span><b>Continuar: ${esc(ac.def.title)}</b><p>${esc(ac.def.objective)}</p></button>`:''}
+   ${ac&&!ac.done&&!ac.def.career?`<div class="cs-sec">Em andamento</div><button class="case t-${ac.def.cat}" type="button" id="csResume" ${can?'':'disabled'}><span class="row"><span class="chip">${CATS[ac.def.cat]}</span><span>etapa ${ac.stage} de ${ac.def.stages.length}</span></span><b>Continuar: ${esc(ac.def.title)}</b><p>${esc(ac.def.objective)}</p></button>`:''}
+   ${careerHTML(can)}
    <div class="cs-sec">Caso sob medida</div>
    <div class="genform t-negocio"><div class="seg" id="gLevel"><span>Nível</span>${LEVELS.map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.level}">${l}</button>`).join('')}</div>
     <div class="seg" id="gCat"><span>Foco</span>${['Aleatório',...Object.values(CATS)].map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.cat}">${l}</button>`).join('')}</div>
     <div class="seg" id="gSet"><span>Situação</span>${SETTINGS.map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.setting}">${l.split(' (')[0]}</button>`).join('')}</div>
+    <textarea id="gWork" rows="3" placeholder="Descreva uma situação real do seu trabalho. Troque nomes de pessoas, empresa e clientes." ${genCaseOpt.setting===4?'':'hidden'}>${esc(genCaseOpt.work)}</textarea>
     <button class="btn primary" type="button" id="gGo" ${can&&!caseBusy?'':'disabled'} style="--tc:var(--spark)">${caseBusy?'Criando o caso…':'Criar caso novo com o Claude'}</button></div>
-   <div class="cs-sec">Do júnior ao líder técnico</div>${CASES.map(card).join('')}
+   <div class="cs-sec">Empresas-alvo: indústria, fintech e delivery</div>${CASES.filter(d=>/^c1[2-6]$/.test(d.id)).map(card).join('')}
+   <div class="cs-sec">Do júnior ao líder técnico</div>${CASES.filter(d=>!/^c1[2-6]$/.test(d.id)).map(card).join('')}
    ${(ST.genCases||[]).length?`<div class="cs-sec">Criados para você</div>${ST.genCases.slice(-8).reverse().map(card).join('')}`:''}
   </div></div>`;
   $('#csBack').addEventListener('click',closeCases);
   box.querySelectorAll('[data-case]').forEach(b=>b.addEventListener('click',()=>{const d=CASES.find(x=>x.id===b.dataset.case)||(ST.genCases||[]).find(x=>x.id===b.dataset.case);if(d)startCase(d)}));
+  box.querySelectorAll('[data-co]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.co;ST.career={co:k,level:0,rep:Object.fromEntries(COMPANIES[k].cast.map(p=>[p.name,50])),hist:[],started:today()};save();genCareerCase()}));
+  const nx=$('#crNext');if(nx)nx.addEventListener('click',()=>{const a=ST.activeCase;if(a&&a.def.career&&!a.done){caseView='chat';renderChat()}else genCareerCase()});
+  const qt=$('#crQuit');if(qt){let armed=false;qt.addEventListener('click',()=>{if(!armed){armed=true;qt.textContent='Toque de novo: a carreira atual será encerrada';setTimeout(()=>{if(qt.isConnected){armed=false;qt.textContent='Trocar de empresa'}},3500);return}ST.career=null;save();renderCases()})}
   const rs=$('#csResume');if(rs)rs.addEventListener('click',()=>{caseView='chat';renderChat()});
-  [['#gLevel','level'],['#gCat','cat'],['#gSet','setting']].forEach(([sel,k])=>box.querySelectorAll(sel+' button').forEach(b=>b.addEventListener('click',()=>{genCaseOpt[k]=+b.dataset.i;box.querySelectorAll(sel+' button').forEach(x=>x.setAttribute('aria-pressed',x===b))})));
+  [['#gLevel','level'],['#gCat','cat'],['#gSet','setting']].forEach(([sel,k])=>box.querySelectorAll(sel+' button').forEach(b=>b.addEventListener('click',()=>{genCaseOpt[k]=+b.dataset.i;box.querySelectorAll(sel+' button').forEach(x=>x.setAttribute('aria-pressed',x===b));if(k==='setting')$('#gWork').hidden=genCaseOpt.setting!==4})));
+  $('#gWork').addEventListener('input',e=>{genCaseOpt.work=e.target.value});
   $('#gGo').addEventListener('click',genCase)}
 
-async function genCase(){if(!sampler||caseBusy)return;caseBusy=true;renderCases();
+const CASE_JSON=lvl=>`{"title":"...","level":"${lvl}","cat":"dados|estat|modelo|negocio","setting":"...","company":"...","player":"Você é ...","cast":[{"name":"...","role":"...","style":"..."}],"group":"nome curto do grupo do projeto","situation":"...","objective":"...","stages":["..."],"hidden":["..."],"scene":{"mode":"meeting","title":"...","participants":["..."]},"opening":[{"who":"narrador","where":"...","text":"..."},{"who":"<nome de um personagem>","where":"...","text":"..."}],"data":{"tables":[{"name":"nome_snake","columns":["col_a","col_b"],"rows":[["valor",1]]}],"facts":["números verdadeiros que as tabelas mostram"]}}`;
+const CASE_RULES=`O jogador usa o chat corporativo da empresa (conversas privadas com cada personagem e um grupo do projeto) e às vezes entra em reuniões ao vivo. Se o caso começa numa reunião, entrevista ou conversa presencial, inclua "scene" com os participantes; senão omita "scene". A abertura tem 1 mensagem do narrador situando a cena e 1 ou 2 falas que já colocam o problema, cada uma com "where" (o nome de quem manda, no privado com o jogador; "grupo"; ou "reuniao" se começar ao vivo).
+Se o problema for de dados (análise, métrica, modelo), inclua "data": 1 a 3 tabelas pequenas (até 80 linhas cada, colunas em snake_case) com números coerentes, em que os fatos ocultos possam ser DESCOBERTOS com SQL (agrupar, filtrar, comparar). "facts" resume os números verdadeiros. Se o caso for só de conversa, omita "data".`;
+async function genCase(){if(!sampler||caseBusy)return;const work=genCaseOpt.setting===4;if(work&&genCaseOpt.work.trim().length<30){genChip('Descreva a situação do trabalho com um pouco mais de detalhe.',3000);return}
+  caseBusy=true;renderCases();
   const lvl=LEVELS[genCaseOpt.level],cat=genCaseOpt.cat?CAT_KEYS[genCaseOpt.cat-1]:CAT_KEYS[Math.floor(Math.random()*4)],set=SETTINGS[genCaseOpt.setting];
   const prev=[...CASES,...(ST.genCases||[])].map(c=>'- '+c.title).join('\n');
   const prompt=`Crie um caso de simulação de trabalho para treinar um profissional de dados no Brasil.
-Nível do jogador: ${lvl}. Foco de competência: ${CATS[cat]}. Tipo de situação: ${set}.
-O caso precisa ser realista e do dia a dia: empresa brasileira plausível (setor variado), problema concreto com números, 2 a 4 personagens com personalidades e interesses diferentes (pelo menos um com algum conflito ou resistência), 3 a 5 etapas que levam ao objetivo, e 3 a 5 fatos ocultos que o jogador só descobre investigando ou perguntando bem.
-O jogador usa o chat corporativo da empresa (conversas privadas com cada personagem e um grupo do projeto) e às vezes entra em reuniões ao vivo. Se o caso começa numa reunião, entrevista ou conversa presencial, inclua "scene" com os participantes; senão omita "scene". A abertura tem 1 mensagem do narrador situando a cena e 1 ou 2 falas que já colocam o problema, cada uma com "where" (o nome de quem manda, no privado com o jogador; "grupo"; ou "reuniao" se começar ao vivo).
+Nível do jogador: ${lvl}. Foco de competência: ${CATS[cat]}. ${work?`Base: uma situação real que o jogador viveu no trabalho dele. Mantenha a essência do problema, mas troque nomes de pessoas, empresa e clientes:\n"""${genCaseOpt.work.slice(0,1500)}"""`:`Tipo de situação: ${set}.`}
+Contexto do jogador: mira vagas em consultoria industrial (séries temporais de sensores, soft sensors, manutenção preditiva, historiadores tipo PI, Seeq, clientes engenheiros), fintech de crédito para PMEs e delivery AI-first. Prefira esses mundos quando fizer sentido.
+O caso precisa ser realista e do dia a dia: empresa brasileira plausível, problema concreto com números, 2 a 4 personagens com personalidades e interesses diferentes (pelo menos um com algum conflito ou resistência), 3 a 5 etapas que levam ao objetivo, e 3 a 5 fatos ocultos que o jogador só descobre investigando ou perguntando bem.
+${CASE_RULES}
 Não repita estes casos:
 ${prev}
 Responda só com JSON:
-{"title":"...","level":"${lvl}","cat":"${cat}","setting":"...","company":"...","player":"Você é ...","cast":[{"name":"...","role":"...","style":"..."}],"group":"nome curto do grupo do projeto","situation":"...","objective":"...","stages":["..."],"hidden":["..."],"scene":{"mode":"meeting","title":"...","participants":["..."]},"opening":[{"who":"narrador","where":"...","text":"..."},{"who":"<nome de um personagem>","where":"...","text":"..."}]}`;
-  try{const o=await sampler.json(prompt,{modelTier:'default',cache:false});const d=validCase(o);if(!d)throw{code:'invalid'};ST.genCases=[...(ST.genCases||[]),d].slice(-20);save();caseBusy=false;startCase(d)}
+${CASE_JSON(lvl)}`;
+  try{const o=await sampler.json(prompt,{modelTier:'default',cache:false});const d=validCase(o);if(!d)throw{code:'invalid'};if(!o.cat)d.cat=cat;ST.genCases=[...(ST.genCases||[]),d].slice(-8);save();caseBusy=false;startCase(d)}
   catch(e){caseBusy=false;genChip(e&&e.code==='rate_limited'?'Limite de uso do Claude. Tente de novo em alguns minutos.':'Não consegui criar o caso agora. Tente de novo.',3500);renderCases()}}
+
+async function genCareerCase(){if(!sampler||caseBusy||!ST.career)return;caseBusy=true;renderCases();const c=ST.career,co=COMPANIES[c.co],lv=c.level;
+  const weak=CAT_KEYS.slice().sort((x,y)=>(skillAvg(x)??-1)-(skillAvg(y)??-1)),focus=Math.random()<.6?weak[0]:CAT_KEYS[Math.floor(Math.random()*4)];
+  const kinds=['tático, com dados para investigar','conversa difícil ou social','reunião com cliente ou liderança','entrega com prazo e documentação'],kind=kinds[c.hist.length%kinds.length];
+  const rel=co.cast.map(p=>`${p.name} (${p.role}): ${c.rep[p.name]??50}`).join('; '),mem=c.hist.slice(-8).map(h=>`- ${h.title}: ${h.memo}`).join('\n');
+  const prompt=`Crie o próximo caso do MODO CARREIRA de um profissional de dados na empresa fictícia abaixo. Os casos são capítulos de uma mesma história: as pessoas se lembram do que aconteceu.
+Empresa: ${co.name}. ${co.desc}
+Elenco fixo (use 2 a 4 dessas pessoas; pode incluir no máximo 1 pessoa nova, como um cliente): ${co.cast.map(p=>`${p.name}, ${p.role}: ${p.style}`).join(' | ')}
+Cargo atual do jogador: ${CAREER_LEVELS[lv]} (${LEVEL_SCOPE[lv]}). O caso deve exigir exatamente as responsabilidades desse cargo.
+Relação de cada pessoa com o jogador (0 a 100): ${rel}
+O que já aconteceu (as pessoas lembram e podem citar):
+${mem||'- Primeira semana do jogador na empresa.'}
+Foco de competência deste caso: ${CATS[focus]}. Tipo de dia: ${kind}.
+${CASE_RULES}
+Responda só com JSON:
+${CASE_JSON(CAREER_LEVELS[lv])}`;
+  try{const o=await sampler.json(prompt,{modelTier:'default',cache:false});const d=validCase(o);if(!d)throw{code:'invalid'};d.career=true;d.cat=CAT_KEYS.includes(o.cat)?o.cat:focus;d.level=CAREER_LEVELS[lv];d.company=co.name+(d.company&&!d.company.includes(co.name)?' · '+d.company:'');
+    d.relations=co.cast.map(p=>`${p.name}: ${c.rep[p.name]??50}`).join('; ')+(mem?'. Lembranças: '+c.hist.slice(-5).map(h=>h.memo).join(' '):'');caseBusy=false;startCase(d)}
+  catch(e){caseBusy=false;genChip(e&&e.code==='rate_limited'?'Limite de uso do Claude. Tente de novo em alguns minutos.':'Não consegui preparar o próximo dia. Tente de novo.',3500);renderCases()}}
 
 function startCase(d){const sc=d.scene||CASE_SCENE[d.id]||null;
   const scene=sc&&sc.participants?{mode:'meeting',title:sc.title||d.title,participants:sc.participants.filter(n=>d.cast.some(p=>p.name===n))}:{mode:'chat'};
-  const a={v:2,def:d,stage:1,done:false,scene,meet:scene.mode==='meeting'?1:0,meetStart:Date.now(),thread:null,unread:{},view:'thread',log:[],api:[],debrief:null};
+  const a={v:3,def:d,stage:1,done:false,scene,meet:scene.mode==='meeting'?1:0,meetStart:Date.now(),thread:null,unread:{},view:'thread',log:[],api:[],debrief:null,hyps:[],delivs:[],queries:[]};
   const first=d.opening.find(m=>m.who!=='narrador');a.thread=first&&d.cast.some(p=>p.name===first.who)?first.who:(d.cast[0]||{}).name;
   const opening=d.opening.map(m=>({who:m.who,text:m.text,where:m.where||(scene.mode==='meeting'?'reuniao':m.who)}));
   opening.forEach(m=>{m.where=normWhere(a,m);a.log.push({...m,meet:m.where==='reuniao'?a.meet:0})});
   if(scene.mode==='chat'){const w=a.log.find(m=>m.who!=='narrador');if(w)a.thread=w.where;a.log.forEach(m=>{if(m.who==='narrador')m.where=a.thread})}
   a.api=[{role:'user',content:caseSetup(d,scene)+'\n\nA cena começa com as mensagens abaixo (já mostradas ao jogador). Depois disso, aguarde a ação do jogador.'},{role:'assistant',content:JSON.stringify({msgs:opening,stage:1,done:false,scene:null})}];
-  ST.activeCase=a;save();caseView='chat';renderChat();sfx.tick()}
-
-/* migra casos salvos na versão de chat único */
-function migrateCase(a){if(a.v===2)return a;const first=(a.def.cast[0]||{}).name;Object.assign(a,{v:2,scene:{mode:'chat'},meet:0,unread:{},view:'thread',thread:first});a.log.forEach(m=>{m.where=m.me||m.who==='narrador'?first:(a.def.cast.some(p=>p.name===m.who)?m.who:m.who==='mentor'?MENTOR:first);m.meet=0});return a}
-
-function renderChat(){const a=migrateCase(ST.activeCase);caseView='chat';clearInterval(mtClock);if(a.scene.mode==='meeting')renderMeeting();else renderTeams()}
+  ST.activeCase=a;save();caseView='chat';renderChat();sfx.tick();if(dataOf(d))getCaseDB(d).catch(()=>{})}
+function migrateCase(a){if(!a.v||a.v<2){const first=(a.def.cast[0]||{}).name;Object.assign(a,{scene:{mode:'chat'},meet:0,unread:{},view:'thread',thread:first});a.log.forEach(m=>{m.where=m.me||m.who==='narrador'?first:(a.def.cast.some(p=>p.name===m.who)?m.who:m.who==='mentor'?MENTOR:first);m.meet=0})}
+  if(a.v!==3){a.v=3;a.hyps=a.hyps||[];a.delivs=a.delivs||[];a.queries=a.queries||[]}if(!a.def.cast.length)a.def.cast=[{name:'Colega',role:'colega',style:''}];return a}
+function renderChat(){const a=migrateCase(ST.activeCase);caseView='chat';document.body.classList.add('immersive');armBack();clearInterval(mtClock);if(a.scene.mode==='meeting')renderMeeting();else renderTeams()}
 
 /* ---------- chat corporativo ---------- */
-function threadsOf(a){const d=a.def;return[{id:MENTOR,name:'Mentor',role:'fora da cena · dicas'},{id:GROUP,name:groupName(d),role:d.cast.map(p=>p.name).join(', ')},...d.cast.map(p=>({id:p.name,name:p.name,role:p.role}))]}
+const ICO={data:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>',doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg>',bulb:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3"/></svg>'};
+function threadsOf(a){const d=a.def;return[{id:MENTOR,name:'Mentor',role:`fora da cena · dicas${hintCost(d)?` (−${hintCost(d)} XP)`:''}`},...(dataOf(d)?[{id:DATA,name:'Dados do caso',role:'consultas SQL de verdade'}]:[]),{id:GROUP,name:groupName(d),role:d.cast.map(p=>p.name).join(', ')},...d.cast.map(p=>({id:p.name,name:p.name,role:p.role}))]}
 function lastIn(a,id){for(let i=a.log.length-1;i>=0;i--){const m=a.log[i];if(m.where===id&&!m.meet)return m}return null}
-function listHTML(a){const d=a.def;return threadsOf(a).map(t=>{const l=lastIn(a,t.id),u=a.unread[t.id]||0,col=t.id===MENTOR?C.ia:t.id===GROUP?C.spark:personColor(d,t.id);
-  const prev=l?(l.me?'Você: ':t.id===GROUP&&l.who!=='narrador'?l.who+': ':'')+l.text.replace(/\s+/g,' ').slice(0,60):t.role;
-  return`<button class="tm-item${a.thread===t.id?' on':''}${u?' unread':''}" type="button" data-th="${esc(t.id)}" style="--pc:${col}"><span class="av" aria-hidden="true">${t.id===GROUP?'#':esc(initials(t.name))}</span><span class="tx"><b>${esc(t.name)}</b><small>${esc(prev)}</small></span>${u?`<span class="badge">${u}</span>`:''}</button>`}).join('')}
+function listHTML(a){const d=a.def;return threadsOf(a).map(t=>{const l=t.id===DATA?null:lastIn(a,t.id),u=a.unread[t.id]||0,col=t.id===MENTOR?C.ia:t.id===DATA?C.ds:t.id===GROUP?C.spark:personColor(d,t.id);
+  const prev=l?(l.me?'Você: ':t.id===GROUP&&l.who!=='narrador'?l.who+': ':'')+l.text.replace(/\s+/g,' ').slice(0,60):t.id===DATA?`${t.role} · ${(a.queries||[]).length} rodadas`:t.role;
+  return`<button class="tm-item${a.thread===t.id?' on':''}${u?' unread':''}" type="button" data-th="${esc(t.id)}" style="--pc:${col}"><span class="av" aria-hidden="true">${t.id===GROUP?'#':t.id===DATA?ICO.data:esc(initials(t.name))}</span><span class="tx"><b>${esc(t.name)}</b><small>${esc(prev)}</small></span>${u?`<span class="badge">${u}</span>`:''}</button>`}).join('')}
 function threadLog(a){return a.log.filter(m=>m.where===a.thread&&!m.meet)}
-function renderTeams(){const a=ST.activeCase,d=a.def,box=$('#cases'),th=a.thread,isP=d.cast.some(p=>p.name===th);
-  const head=th===MENTOR?{name:'Mentor',role:'fora da cena: pede uma dica quando travar',col:C.ia,ini:'M'}:th===GROUP?{name:groupName(d),role:d.cast.map(p=>p.name).join(', '),col:C.spark,ini:'#'}:{name:th,role:roleOf(d,th),col:personColor(d,th),ini:initials(th)};
+function toolsHTML(){return`<button class="rbtn" id="cvHyp" type="button">${ICO.bulb}Hipótese</button><button class="rbtn" id="cvDel" type="button">${ICO.doc}Entregável</button>`}
+function renderTeams(){const a=ST.activeCase,d=a.def,box=$('#cases');if(a.thread===DATA&&!dataOf(d))a.thread=GROUP;const th=a.thread,isP=d.cast.some(p=>p.name===th);
+  const head=th===MENTOR?{name:'Mentor',role:'fora da cena: pede uma dica quando travar',col:C.ia,ini:'M'}:th===DATA?{name:'Dados do caso',role:'SQL de verdade (SQLite) · envie o resultado para alguém',col:C.ds,ini:'DB'}:th===GROUP?{name:groupName(d),role:d.cast.map(p=>p.name).join(', '),col:C.spark,ini:'#'}:{name:th,role:roleOf(d,th),col:personColor(d,th),ini:initials(th)};
   box.innerHTML=`<div class="tm t-${d.cat} ${a.view==='list'?'show-list':'show-thread'}">
    <aside class="tm-side"><div class="cs-h"><button class="icon-btn" id="cvBack" aria-label="Voltar para a lista de casos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>${esc(d.title)}</b><span id="cvStage"></span></div></div>
     <div class="stagebar" id="cvBar"></div>
     <div class="tm-tools"><button class="rbtn" id="cvObjBtn" type="button" aria-expanded="false">Objetivo</button><button class="rbtn" id="cvEnd" type="button">Encerrar e avaliar</button><span class="sp"></span><button class="rbtn" id="cvRestart" type="button">Recomeçar</button></div>
-    <div class="cv-obj" id="cvObj" hidden><div><b>Você:</b> ${esc(d.player)}</div><div><b>Situação:</b> ${esc(d.situation)}</div><div><b>Objetivo:</b> ${esc(d.objective)}</div><ol id="cvSteps"></ol></div>
+    <div class="cv-obj" id="cvObj" hidden><div><b>Você:</b> ${esc(d.player)}</div><div><b>Situação:</b> ${esc(d.situation)}</div><div><b>Objetivo:</b> ${esc(d.objective)}</div><ol id="cvSteps"></ol>${a.hyps.length?`<div><b>Suas hipóteses:</b> ${a.hyps.map(h=>`${esc(h.t)} (${h.conf}%)`).join(' · ')}</div>`:''}</div>
     <div class="tm-list" id="tmList">${listHTML(a)}</div></aside>
    <section class="tm-main"><div class="tm-mh" style="--pc:${head.col}"><button class="icon-btn tm-back" id="tmBack" aria-label="Ver conversas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><span class="av" aria-hidden="true">${esc(head.ini)}</span><div class="t"><b>${esc(head.name)}</b><span>${esc(head.role)}</span></div><span class="sp"></span>
      ${isP?`<button class="rbtn call" id="tmCall" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Ligar</button>`:th===GROUP?`<button class="rbtn call" id="tmMeet" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>Reunião agora</button>`:''}</div>
-    <div class="cs-body tm-log" id="cvLog" aria-live="polite"></div>
-    ${th===MENTOR?`<div class="cv-in"><button class="btn primary" id="cvHint" type="button" style="--tc:var(--ia);flex:1">Pedir uma dica ao mentor</button></div>`:`<div class="cv-in"><textarea id="cvText" rows="1" placeholder="Mensagem para ${esc(head.name)}" aria-label="Sua mensagem"></textarea><button class="send" id="cvSend" aria-label="Enviar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>`}
+    ${th===DATA?`<div class="cs-body tm-log" id="sqlPane"></div>`:`<div class="cs-body tm-log" id="cvLog" aria-live="polite"></div>`}
+    ${th===MENTOR?`<div class="cv-in"><button class="btn primary" id="cvHint" type="button" style="--tc:var(--ia);flex:1">Pedir uma dica ao mentor${hintCost(d)?` (−${hintCost(d)} XP)`:''}</button></div>`:th===DATA?'':`<div class="cv-act">${toolsHTML()}</div><div class="cv-in"><textarea id="cvText" rows="1" placeholder="Mensagem para ${esc(head.name)}" aria-label="Sua mensagem"></textarea><button class="send" id="cvSend" aria-label="Enviar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>`}
    </section></div>`;
-  a.unread[th]=0;fillThread();updStage();bindCommon();
+  a.unread[th]=0;if(th===DATA)renderSQL($('#sqlPane'));else fillThread();updStage();bindCommon();
   $('#tmList').addEventListener('click',e=>{const b=e.target.closest('[data-th]');if(!b)return;a.thread=b.dataset.th;a.view='thread';save();renderTeams()});
   $('#tmBack').addEventListener('click',()=>{a.view='list';renderTeams()});
   const call=$('#tmCall');if(call)call.addEventListener('click',()=>{addLog({who:'narrador',text:`Chamando ${th}…`,where:th});sendCase(`[Você ligou para ${th}]`,'event')});
@@ -1431,7 +1695,57 @@ function bindCommon(){const a=ST.activeCase,d=a.def;
   const ta=$('#cvText');if(ta){ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=Math.min(140,ta.scrollHeight)+'px'});ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendCase(ta.value)}})}
   const sb=$('#cvSend');if(sb)sb.addEventListener('click',()=>sendCase($('#cvText').value));
   const en=$('#cvEnd');if(en)en.addEventListener('click',endCase);
+  const hy=$('#cvHyp');if(hy)hy.addEventListener('click',()=>openHyp());
+  const dl=$('#cvDel');if(dl)dl.addEventListener('click',()=>openDeliv());
   const rs=$('#cvRestart');if(rs){let armed=false;rs.addEventListener('click',()=>{if(!armed){armed=true;rs.textContent='Toque de novo para recomeçar';setTimeout(()=>{if(rs.isConnected){armed=false;rs.textContent='Recomeçar'}},3500);return}startCase(d)})}}
+
+/* ---------- console SQL do caso ---------- */
+function resultTable(res){if(!res)return'<p class="empty">A consulta rodou e não devolveu linhas.</p>';const rows=res.values.slice(0,100);
+  return`<div class="tbl"><table class="mini"><tr>${res.columns.map(c=>`<th>${esc(c)}</th>`).join('')}</tr>${rows.map(r=>`<tr>${r.map(v=>v===null?'<td class="null">NULL</td>':`<td>${esc(typeof v==='number'?(Number.isInteger(v)?v:Math.round(v*1000)/1000):v)}</td>`).join('')}</tr>`).join('')}</table></div>${res.values.length>100?`<p class="empty">Mostrando 100 de ${res.values.length} linhas.</p>`:''}`}
+function pipeTable(res,max=15){if(!res)return'(sem linhas)';const fmt=v=>v===null?'NULL':typeof v==='number'&&!Number.isInteger(v)?String(Math.round(v*100)/100):String(v);
+  return['| '+res.columns.join(' | ')+' |',...res.values.slice(0,max).map(r=>'| '+r.map(fmt).join(' | ')+' |')].join('\n')+(res.values.length>max?`\n(+${res.values.length-max} linhas)`:'')}
+function renderSQL(pane){const a=ST.activeCase,d=a.def,ds=dataOf(d);
+  const dests=a.scene.mode==='meeting'?[['reuniao','a reunião']]:[[GROUP,groupName(d)],...d.cast.map(p=>[p.name,p.name])];
+  pane.innerHTML=`<div class="sqlx"><p class="cs-intro">Banco SQLite do caso. Toque numa tabela para ver as colunas. Rode quantas consultas quiser e envie o resultado para alguém quando tiver algo a mostrar.</p>
+   <div class="schema">${ds.tables.map(t=>`<button class="sch" type="button" data-t="${esc(t.name)}"><b>${esc(t.name)}</b><span>${t.cols.map(esc).join(', ')}</span><small>${t.rows.length} linhas</small></button>`).join('')}</div>
+   <textarea id="sqlIn" class="sqlin" rows="5" spellcheck="false" aria-label="Consulta SQL">${esc(a.lastSql||`SELECT *\nFROM ${ds.tables[0].name}\nLIMIT 10;`)}</textarea>
+   <div class="btnrow"><button class="btn primary" id="sqlRun" type="button" style="--tc:var(--ds)">Rodar (Ctrl+Enter)</button><label class="sendto">Enviar para <select id="sqlTo">${dests.map(([v,l])=>`<option value="${esc(v)}">${esc(l)}</option>`).join('')}</select></label><button class="btn" id="sqlSend" type="button" disabled>Enviar resultado</button></div>
+   <div id="sqlOut"></div>${(a.queries||[]).length?`<div class="cs-sec">Últimas consultas</div><div class="list">${a.queries.slice(-5).reverse().map((q,i)=>`<button class="li qh" type="button" data-q="${a.queries.length-1-i}"><code>${esc(q.sql.slice(0,140))}</code><small>${q.err?'erro':q.n+' linhas'}</small></button>`).join('')}</div>`:''}</div>`;
+  const inp=$('#sqlIn'),out=$('#sqlOut');let last=null;
+  pane.querySelectorAll('.sch').forEach(b=>b.addEventListener('click',()=>{inp.value=`SELECT *\nFROM ${b.dataset.t}\nLIMIT 10;`;inp.focus()}));
+  pane.querySelectorAll('.qh').forEach(b=>b.addEventListener('click',()=>{inp.value=a.queries[+b.dataset.q].sql;inp.focus()}));
+  const run=async()=>{const sql=inp.value.trim();if(!sql)return;a.lastSql=sql;out.innerHTML='<p class="empty">Rodando…</p>';
+    try{const db=await getCaseDB(d);const res=db.exec(sql);last=res[res.length-1]||null;out.innerHTML=resultTable(last);$('#sqlSend').disabled=false;a.queries.push({sql,n:last?last.values.length:0});a.log.push({who:'_sql',where:'_sql',text:sql+`\n→ ${last?last.values.length+' linhas':'sem linhas'}`});
+      if(a.queries.length===1)award(5,$('#sqlRun'));save()}
+    catch(e){last=null;$('#sqlSend').disabled=true;out.innerHTML=`<div class="note" style="color:var(--bad)">${esc(e.message||String(e))}</div>`;a.queries.push({sql,n:0,err:1})}};
+  $('#sqlRun').addEventListener('click',run);inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();run()}});
+  $('#sqlSend').addEventListener('click',()=>{if(!last&&last!==null)return;const to=$('#sqlTo').value,txt=`Rodei esta consulta:\n\`\`\`\n${a.lastSql}\n\`\`\`\n${pipeTable(last)}`;
+    if(a.scene.mode==='meeting'){closeOverlay();sendCase(txt,'msg',{display:txt})}else{a.thread=to;a.view='thread';renderTeams();sendCase(txt)}})}
+
+/* ---------- sobreposições: hipótese, entregável, dados na reunião ---------- */
+function overlay(html){closeOverlay();$('#cases').insertAdjacentHTML('beforeend',`<div class="ov" id="caseOv"><div class="ov-in">${html}</div></div>`);const o=$('#caseOv');o.addEventListener('click',e=>{if(e.target===o)closeOverlay()});return o}
+function closeOverlay(){const o=$('#caseOv');if(o)o.remove()}
+function openHyp(auto){const a=ST.activeCase;if(!a||a.done)return;let conf=70;
+  const o=overlay(`<h3>${auto?'Etapa concluída. Qual sua hipótese agora?':'Registrar hipótese'}</h3><p class="cs-intro">Escreva o que você acha que está acontecendo e quanta certeza tem. Só você vê. No final, o mentor compara com a verdade, e o app mede sua calibração: quando você diz 90%, acerta 90%?</p>
+   <textarea id="hypT" rows="3" placeholder="Ex.: a diferença vem de cancelamentos que o BI não desconta"></textarea>
+   <div class="seg" id="hypC"><span>Confiança</span>${[50,70,90].map(v=>`<button type="button" data-v="${v}" aria-pressed="${v===conf}">${v}%</button>`).join('')}</div>
+   <div class="btnrow"><button class="btn primary" id="hypOk" type="button" style="--tc:var(--gold)">Registrar</button><button class="btn" id="hypNo" type="button">${auto?'Agora não':'Cancelar'}</button></div>`);
+  o.querySelectorAll('#hypC button').forEach(b=>b.addEventListener('click',()=>{conf=+b.dataset.v;o.querySelectorAll('#hypC button').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+  $('#hypNo').addEventListener('click',closeOverlay);$('#hypT').focus();
+  $('#hypOk').addEventListener('click',()=>{const t=$('#hypT').value.trim();if(!t)return;a.hyps.push({t:t.slice(0,300),conf,stage:a.stage});a.log.push({who:'_hip',where:'_hip',text:`(${conf}%) ${t}`});save();closeOverlay();award(3,$('#cvStage'));genChip('Hipótese registrada. O mentor confere no final.',2200)})}
+const DELIV=['Mensagem','E-mail','Resumo executivo','Documentação técnica','Comentário de revisão'];
+function openDeliv(){const a=ST.activeCase;if(!a||a.done)return;const d=a.def,inMeet=a.scene.mode==='meeting';let type=0;
+  const dests=inMeet?[['reuniao','a reunião (apresentar)']]:[[a.thread&&a.thread!==MENTOR&&a.thread!==DATA?a.thread:GROUP,'conversa atual'],[GROUP,groupName(d)],...d.cast.map(p=>[p.name,p.name])].filter((x,i,arr)=>arr.findIndex(y=>y[0]===x[0])===i);
+  const o=overlay(`<h3>Entregável</h3><p class="cs-intro">Escreva como mandaria de verdade. Quem recebe reage à qualidade: número, recomendação e próximo passo destravam; texto vago gera cobrança. No final, o mentor mostra a versão de um sênior ao lado da sua.</p>
+   <div class="seg" id="dlT"><span>Tipo</span>${DELIV.map((t,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===0}">${t}</button>`).join('')}</div>
+   <label class="sendto">Para <select id="dlTo">${dests.map(([v,l])=>`<option value="${esc(v)}">${esc(l)}</option>`).join('')}</select></label>
+   <textarea id="dlX" rows="9" placeholder="Assunto, contexto, número principal, recomendação, próximo passo…"></textarea>
+   <div class="btnrow"><button class="btn primary" id="dlOk" type="button" style="--tc:var(--spark)">Enviar entregável</button><button class="btn" id="dlNo" type="button">Cancelar</button></div>`);
+  o.querySelectorAll('#dlT button').forEach(b=>b.addEventListener('click',()=>{type=+b.dataset.i;o.querySelectorAll('#dlT button').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+  $('#dlNo').addEventListener('click',closeOverlay);
+  $('#dlOk').addEventListener('click',()=>{const txt=$('#dlX').value.trim();if(txt.length<20){genChip('Escreva o entregável completo antes de enviar.',2200);return}const to=$('#dlTo').value,label=DELIV[type];closeOverlay();
+    a.delivs.push({type:label,to,text:txt});if(!inMeet){a.thread=to;a.view='thread';renderTeams()}
+    sendCase(txt,'msg',{deliv:label,content:`[Entregável: ${label} para ${to===GROUP?'o grupo':to==='reuniao'?'a reunião':to}]\n${txt}`})})}
 
 /* ---------- reunião ao vivo ---------- */
 function renderMeeting(){const a=ST.activeCase,d=a.def,sc=a.scene,box=$('#cases');
@@ -1440,27 +1754,29 @@ function renderMeeting(){const a=ST.activeCase,d=a.def,sc=a.scene,box=$('#cases'
    <div class="stagebar" id="cvBar"></div>
    <div class="mt-grid n${Math.min(sc.participants.length+1,6)}">${sc.participants.map(n=>tile(n)).join('')}${tile('Você',true)}</div>
    <div class="mt-cap" id="cvLog" aria-live="polite"></div>
+   <div class="cv-act">${toolsHTML()}${dataOf(d)?`<button class="rbtn" id="mtData" type="button">${ICO.data}Compartilhar dados</button>`:''}<span class="sp"></span><button class="rbtn" id="cvHint" type="button">Dica${hintCost(d)?` (−${hintCost(d)})`:''}</button></div>
    <div class="cv-in"><textarea id="cvText" rows="1" placeholder="Fale na reunião…" aria-label="Sua fala"></textarea><button class="send" id="cvSend" aria-label="Falar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
-   <div class="cv-act"><button class="rbtn" id="cvHint" type="button">Dica do mentor</button><button class="rbtn" id="cvObjBtn" type="button" aria-expanded="false">Objetivo</button><span class="sp"></span><button class="rbtn leave" id="mtLeave" type="button">Sair da reunião</button><button class="rbtn" id="cvEnd" type="button">Encerrar e avaliar</button></div>
+   <div class="cv-act"><button class="rbtn" id="cvObjBtn" type="button" aria-expanded="false">Objetivo</button><span class="sp"></span><button class="rbtn leave" id="mtLeave" type="button">Sair da reunião</button><button class="rbtn" id="cvEnd" type="button">Encerrar e avaliar</button></div>
    <div class="cv-obj" id="cvObj" hidden><div><b>Objetivo:</b> ${esc(d.objective)}</div><ol id="cvSteps"></ol></div>
    <button class="rbtn" id="cvBack" type="button" style="position:absolute;top:10px;right:12px" aria-label="Voltar para a lista de casos">✕</button></div>`;
   const log=$('#cvLog');log.innerHTML=a.log.filter(m=>m.meet===a.meet||(m.where===MENTOR&&m.meetHint===a.meet)).map(capHTML).join('')||'<div class="cap nar">A reunião começou.</div>';log.scrollTop=log.scrollHeight;
   updStage();bindCommon();
   $('#cvHint').addEventListener('click',()=>sendCase('[DICA]','hint'));
   $('#mtLeave').addEventListener('click',()=>sendCase('[Você saiu da reunião]','event'));
+  const md=$('#mtData');if(md)md.addEventListener('click',()=>{const o=overlay('<h3>Compartilhar dados na reunião</h3><div id="sqlPane"></div><div class="btnrow"><button class="btn" id="ovClose" type="button">Fechar</button></div>');renderSQL($('#sqlPane'));$('#ovClose').addEventListener('click',closeOverlay)});
   const t0=a.meetStart||Date.now(),ck=$('#mtClock');const tick=()=>{const s=Math.floor((Date.now()-t0)/1000);ck.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};tick();mtClock=setInterval(()=>{if(!ck.isConnected)return clearInterval(mtClock);tick()},1000);
   lockChat(caseBusy||a.done)}
-function capHTML(m){const d=ST.activeCase.def;if(m.me)return`<div class="cap me"><b>Você</b>${esc(m.text)}</div>`;const w=(m.who||'').toLowerCase();
+function capHTML(m){const d=ST.activeCase.def;if(m.me)return`<div class="cap me"><b>Você${m.deliv?' · '+esc(m.deliv):''}</b>${fmtMsg(m.text)}</div>`;const w=(m.who||'').toLowerCase();
   if(w==='narrador'||w==='sistema')return`<div class="cap nar">${fmtMsg(m.text)}</div>`;if(w==='mentor')return`<div class="cap men"><b>Mentor</b>${fmtMsg(m.text)}</div>`;
   return`<div class="cap" style="--pc:${personColor(d,m.who)}"><b>${esc(m.who)}</b>${fmtMsg(m.text)}</div>`}
 function speak(who,on){const t=document.querySelector(`.tile[data-who="${CSS.escape(who)}"]`);if(t)t.classList.toggle('speaking',on)}
 async function enterMeeting(sc){const a=ST.activeCase,prev=a.thread;addLog({who:'narrador',text:`Reunião “${sc.title}” com ${sc.participants.join(', ')}.`,where:sc.participants.length===1&&a.def.cast.some(p=>p.name===sc.participants[0])?sc.participants[0]:GROUP});
   a.scene=sc;a.meet=(a.meet||0)+1;a.meetStart=Date.now();a.prevThread=prev;save();
-  if(caseView==='chat'){$('#cases').insertAdjacentHTML('beforeend','<div class="mt-join">Entrando na reunião…</div>');await sleep(900);renderMeeting()}}
-async function exitMeeting(){const a=ST.activeCase;a.scene={mode:'chat'};a.view='thread';a.thread=a.prevThread||a.thread||GROUP;save();if(caseView==='chat'){await sleep(1100);renderTeams()}}
+  if(caseView==='chat'){closeOverlay();$('#cases').insertAdjacentHTML('beforeend','<div class="mt-join">Entrando na reunião…</div>');await sleep(900);renderMeeting()}}
+async function exitMeeting(){const a=ST.activeCase;a.scene={mode:'chat'};a.view='thread';a.thread=a.prevThread&&a.prevThread!==DATA?a.prevThread:GROUP;save();if(caseView==='chat'){await sleep(1100);closeOverlay();renderTeams()}}
 
 /* ---------- mensagens ---------- */
-function addLog(m){const a=ST.activeCase;a.log.push(m);if(a.log.length>160)a.log.shift();if(caseView!=='chat')return;const log=$('#cvLog');if(!log)return;
+function addLog(m){const a=ST.activeCase;a.log.push(m);if(a.log.length>200)a.log.shift();if(caseView!=='chat')return;const log=$('#cvLog');if(!log)return;
   if(a.scene.mode==='meeting'){if(m.where==='reuniao'||m.where===MENTOR){log.insertAdjacentHTML('beforeend',capHTML(m));log.scrollTop=log.scrollHeight}}
   else if(m.where===a.thread&&!m.meet){const e=log.querySelector('.m.nar:only-child');if(e&&!a.log.some(x=>x!==m&&x.where===a.thread))e.remove();log.insertAdjacentHTML('beforeend',msgHTML(a.def,m,a.thread===GROUP));log.scrollTop=log.scrollHeight}
   const l=$('#tmList');if(l)l.innerHTML=listHTML(a)}
@@ -1478,10 +1794,12 @@ async function playMsgs(msgs){const a=ST.activeCase;
       addLog(m);if(!visible&&m.where!==MENTOR){a.unread[m.where]=(a.unread[m.where]||0)+1;const l=$('#tmList');if(l)l.innerHTML=listHTML(a);if(w!=='narrador')toast(a,m)}}
     sfx.tick()}}
 
-async function sendCase(text,kind='msg'){const a=ST.activeCase;if(!a||a.done||caseBusy||!sampler)return;text=(text||'').trim();if(!text)return;
+async function sendCase(text,kind='msg',opt={}){const a=ST.activeCase;if(!a||a.done||caseBusy||!sampler)return;text=(text||'').trim();if(!text)return;
   const inMeet=a.scene.mode==='meeting',ta=$('#cvText');
-  const content=kind==='hint'?'[DICA]':kind==='event'?text:(inMeet?'[Na reunião] ':a.thread===GROUP?`[No grupo ${groupName(a.def)}] `:`[Privado com ${a.thread}] `)+text;
-  let mine=null;if(kind==='msg'){mine={me:true,text,where:inMeet?'reuniao':a.thread,meet:inMeet?a.meet:0};addLog(mine);if(ta){ta.value='';ta.style.height='auto'}}
+  const prefix=inMeet?'[Na reunião] ':a.thread===GROUP?`[No grupo ${groupName(a.def)}] `:`[Privado com ${a.thread}] `;
+  const content=kind==='hint'?'[DICA]':kind==='event'?text:opt.content?(inMeet?'[Na reunião] ':prefix)+opt.content:prefix+text;
+  let mine=null;if(kind==='msg'){mine={me:true,text,where:inMeet?'reuniao':a.thread,meet:inMeet?a.meet:0};if(opt.deliv)mine.deliv=opt.deliv;addLog(mine);if(ta&&!opt.deliv&&!opt.display){ta.value='';ta.style.height='auto'}}
+  if(kind==='hint'&&hintCost(a.def)){award(-hintCost(a.def),$('#cvStage'))}
   caseBusy=true;lockChat(true);a.api.push({role:'user',content});
   const who=kind==='hint'?'Mentor':inMeet?(a.scene.participants[0]):(a.thread===GROUP?(a.def.cast[0]||{}).name:a.thread);
   const tip=kind==='hint'&&!inMeet&&a.thread!==MENTOR?null:typing(who);
@@ -1491,13 +1809,13 @@ async function sendCase(text,kind='msg'){const a=ST.activeCase;if(!a||a.done||ca
     if(kind==='hint'&&!inMeet&&a.thread!==MENTOR){a.thread=MENTOR;a.view='thread';renderTeams()}
     if(sc&&sc.mode==='meeting'&&!inMeet)await enterMeeting(sc);
     await playMsgs(msgs);
-    const ns=clamp(parseInt(r.stage,10)||a.stage,1,a.def.stages.length);if(ns>a.stage){award(15*(ns-a.stage),$('#cvStage'));fire(C.spark)}a.stage=Math.max(a.stage,ns);
+    const ns=clamp(parseInt(r.stage,10)||a.stage,1,a.def.stages.length),adv=ns>a.stage;if(adv){award(15*(ns-a.stage),$('#cvStage'));fire(C.spark)}a.stage=Math.max(a.stage,ns);
     if(sc&&sc.mode==='chat'&&a.scene.mode==='meeting')await exitMeeting();
     if(r.done){a.done=true;updStage();save();caseBusy=false;await endCase();return}
-    updStage();save()}
+    updStage();save();if(adv){caseBusy=false;lockChat(false);setTimeout(()=>{if(caseView==='chat'&&!a.done&&!$('#caseOv'))openHyp(true)},900);return}}
   catch(e){if(tip)tip.remove();a.api.pop();
-    if(mine){const i=a.log.lastIndexOf(mine);if(i>=0)a.log.splice(i,1);if(caseView==='chat'){renderChat();const t=$('#cvText');if(t)t.value=text}}
-    const note={who:'sistema',text:e&&e.code==='rate_limited'?'Limite de uso do Claude. Espere um pouco e tente de novo.':'A cena não respondeu. Sua mensagem voltou para a caixa; envie de novo.',where:inMeet?'reuniao':a.thread,meet:inMeet?a.meet:0};
+    if(mine){const i=a.log.lastIndexOf(mine);if(i>=0)a.log.splice(i,1);if(opt.deliv)a.delivs.pop();if(caseView==='chat'){renderChat();const t=$('#cvText');if(t&&!opt.deliv)t.value=text}}
+    const note={who:'sistema',text:e&&e.code==='rate_limited'?'Limite de uso do Claude. Espere um pouco e tente de novo.':`A cena não respondeu.${opt.deliv?' Seu entregável não foi enviado; copie o texto antes de tentar de novo.':' Sua mensagem voltou para a caixa; envie de novo.'}`,where:inMeet?'reuniao':a.thread,meet:inMeet?a.meet:0};
     addLog(note);a.log.splice(a.log.indexOf(note),1)}
   caseBusy=false;lockChat(a.done)}
 
@@ -1505,47 +1823,72 @@ function updStage(){const a=ST.activeCase;if(!a)return;const d=a.def,n=d.stages.
   const s=$('#cvStage');if(s)s.textContent=a.done?'caso encerrado':`etapa ${st} de ${n} · ${d.stages[st-1]}`;
   const bar=$('#cvBar');if(bar)bar.innerHTML=d.stages.map((_,i)=>`<i class="${a.done||i<st-1?'on':''}"></i>`).join('');
   const ol=$('#cvSteps');if(ol)ol.innerHTML=d.stages.map((x,i)=>`<li class="${i<st-1||a.done?'done':i===st-1?'now':''}">${esc(x)}</li>`).join('')}
-function lockChat(on){['#cvSend','#cvHint','#cvEnd','#tmCall','#tmMeet','#mtLeave'].forEach(s=>{const e=$(s);if(e)e.disabled=on});const ta=$('#cvText');if(ta){ta.disabled=on;if(ST.activeCase&&ST.activeCase.done)ta.placeholder='Caso encerrado'}}
+function lockChat(on){['#cvSend','#cvHint','#cvEnd','#tmCall','#tmMeet','#mtLeave','#cvHyp','#cvDel','#mtData'].forEach(s=>{const e=$(s);if(e)e.disabled=on});const ta=$('#cvText');if(ta){ta.disabled=on;if(ST.activeCase&&ST.activeCase.done)ta.placeholder='Caso encerrado'}}
 
+/* ---------- avaliação: nota, entregável sênior, calibração, história, lições, carreira ---------- */
 async function endCase(){const a=ST.activeCase;if(!a||caseBusy||!sampler)return;if(a.debrief){caseView='debrief';renderDebrief();return}caseBusy=true;lockChat(true);
   genChip('O mentor está lendo a conversa…');const d=a.def;
-  const where=m=>m.where==='reuniao'?'reunião':m.where===GROUP?'grupo':m.where===MENTOR?'mentor':'privado com '+m.where;
-  const transcript=a.log.filter(m=>m.who!=='sistema').map(m=>`[${where(m)}] ${m.me?'JOGADOR':m.who}: ${m.text}`).join('\n').slice(-16000);
-  const prompt=`Você é um mentor sênior de ciência de dados avaliando como um profissional se saiu numa simulação de trabalho. Seja honesto, específico e construtivo, citando momentos do diálogo. Avalie também se ele falou com as pessoas certas, no canal certo (privado, grupo, reunião) e no momento certo.
+  const where=m=>m.where==='reuniao'?'reunião':m.where===GROUP?'grupo':m.where===MENTOR?'mentor':m.where==='_sql'?'consulta SQL do jogador':m.where==='_hip'?'hipótese privada do jogador':'privado com '+m.where;
+  const transcript=a.log.filter(m=>m.who!=='sistema').map(m=>`[${where(m)}] ${m.me?'JOGADOR'+(m.deliv?' (entregável: '+m.deliv+')':''):m.who.startsWith('_')?'JOGADOR':m.who}: ${m.text}`).join('\n').slice(-18000);
+  const prompt=`Você é um mentor sênior de ciência de dados avaliando como um profissional se saiu numa simulação de trabalho. Seja honesto, específico e construtivo, citando momentos do diálogo. Avalie também: se falou com as pessoas certas, no canal certo e na hora certa; a qualidade das consultas SQL (se houve); e a clareza dos entregáveis escritos.
 Caso: ${d.title} (${d.level}). Objetivo: ${d.objective}
 Etapas: ${d.stages.join(' | ')}
 Fatos ocultos que podiam ser descobertos: ${d.hidden.join(' | ')}
-Transcrição (entre colchetes, onde cada mensagem aconteceu):
+${factsOf(d).length?'Números verdadeiros dos dados: '+factsOf(d).join(' | '):''}
+Hipóteses que o jogador registrou (em ordem): ${a.hyps.length?a.hyps.map((h,i)=>`${i}. "${h.t}" (${h.conf}% de confiança, etapa ${h.stage})`).join(' | '):'nenhuma'}
+Transcrição (entre colchetes, onde cada coisa aconteceu):
 ${transcript}
 
 Responda só com JSON:
-{"nota":0-10,"resumo":"2 frases sobre o desempenho","fortes":["até 3 acertos concretos"],"melhorar":["até 3 pontos concretos, cada um com o que dizer ou fazer em vez disso"],"senior":"como um profissional sênior teria conduzido o caso, em até 70 palavras","frases":["2 ou 3 frases prontas que o jogador pode usar em situações parecidas"],"comp":{"dados":0-5 ou null,"estat":0-5 ou null,"modelo":0-5 ou null,"negocio":0-5 ou null}}
-Use null nas competências que o caso não exercitou.`;
+{"nota":0-10,"resumo":"2 frases","fortes":["até 3 acertos concretos"],"melhorar":["até 3 pontos concretos, cada um com o que dizer ou fazer em vez disso"],"senior":"como um profissional sênior teria conduzido, em até 70 palavras","frases":["2 ou 3 frases prontas para situações parecidas"],"comp":{"dados":0-5 ou null,"estat":0-5 ou null,"modelo":0-5 ou null,"negocio":0-5 ou null},
+"entregavel":${a.delivs.length?'{"tipo":"...","seu":"copie o principal entregável do jogador","senior":"a mesma mensagem reescrita por um sênior, mesmo tamanho ou menor"}':'null'},
+"hipoteses":[{"i":0,"acertou":true,"comentario":"curto"}],
+"star":${'{"situacao":"...","tarefa":"...","acao":"o que o JOGADOR fez de fato, em primeira pessoa","resultado":"com número quando houver"}'} ou null se a nota for menor que 6,
+"licoes":[{"q":"pergunta de revisão sobre um erro ou acerto importante do jogador","opts":["correta","errada","errada","errada"],"why":"até 50 palavras","pro":"frase pronta"}]${d.career?`,
+"rep":{${d.cast.map(p=>`"${p.name}":-15 a 15`).join(',')}},"memoria":"1 frase do que aconteceu, do ponto de vista dos colegas"`:''}}
+Use null nas competências que o caso não exercitou. Gere 2 lições.`;
   try{const r=await sampler.json(prompt,{modelTier:'default',cache:false});genChip('');
     const nota=clamp(Math.round(+r.nota||0),0,10),list=(v,n)=>(Array.isArray(v)?v:[]).map(x=>sstr(x,400)).filter(Boolean).slice(0,n);
     const comp={};CAT_KEYS.forEach(k=>{const v=r.comp&&r.comp[k];comp[k]=v==null||!isFinite(v)?null:clamp(Math.round(+v),0,5)});
-    a.debrief={nota,resumo:sstr(r.resumo,500)||'',fortes:list(r.fortes,3),melhorar:list(r.melhorar,3),senior:sstr(r.senior,700)||'',frases:list(r.frases,3),comp};a.done=true;
-    ST.cases=[...(ST.cases||[]),{id:d.id,title:d.title,cat:d.cat,nota,date:today()}].slice(-40);
+    const ent=r.entregavel&&sstr(r.entregavel.senior,2500)?{tipo:sstr(r.entregavel.tipo,40)||'Entregável',seu:sstr(r.entregavel.seu,2500)||(a.delivs[a.delivs.length-1]||{}).text||'',senior:sstr(r.entregavel.senior,2500)}:null;
+    const hyps=a.hyps.map((h,i)=>{const e=(Array.isArray(r.hipoteses)?r.hipoteses:[]).find(x=>x&&+x.i===i);return{...h,acertou:e?!!e.acertou:null,com:e?sstr(e.comentario,240)||'':''}});
+    const st=r.star&&sstr(r.star.acao,600)?{s:sstr(r.star.situacao,400)||'',t:sstr(r.star.tarefa,300)||'',a:sstr(r.star.acao,600),r:sstr(r.star.resultado,400)||''}:null;
+    a.debrief={nota,resumo:sstr(r.resumo,500)||'',fortes:list(r.fortes,3),melhorar:list(r.melhorar,3),senior:sstr(r.senior,700)||'',frases:list(r.frases,3),comp,ent,hyps,star:st,lessons:0,promo:null,repd:null};a.done=true;
+    ST.cases=[...(ST.cases||[]),{id:d.id,title:d.title,cat:d.cat,nota,date:today()}].slice(-60);
     ST.casePhrases=[...a.debrief.frases.map(t=>({t,cat:d.cat})),...(ST.casePhrases||[])].slice(0,40);
-    award(40+nota*8,$('#cvStage'));if(nota>=7){confetti();sfx.lvl()}touchDay();save();
-    caseBusy=false;caseView='debrief';renderDebrief();return}
+    ST.skill=ST.skill||{};CAT_KEYS.forEach(k=>{if(comp[k]!=null){const s=ST.skill[k]||{s:0,n:0};s.s+=comp[k];s.n++;ST.skill[k]=s}});
+    ST.calib=ST.calib||{};hyps.forEach(h=>{if(h.acertou==null)return;const c=ST.calib[h.conf]||[0,0];c[0]+=h.acertou?1:0;c[1]++;ST.calib[h.conf]=c});
+    if(st)ST.stories=[{title:d.title,cat:d.cat,date:today(),...st},...(ST.stories||[])].slice(0,30);
+    (Array.isArray(r.licoes)?r.licoes:[]).slice(0,2).forEach(o=>{const c=validCard({...o,kind:'quiz',mode:'conceito'},d.cat,'case',sstr(d.title,60));if(c){c.fromCase=d.title;if(registerCard(c)){GEN.push(c);sessRev.push({id:c.id,at:fc+3});a.debrief.lessons++}}});persistGen();cloudSaveBatch('case');
+    if(d.career&&ST.career){const c=ST.career,repd={};Object.entries(r.rep||{}).forEach(([n,v])=>{if(c.rep[n]==null||!isFinite(v))return;const dv=clamp(Math.round(+v),-15,15);c.rep[n]=clamp(c.rep[n]+dv,0,100);repd[n]=dv});a.debrief.repd=repd;
+      c.hist.push({title:d.title,nota,memo:sstr(r.memoria,240)||d.title,level:c.level,date:today()});c.hist=c.hist.slice(-40);
+      const atLv=c.hist.filter(h=>h.level===c.level),l3=atLv.slice(-3);if(c.level<CAREER_LEVELS.length-1&&l3.length>=3&&l3.reduce((s,h)=>s+h.nota,0)/3>=7){c.level++;a.debrief.promo=CAREER_LEVELS[c.level]}}
+    dayLog().cases++;award(40+nota*8,$('#cvStage'));if(nota>=7||a.debrief.promo){confetti();sfx.lvl()}touchDay();save();
+    caseBusy=false;caseView='debrief';renderDebrief();if(a.debrief.promo)setTimeout(()=>promoOverlay(a.debrief.promo),700);return}
   catch(e){genChip('Não consegui gerar a avaliação agora. Toque em "Encerrar e avaliar" de novo.',4000)}
   caseBusy=false;lockChat(a.done)}
-function renderDebrief(){const a=ST.activeCase,d=a.def,r=a.debrief,box=$('#cases');clearInterval(mtClock);const comp=CAT_KEYS.filter(k=>r.comp[k]!=null);
+function promoOverlay(title){const o=$('#lvlup');o.innerHTML=`<div class="box"><div class="s">promoção</div><div class="n" style="font-size:clamp(2.4rem,11vw,4.5rem)">${esc(title)}</div><div class="t">${esc(COMPANIES[ST.career.co].name)}</div><div class="s">novas responsabilidades nos próximos casos</div><div class="s" style="margin-top:14px">toque para continuar</div></div>`;o.hidden=false;confetti();sfx.lvl();for(let i=0;i<6;i++)setTimeout(()=>fire(C.gold,9),i*120)}
+function renderDebrief(){document.body.classList.remove('immersive');const a=ST.activeCase,d=a.def,r=a.debrief,box=$('#cases');clearInterval(mtClock);const comp=CAT_KEYS.filter(k=>r.comp[k]!=null);
   box.innerHTML=`<div class="cs t-${d.cat}"><div class="cs-h"><button class="icon-btn" id="dbBack" aria-label="Voltar para a lista de casos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>Avaliação</b><span>${esc(d.title)}</span></div></div>
-  <div class="cs-body"><div class="debrief"><h5>Avaliação do mentor</h5><div style="display:flex;align-items:baseline;gap:10px"><span class="nota">${r.nota}</span><span style="color:var(--muted)">de 10</span></div><p style="margin:0">${esc(r.resumo)}</p>
+  <div class="cs-body"><div class="debrief"><h5>Avaliação do mentor</h5><div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap"><span class="nota">${r.nota}</span><span style="color:var(--muted)">de 10</span>${r.promo?`<span class="chip" style="background:var(--gold);color:var(--bg)">promovido: ${esc(r.promo)}</span>`:''}</div><p style="margin:0">${esc(r.resumo)}</p>
   ${comp.length?`<div class="mastery">${comp.map(k=>`<div class="mrow t-${k}"><span>${CATS[k]}</span><div class="mbar"><i style="width:${r.comp[k]*20}%"></i></div><output>${r.comp[k]}/5</output></div>`).join('')}</div>`:''}
   ${r.fortes.length?`<h5>O que funcionou</h5><ul>${r.fortes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
   ${r.melhorar.length?`<h5>Para a próxima</h5><ul>${r.melhorar.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
   ${r.senior?`<h5>Como um sênior conduziria</h5><p style="margin:0">${esc(r.senior)}</p>`:''}
+  ${r.hyps&&r.hyps.length?`<h5>Suas hipóteses</h5><ul class="hyps">${r.hyps.map(h=>`<li class="${h.acertou===true?'ok':h.acertou===false?'bad':''}"><b>${h.acertou===true?'Acertou':h.acertou===false?'Errou':'Sem veredito'} · ${h.conf}%</b> ${esc(h.t)}${h.com?`<small>${esc(h.com)}</small>`:''}</li>`).join('')}</ul>`:''}
+  ${r.ent?`<h5>${esc(r.ent.tipo)}: o seu e o de um sênior</h5><div class="cmp"><div><span class="lab">Você</span>${fmtMsg(r.ent.seu)}</div><div class="sr"><span class="lab">Sênior</span>${fmtMsg(r.ent.senior)}</div></div>`:''}
+  ${r.repd&&Object.keys(r.repd).length?`<h5>Como os colegas ficaram</h5><div class="repd">${Object.entries(r.repd).map(([n,v])=>`<span class="${v>0?'up':v<0?'down':''}">${esc(n)} ${v>0?'+':''}${v}</span>`).join('')}</div>`:''}
+  ${r.star?`<h5>Sua história para entrevista</h5><div class="star"><p><b>Situação.</b> ${esc(r.star.s)}</p><p><b>Tarefa.</b> ${esc(r.star.t)}</p><p><b>Ação.</b> ${esc(r.star.a)}</p><p><b>Resultado.</b> ${esc(r.star.r)}</p><small>Salva em Perfil → Histórias para entrevista.</small></div>`:''}
+  ${r.lessons?`<p class="note">${r.lessons} lições deste caso entraram no seu feed e voltam na revisão espaçada.</p>`:''}
   ${r.frases.length?`<div class="pro" style="--tc:var(--spark)"><span class="lab">Frases prontas</span>${r.frases.map(esc).join('<br>')}</div>`:''}</div>
-  <div class="btnrow"><button class="btn" id="dbConv" type="button">Rever a conversa</button><button class="btn primary" id="dbAgain" type="button" style="--tc:var(--spark)">Jogar de novo</button><button class="btn" id="dbList" type="button">Outros casos</button></div></div></div>`;
+  <div class="btnrow"><button class="btn" id="dbConv" type="button">Rever a conversa</button>${d.career?`<button class="btn primary" id="dbNext" type="button" style="--tc:var(--spark)">Próximo dia de trabalho</button>`:`<button class="btn primary" id="dbAgain" type="button" style="--tc:var(--spark)">Jogar de novo</button>`}<button class="btn" id="dbList" type="button">Outros casos</button></div></div></div>`;
   $('#dbBack').addEventListener('click',()=>{caseView='list';renderCases()});$('#dbList').addEventListener('click',()=>{caseView='list';renderCases()});
-  $('#dbConv').addEventListener('click',()=>{a.scene={mode:'chat'};caseView='chat';renderTeams()});$('#dbAgain').addEventListener('click',()=>startCase(d))}
+  $('#dbConv').addEventListener('click',()=>{a.scene={mode:'chat'};if(a.thread===DATA)a.thread=GROUP;caseView='chat';renderTeams()});
+  const ag=$('#dbAgain');if(ag)ag.addEventListener('click',()=>startCase(d));const nx=$('#dbNext');if(nx)nx.addEventListener('click',()=>{caseView='list';genCareerCase()})}
 $('#openCases').addEventListener('click',openCases);
 
 /* ================= perfil ================= */
-function openSheet(){const li=levelInfo(ST.xp),tot=ST.ok+ST.bad,phr=QUIZ.filter(c=>c.pro&&(ST.ans[c.id]||{}).ok>0).reverse();
+function openSheet(){if(!$('#cases').hidden)closeCases(true);setNav('profile');armBack();const li=levelInfo(ST.xp),tot=ST.ok+ST.bad,phr=QUIZ.filter(c=>c.pro&&(ST.ans[c.id]||{}).ok>0).reverse();
   const tracks=CAT_KEYS.map(k=>{const qs=QUIZ.filter(c=>catOf(c)===k),m=qs.filter(c=>(ST.ans[c.id]||{}).box>=2).length;return{k,m,n:qs.length}});
   const item=id=>{const c=byId[id];if(!c)return'';const txt=c.q||c.title;return `<div class="li t-${catOf(c)}"><span class="chip">${CAT_LABEL[catOf(c)]}</span><span>${esc(txt)}</span>${c.why?`<small>${esc(c.why)}</small>`:c.ans?`<small>${esc(c.ans)}</small>`:''}</div>`};
   $('#sheet').innerHTML=`<div class="sheet-in" role="dialog" aria-label="Seu progresso">
@@ -1554,6 +1897,9 @@ function openSheet(){const li=levelInfo(ST.xp),tot=ST.ok+ST.bad,phr=QUIZ.filter(
    <div><h4>Domínio por categoria (acertou 2× seguidas)</h4><div class="mastery">${tracks.map(t=>`<div class="mrow t-${t.k}"><span>${CATS[t.k]}</span><div class="mbar"><i style="width:${t.n?t.m/t.n*100:0}%"></i></div><output>${t.m}/${t.n}</output></div>`).join('')}</div></div>
    <div><h4>Frases prontas (${phr.length})</h4><div class="list">${phr.length?phr.slice(0,25).map(c=>`<div class="li t-${catOf(c)}"><span class="chip">${MODE_LABEL[c.mode]||CAT_LABEL[catOf(c)]}</span><span>${esc(c.pro)}</span></div>`).join(''):'<p class="empty">Cada card que você acerta deixa aqui uma frase pronta para reunião e entrevista. Releia antes de entrar numa.</p>'}</div></div>
    ${(ST.casePhrases||[]).length?`<div><h4>Frases dos casos (${ST.casePhrases.length})</h4><div class="list">${ST.casePhrases.slice(0,15).map(p=>`<div class="li t-${p.cat}"><span class="chip">${CATS[p.cat]||'Caso'}</span><span>${esc(p.t)}</span></div>`).join('')}</div></div>`:''}
+   ${calibHTML()}
+   ${(ST.stories||[]).length?`<div><h4>Histórias para entrevista (${ST.stories.length})</h4><div class="list">${ST.stories.slice(0,10).map((h,i)=>`<div class="li t-${h.cat}"><span class="chip">${CATS[h.cat]||'Caso'}</span><b>${esc(h.title)}</b><small><b>Situação.</b> ${esc(h.s)} <b>Tarefa.</b> ${esc(h.t)} <b>Ação.</b> ${esc(h.a)} <b>Resultado.</b> ${esc(h.r)}</small><button class="rbtn cp" type="button" data-story="${i}">Copiar</button></div>`).join('')}</div></div>`:''}
+   <div><h4>Resumo e outras contas</h4><div class="btnrow"><button class="btn" id="wkBtn" type="button">Resumo da semana</button><button class="btn" id="exBtn" type="button">Levar progresso para outra conta</button><button class="btn" id="imBtn" type="button">Trazer progresso</button></div><div id="xfer"></div></div>
    <div><h4>Caderno de erros (${ST.errs.length})</h4><div class="list">${ST.errs.length?ST.errs.slice(0,15).map(item).join(''):'<p class="empty">Nada aqui ainda. O que você errar entra aqui com a explicação.</p>'}</div></div>
    <div><h4>Salvos (${ST.saved.length})</h4><div class="list">${ST.saved.length?ST.saved.map(item).join(''):'<p class="empty">Toque em Salvar num card para guardar aqui.</p>'}</div></div>
    <div><h4>Conteúdo novo e uso offline</h4><p class="hook" style="margin-bottom:10px"><span class="gen-count">${GEN.length}</span> cards gerados pelo Claude, somando ${CARDS.length} no total. Reserva de cards ainda não vistos: <b class="reserve-min">~${Math.min(reserveMin(),RESERVE_MIN)}</b> de ${RESERVE_MIN} min (no seu ritmo de ~${Math.round(secPerCard())} s por card). A geração só roda com internet. Para estudar sem conexão, baixe o arquivo: ele leva todos os cards e seu progresso e abre em qualquer navegador.</p>
@@ -1562,11 +1908,41 @@ function openSheet(){const li=levelInfo(ST.xp),tot=ST.ok+ST.bad,phr=QUIZ.filter(
   </div>`;
   $('#sheet').hidden=false;$('#closeSheet').addEventListener('click',closeSheet);refreshGenUI();
   $('#genNow').addEventListener('click',()=>{gen.backoff=0;generate(pickGenTrack())});
+  document.querySelectorAll('[data-story]').forEach(b=>b.addEventListener('click',()=>{const h=ST.stories[+b.dataset.story];copyText(`Situação: ${h.s}\nTarefa: ${h.t}\nAção: ${h.a}\nResultado: ${h.r}`,b)}));
+  $('#wkBtn').addEventListener('click',()=>showXfer('Resumo da semana: mande para um mentor, um colega ou poste. Alguém de fora acompanhando faz você voltar.',weekSummary(),true));
+  $('#exBtn').addEventListener('click',()=>showXfer('Copie este código e cole em "Trazer progresso" na outra conta ou aparelho.',exportCode(),true));
+  $('#imBtn').addEventListener('click',()=>{const x=$('#xfer');x.innerHTML='<textarea id="imTxt" rows="4" placeholder="Cole aqui o código de progresso"></textarea><div class="btnrow"><button class="btn primary" id="imGo" type="button">Trazer progresso</button></div><p class="sync" id="imMsg"></p>';$('#imGo').addEventListener('click',()=>importCode($('#imTxt').value,$('#imMsg')))});
   $('#dlOffline').addEventListener('click',e=>exportOffline(e.currentTarget,$('#dlMsg')));
   const rb=$('#resetBtn');let armed=false,tmr;rb.addEventListener('click',()=>{if(!armed){armed=true;rb.textContent='Toque de novo para apagar tudo';tmr=setTimeout(()=>{armed=false;rb.textContent='Zerar progresso'},4000);return}clearTimeout(tmr);const snd=ST.sound;ST=DEF();ST.sound=snd;sessRev=[];combo=0;lastLevel=1;save();hud(false);closeSheet();resetFeed()})}
-function closeSheet(){$('#sheet').hidden=true}
+function closeSheet(keep){$('#sheet').hidden=true;if(!keep)setNav($('#cases').hidden?'feed':'cases')}
+function setNav(k){[['feed','#navFeed'],['cases','#openCases'],['profile','#navProfile']].forEach(([n,sel])=>{const b=$(sel);if(!b)return;b.classList.toggle('on',n===k);if(n===k)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')})}
+/* Botão voltar do Android: fecha a camada de cima (sobreposição, conversa, casos, perfil) em vez de sair do app */
+let backArmed=false;
+function armBack(){if(backArmed)return;try{history.pushState({sinapse:1},'');backArmed=true}catch(e){}}
+function anyLayer(){return!$('#cases').hidden||!$('#sheet').hidden||!$('#lvlup').hidden}
+function backLayer(){if(!$('#lvlup').hidden){$('#lvlup').hidden=true;return true}const ov=$('#caseOv');if(ov){closeOverlay();return true}
+  if(!$('#cases').hidden){const a=ST.activeCase;if(caseView==='chat'&&a&&a.scene.mode!=='meeting'&&a.view==='thread'&&innerWidth<760){a.view='list';renderTeams();return true}
+    if(caseView==='chat'||caseView==='debrief'){caseView='list';renderCases();return true}closeCases();return true}
+  if(!$('#sheet').hidden){closeSheet();return true}return false}
+addEventListener('popstate',()=>{backArmed=false;backLayer();if(anyLayer())armBack()});
+/* Teclado do Android: mantém a caixa de mensagem visível acima dele */
+if(window.visualViewport){const kb=()=>{const v=window.visualViewport,k=Math.max(0,Math.round(innerHeight-v.height-v.offsetTop));document.documentElement.style.setProperty('--kb',(k>80?k:0)+'px');if(k>80){const t=document.activeElement;if(t&&t.tagName==='TEXTAREA')setTimeout(()=>{const l=$('#cvLog');if(l)l.scrollTop=l.scrollHeight},60)}};visualViewport.addEventListener('resize',kb);visualViewport.addEventListener('scroll',kb)}
+function copyText(t,btn){const done=()=>{if(btn){const o=btn.textContent;btn.textContent='Copiado';setTimeout(()=>btn.textContent=o,1600)}};try{navigator.clipboard.writeText(t).then(done,()=>{})}catch(e){}}
+function showXfer(msg,text,copy){const x=$('#xfer');x.innerHTML=`<p class="sync" style="margin:8px 0">${esc(msg)}</p><textarea id="xfTxt" rows="7" readonly>${esc(text)}</textarea>${copy?'<div class="btnrow"><button class="btn primary" id="xfCopy" type="button">Copiar</button></div>':''}`;const ta=$('#xfTxt');ta.addEventListener('focus',()=>ta.select());const c=$('#xfCopy');if(c)c.addEventListener('click',()=>{copyText(text,c);ta.select()})}
+function calibHTML(){const c=ST.calib||{},ks=[50,70,90].filter(k=>c[k]&&c[k][1]);if(!ks.length)return'';return`<div><h4>Calibração das suas hipóteses</h4><div class="mastery">${ks.map(k=>{const[o,n]=c[k],p=o/n;return`<div class="mrow"><span>Quando diz ${k}%</span><div class="mbar"><i style="width:${Math.round(p*100)}%;background:${Math.abs(p*100-k)<=12?'var(--ok)':'var(--gold)'}"></i></div><output>${Math.round(p*100)}%</output></div>`}).join('')}</div><p class="empty" style="margin-top:6px">Bem calibrado é acertar perto do que você diz. Acerta menos do que diz: excesso de confiança. Acerta mais: confie mais no seu raciocínio.</p></div>`}
+function weekSummary(){let xp=0,ok=0,bad=0,cs=0;for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const x=(ST.days||{})[dayStr(d)];if(x){xp+=x.xp;ok+=x.ok;bad+=x.bad;cs+=x.cases}}
+  const since=(()=>{const d=new Date();d.setDate(d.getDate()-6);return dayStr(d)})(),recent=(ST.cases||[]).filter(c=>c.date>=since),sk=CAT_KEYS.map(k=>[k,skillAvg(k)]).filter(x=>x[1]!=null),story=(ST.stories||[]).find(h=>h.date>=since);
+  return['Minha semana estudando dados (Sinapse):',`- ${xp.toLocaleString('pt-BR')} XP, ${ok+bad} perguntas respondidas${ok+bad?` com ${Math.round(ok/(ok+bad)*100)}% de acerto`:''}, ${cs} caso${cs===1?'':'s'} simulado${cs===1?'':'s'}.`,
+   ...recent.map(c=>`- Caso "${c.title}": nota ${c.nota}/10`),sk.length?'- Competências nos casos (0 a 5): '+sk.map(([k,v])=>`${CATS[k]} ${num(v,1)}`).join(', ')+'.':'',
+   ST.career?`- Carreira simulada: ${CAREER_LEVELS[ST.career.level]} na ${COMPANIES[ST.career.co].name}.`:'',story?`\nHistória da semana, "${story.title}": ${story.a} Resultado: ${story.r}`:''].filter(Boolean).join('\n')}
+function exportCode(){const st=JSON.parse(JSON.stringify(ST));if(st.activeCase)delete st.activeCase.api;return 'SINAPSE1.'+btoa(unescape(encodeURIComponent(JSON.stringify({st,gen:GEN.slice(-300)}))))}
+function importCode(code,msg){try{const raw=String(code||'').trim().replace(/^SINAPSE1\./,'');const o=JSON.parse(decodeURIComponent(escape(atob(raw))));if(!o||!o.st||typeof o.st.xp!=='number')throw 0;
+  const keepSound=ST.sound;ST=Object.assign(DEF(),o.st);ST.sound=keepSound;if(ST.activeCase&&!ST.activeCase.api)ST.activeCase=null;(o.gen||[]).forEach(c=>{if(c&&c.id&&!GEN.some(x=>x.id===c.id)){GEN.push(c);registerCard(c)}});persistGen();lastLevel=levelInfo(ST.xp).L;save();dirty=true;flush();hud(false);msg.textContent='Progresso trazido. Nível '+lastLevel+'.';setTimeout(()=>{closeSheet();resetFeed()},900)}
+  catch(e){msg.textContent='Código inválido. Copie o código inteiro, começando por SINAPSE1.'}}
 $('#sheet').addEventListener('click',e=>{if(e.target.id==='sheet')closeSheet()});
 $('#lvlBtn').addEventListener('click',openSheet);
+$('#navProfile').addEventListener('click',()=>{if($('#sheet').hidden)openSheet()});
+$('#navFeed').addEventListener('click',()=>{if(!$('#cases').hidden)closeCases(true);if(!$('#sheet').hidden)closeSheet(true);setNav('feed')});
 $('#soundBtn').addEventListener('click',()=>{ST.sound=!ST.sound;save();hud(false);sfx.tick()});
 document.querySelectorAll('.tab[data-f]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.f===filter)return;filter=b.dataset.f;document.querySelectorAll('.tab[data-f]').forEach(x=>x.setAttribute('aria-selected',x===b));resetFeed()}));
 addEventListener('keydown',e=>{if(!$('#cases').hidden){if(e.key==='Escape'&&e.target.tagName!=='TEXTAREA')closeCases();return}if(!$('#sheet').hidden){if(e.key==='Escape')closeSheet();return}if(e.target.tagName==='INPUT')return;const f=$('#feed');
@@ -1580,7 +1956,7 @@ addEventListener('resize',()=>{fitFx();fitBg()});
 fitFx();fitBg();hud(false);
 (async()=>{if(PWA)await Promise.race([loadRemoteCards(),new Promise(r=>setTimeout(r,3000))]);
   ST.rev.forEach((id,i)=>{if(byId[id]&&!sessRev.some(r=>r.id===id))sessRev.push({id,at:2+i*3})});
-  mount({c:{id:'intro',kind:'intro',track:'neuro'}});append(8)})();
+  mount({c:{id:'intro',kind:'intro',track:'neuro'}});append(8);if(location.hash==='#casos')setTimeout(openCases,500);const sp=$('#splash');if(sp)setTimeout(()=>{sp.classList.add('gone');setTimeout(()=>sp.remove(),400)},reduced?0:450)})();
 requestAnimationFrame(loop);
 initCloud();initAI();
 setInterval(maybeGen,15000);

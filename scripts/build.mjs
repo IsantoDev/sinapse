@@ -16,7 +16,12 @@ const head = `<meta charset="utf-8">
 <meta name="apple-mobile-web-app-title" content="Sinapse">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>`;
 const reg = `<script>
-if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+if ('serviceWorker' in navigator) {
+  // versão nova do app assume na hora: recarrega uma vez quando o service worker novo entra
+  const had = !!navigator.serviceWorker.controller; let done = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (had && !done) { done = true; location.reload(); } });
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js').then(r => r.update()).catch(() => {}));
+}
 if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 </script>`;
 const html = `<!doctype html><html lang="pt-BR"><head>${head}</head><body>\n${src}\n${reg}\n</body></html>\n`;

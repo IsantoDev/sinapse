@@ -2555,7 +2555,12 @@ addEventListener('offline',()=>genChip(`Sem internet. Você tem ~${reserveMin()}
 </script>
 
 <script>
-if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+if ('serviceWorker' in navigator) {
+  // versão nova do app assume na hora: recarrega uma vez quando o service worker novo entra
+  const had = !!navigator.serviceWorker.controller; let done = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (had && !done) { done = true; location.reload(); } });
+  addEventListener('load', () => navigator.serviceWorker.register('sw.js').then(r => r.update()).catch(() => {}));
+}
 if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 </script>
 </body></html>

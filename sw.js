@@ -1,5 +1,5 @@
 // Service worker do Sinapse: app abre sem internet; cards novos chegam quando há rede.
-const APP = 'sinapse-app-b9ca5109fe';
+const APP = 'sinapse-app-feb4cada79';
 const DATA = 'sinapse-data';
 const FONTS = 'sinapse-fonts';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './content/cards.json'];
@@ -47,7 +47,7 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(req.url);
   if (url.origin === location.origin) {
     if (url.pathname.endsWith('/content/cards.json')) e.respondWith(networkFirst(req, DATA, 5000));
-    else if (req.mode === 'navigate') e.respondWith(staleWhileRevalidate(new Request('./index.html'), APP));
+    else if (req.mode === 'navigate') e.respondWith(networkFirst(new Request('./index.html'), APP, 4000));
     else e.respondWith(staleWhileRevalidate(req, APP));
   } else if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com' || (url.hostname === 'cdnjs.cloudflare.com' && url.pathname.includes('/sql.js/'))) {
     e.respondWith(caches.open(FONTS).then(async (c) => (await c.match(req)) || fetch(req).then((res) => { c.put(req, res.clone()); return res; })));

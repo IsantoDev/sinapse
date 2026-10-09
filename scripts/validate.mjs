@@ -25,6 +25,13 @@ function checkChart(ch, where) {
   ser.forEach((s, i) => { if (!Array.isArray(s.values) || s.values.length !== n || !s.values.every(Number.isFinite)) errs.push(`${where}: series[${i}].values precisa ter ${n} números`); });
 }
 
+const MODES = ['reuniao', 'entrevista', 'trabalho', 'codigo', 'conceito', 'bolso'];
+function checkOpts(o, where) {
+  if (!str(o.q, 420)) errs.push(`${where}: q vazio ou maior que 420`);
+  if (!str(o.why, 900)) errs.push(`${where}: why vazio ou maior que 900`);
+  const op = Array.isArray(o.opts) ? o.opts : [];
+  if (op.length < 3 || op.length > 4 || !op.every((x) => str(x, 320)) || new Set(op).size !== op.length) errs.push(`${where}: opts precisa de 3 a 4 alternativas distintas de até 320 caracteres (a correta em opts[0])`);
+}
 const ids = new Set(), qs = new Set();
 cards.forEach((c, i) => {
   const where = `cards[${i}] (${c && c.id})`;
@@ -33,19 +40,23 @@ cards.forEach((c, i) => {
   if (ids.has(c.id)) errs.push(`${where}: id repetido`); ids.add(c.id);
   if (!SYL[c.track]) errs.push(`${where}: track deve ser ana, ds, ml ou ia`);
   else if (!SYL[c.track].includes(c.topic)) errs.push(`${where}: topic fora da ementa de ${c.track}`);
-  const qk = String(c.q || '').trim().toLowerCase();
+  const qk = String(c.kind === 'chain' ? (c.ctx ? c.ctx.say : (c.steps && c.steps[0] && c.steps[0].q) || '') : c.q || '').trim().toLowerCase();
   if (qs.has(qk)) errs.push(`${where}: pergunta repetida`); qs.add(qk);
+  if (c.mode !== undefined && !MODES.includes(c.mode)) errs.push(`${where}: mode deve ser um de ${MODES.join(', ')}`);
+  if (c.ctx !== undefined && !(c.ctx && str(c.ctx.who, 40) && str(c.ctx.say, 320))) errs.push(`${where}: ctx precisa de who (até 40) e say (até 320)`);
+  if (c.pro !== undefined && !str(c.pro, 300)) errs.push(`${where}: pro vazio ou maior que 300`);
   if (c.kind === 'quiz') {
-    if (!str(c.q, 420)) errs.push(`${where}: q vazio ou maior que 420`);
-    if (!str(c.why, 900)) errs.push(`${where}: why vazio ou maior que 900`);
-    const o = Array.isArray(c.opts) ? c.opts : [];
-    if (o.length < 3 || o.length > 4 || !o.every((x) => str(x, 240)) || new Set(o).size !== o.length) errs.push(`${where}: opts precisa de 3 a 4 alternativas distintas (a correta em opts[0])`);
+    checkOpts(c, where);
     if (c.code !== undefined && !str(c.code, 900)) errs.push(`${where}: code maior que 900`);
     if (c.chart !== undefined) checkChart(c.chart, where);
+  } else if (c.kind === 'chain') {
+    const st = Array.isArray(c.steps) ? c.steps : [];
+    if (st.length < 2 || st.length > 4) errs.push(`${where}: chain precisa de 2 a 4 steps`);
+    st.forEach((s, k) => checkOpts(s || {}, `${where}.steps[${k}]`));
   } else if (c.kind === 'flip') {
     if (!str(c.q, 260)) errs.push(`${where}: q vazio ou maior que 260`);
     if (!str(c.ans, 900)) errs.push(`${where}: ans vazio ou maior que 900`);
-  } else errs.push(`${where}: kind deve ser quiz ou flip`);
+  } else errs.push(`${where}: kind deve ser quiz, chain ou flip`);
 });
 
 if (errs.length) { console.error(`${errs.length} problema(s):\n- ` + errs.slice(0, 60).join('\n- ')); process.exit(1); }

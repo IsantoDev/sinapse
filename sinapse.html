@@ -169,6 +169,18 @@ body.ai-on .ai-btn{display:inline-flex!important}
 #lvlup .s{color:var(--muted);font:12px var(--f-mono);letter-spacing:.1em;text-transform:uppercase}
 @keyframes zoom{from{transform:scale(.4);opacity:0}to{transform:none;opacity:1}}
 [hidden]{display:none!important}
+.ctx{display:flex;gap:10px;align-items:flex-start}
+.ctx .av{width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1.5px solid var(--tc);display:grid;place-items:center;font:700 12px var(--f-mono);color:var(--tc);flex:none}
+.ctx .bub{background:var(--bg2);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:9px 13px;font-size:15px;line-height:1.4;min-width:0}
+.ctx .who{display:block;font:600 10.5px var(--f-mono);color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
+.pro{padding:11px 14px;border-radius:14px;background:color-mix(in srgb,var(--tc) 13%,var(--bg2));border:1px solid color-mix(in srgb,var(--tc) 42%,var(--line));font-size:14.5px;line-height:1.4;animation:rise .35s ease-out}
+.pro .lab{display:block;font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tc);margin-bottom:3px}
+.step{display:flex;flex-direction:column;gap:9px}
+.step+.step{border-top:1px dashed var(--line);padding-top:12px;animation:rise .35s ease-out}
+.steplab{font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tc)}
+.step h3{margin:0;font:700 clamp(1.05rem,4.2vw,1.3rem)/1.22 var(--f-display);letter-spacing:-.015em;text-wrap:balance}
+.tag-spaced{color:var(--neuro)}
+.cd{font:600 12px var(--f-mono);opacity:.8;font-variant-numeric:tabular-nums}
 .ai-only{display:none!important}
 body.ai-on .ai-only{display:flex!important}
 .tag-ai{color:var(--ia)}
@@ -685,6 +697,36 @@ const CARDS=[
 {id:'n1',track:'neuro',kind:'quiz',q:'Segundo os experimentos de Schultz, quando o neurônio de dopamina dispara mais?',opts:['Quando o resultado é melhor do que o esperado','Sempre que há recompensa','Quando a recompensa é prevista com certeza','Quando não acontece nada'],why:'É um sinal de erro de previsão. Por isso este app pede que você preveja antes de ver a resposta: o acerto inesperado e o erro marcam a memória. É a mesma ideia de aprendizado que o TD-learning usa em IA.'},
 {id:'n2',track:'neuro',kind:'quiz',q:'Qual estratégia de estudo retém mais depois de uma semana?',opts:['Tentar lembrar (testar-se), com intervalos','Reler o material várias vezes','Grifar o texto','Assistir a mesma aula de novo'],why:'O efeito de testagem (Roediger & Karpicke, 2006) e o espaçamento são dos achados mais robustos da psicologia da memória. Reler dá sensação de domínio, mas retém menos.'},
 
+/* ---- vida real: reunião, entrevista em rodadas, trabalho, números de bolso ---- */
+{id:'r1',track:'ml',kind:'quiz',mode:'reuniao',ctx:{who:'Diretora comercial',say:'O modelo de churn tem 92% de acurácia. Então dá pra confiar, né?'},q:'Qual resposta te faz parecer sênior?',opts:['“Com 8% de churn, chutar ‘ninguém cancela’ já dá 92%. O que importa: pegamos 6 de cada 10 que vão cancelar, e 4 de cada 10 alertas são reais. Proponho ligar para os 200 de maior risco e medir.”','“Sim, acima de 90% é um resultado excelente.”','“Acurácia não serve aqui, precisamos olhar a AUC.”','“Preciso rodar mais experimentos antes de responder.”'],why:'A resposta certa compara com o chute ingênuo, traduz recall e precisão em clientes e termina com uma ação mensurável. Citar AUC está correto tecnicamente, mas não ajuda quem decide.',pro:'Antes de falar de acurácia, eu comparo com o chute ingênuo e traduzo o resultado em clientes por mês.'},
+{id:'r2',track:'ds',kind:'quiz',mode:'reuniao',ctx:{who:'Gerente de produto',say:'A conversão foi de 3,1% para 3,4% depois do botão novo. Podemos dizer que o botão funcionou?'},q:'Melhor resposta:',opts:['“Depende de como medimos. Se não teve grupo de controle, campanha ou sazonalidade explicam igual. Se foi A/B, olho o intervalo de confiança e te respondo amanhã.”','“Sim, subiu 0,3 ponto, então funcionou.”','“Não, 0,3 ponto é pouco.”','“Só com machine learning dá pra saber.”'],why:'Antes e depois sem controle não separa o efeito do botão de tudo que mudou junto. Com A/B, a diferença precisa de intervalo de confiança que não inclua zero.',pro:'Antes de atribuir causa, eu pergunto: comparado com quem?'},
+{id:'r3',track:'ml',kind:'quiz',mode:'reuniao',ctx:{who:'CFO',say:'Quanto esse modelo antifraude economiza por mês?'},q:'Qual resposta o CFO quer ouvir?',opts:['“Com o corte atual, barramos cerca de R$ 180 mil em fraude por mês e geramos uns 1.200 bloqueios indevidos, que custam uns R$ 15 cada em atendimento. Saldo: cerca de R$ 160 mil.”','“A AUC do modelo é 0,91.”','“É difícil estimar com precisão.”','“Ele acerta 97% das transações.”'],why:'Executivo decide em dinheiro. Ganho, custo do erro e saldo cabem numa frase e mostram que você entende o trade-off do threshold.',pro:'Todo modelo vira três números: quanto ganha, quanto erra e quanto custa cada erro.'},
+{id:'r4',track:'ana',kind:'quiz',mode:'reuniao',ctx:{who:'Head de operações',say:'Preciso de um dashboard pra amanhã com todas as métricas possíveis.'},q:'Como responder sem dizer só “sim”?',opts:['“Qual decisão você vai tomar com ele? Te entrego amanhã 3 KPIs que respondem isso, e o resto entra numa segunda aba depois.”','“Ok, coloco tudo que tiver no banco.”','“Não dá tempo.”','“Dashboard não é o ideal, melhor um modelo.”'],why:'Métrica sem decisão vira papel de parede. Perguntar a decisão define o recorte, protege o prazo e mostra maturidade de analista.',pro:'Um dashboard existe para responder uma decisão. Qual é a sua?'},
+{id:'r5',track:'ana',kind:'quiz',mode:'trabalho',ctx:{who:'Seu gestor, no Slack',say:'O relatório de ontem pra diretoria saiu com receita errada. O que houve?'},q:'Primeira mensagem certa:',opts:['“Confirmado: a carga de pedidos rodou pela metade às 6h, a receita de ontem está 18% abaixo. Afeta só o relatório de 08/10. Reprocesso até 11h e mando a versão corrigida. Depois te passo a causa e o teste que evita isso.”','“Vou investigar e te aviso.”','“Não fui eu, foi o pipeline.”','“Ninguém percebeu, dá pra corrigir quietinho.”'],why:'Incidente de dado se comunica rápido e com escopo: o que está errado, desde quando, quem foi afetado, quando corrige e como evitar de novo.',pro:'Erro em dado: o que, desde quando, quem foi afetado, quando corrige e o que muda para não repetir.'},
+{id:'r6',track:'ana',kind:'quiz',mode:'trabalho',q:'Você faz o merge de pedidos com itens e a receita total dobra. Causa mais provável?',code:"pedidos.merge(itens, on='id_pedido')\n       .groupby('mes')['valor_pedido'].sum()",opts:['O merge é 1 para N: o valor do pedido se repete em cada item','O pandas arredondou os valores','Faltou dropna()','O groupby está somando os meses errados'],why:'Depois do merge, cada linha é um item, e o valor do pedido aparece repetido. Some no grão certo: valor por item, ou deduplique por pedido antes. Confira contagens antes e depois do merge com validate="one_to_many".',pro:'Depois de todo join, eu confiro se o número de linhas e o total mudaram como eu esperava.'},
+{id:'r7',track:'ds',kind:'quiz',mode:'trabalho',q:'Seu notebook roda na sua máquina e quebra na do colega. O que resolve na raiz?',opts:['Fixar versões (requirements/lock), usar caminhos relativos e rodar “Restart & Run All” antes de entregar','Mandar o notebook por e-mail de novo','Pedir para o colega atualizar o Python','Converter para PDF'],why:'Notebook que só roda na ordem em que você clicou não é reprodutível. Ambiente fixado e execução do zero são o mínimo esperado no trabalho.',pro:'Se não roda do zero na máquina de outra pessoa, ainda não está pronto.'},
+{id:'r8',track:'ml',kind:'chain',mode:'entrevista',ctx:{who:'Gestora de Ciência de Dados',say:'Me conta de um modelo seu. Vi aqui que o de churn deu AUC 0,97.'},steps:[
+  {q:'Qual a primeira reação certa a uma AUC de 0,97 em churn?',opts:['Desconfiar de vazamento e checar features que só existem depois do cancelamento','Comemorar e subir para produção','Testar uma rede neural para chegar a 0,99','Trocar a métrica para acurácia'],why:'Em dado de comportamento humano, 0,97 é raro. Quase sempre é alguma feature carregando o futuro.'},
+  {q:'Você acha a feature “dias sem login”, calculada com a data de hoje. Qual o problema?',opts:['Ela usa informação posterior à data da previsão; precisa ser calculada na data de corte','Nenhum, é uma boa feature','Ela precisa ser normalizada','Ela deveria ser categórica'],why:'Quem cancelou parou de logar depois de cancelar. Calculada hoje, a feature já contém a resposta.'},
+  {q:'Corrigido, a AUC cai para 0,78. Como você apresenta isso?',opts:['0,78 é realista: comparo com o baseline e mostro quantos clientes conseguimos reter por mês no topo da lista','Volto a feature, porque o número era melhor','Digo que o modelo piorou','Aumento o número de árvores até voltar a 0,97'],why:'Um número honesto que vira ação vale mais que um número bonito que quebra em produção. Gestor contrata quem acha o próprio erro.'}],
+  pro:'AUC alta demais em dado de negócio é vazamento até prova em contrário.'},
+{id:'r9',track:'ia',kind:'chain',mode:'entrevista',ctx:{who:'Tech lead',say:'Desenha pra mim um RAG para responder dúvidas do suporte usando os tickets antigos.'},steps:[
+  {q:'Por onde você começa?',opts:['Por um conjunto de perguntas reais com o ticket que responde cada uma, para medir antes de construir','Escolhendo o maior LLM disponível','Fazendo fine-tuning com todos os tickets','Criando a interface do chat'],why:'Sem um gabarito você não sabe se a mudança melhorou. 50 perguntas com resposta conhecida já bastam para começar.'},
+  {q:'A resposta sai errada. Como saber se a culpa é da busca ou do LLM?',opts:['Medir recall@k: o trecho certo estava no top-k? Se não estava, o problema é a busca','Trocar o modelo e ver se melhora','Aumentar a temperatura','Colocar todos os tickets no prompt'],why:'Separar recuperação de geração diz onde mexer: chunking, embeddings e reranking, ou prompt e modelo.'},
+  {q:'Os tickets têm CPF e e-mail de clientes. O que fazer?',opts:['Mascarar dados pessoais antes de indexar e respeitar a permissão de quem pergunta','Nada, o modelo é interno','Pedir ao LLM para não mostrar','Apagar todos os tickets com dados pessoais'],why:'LGPD vale para o índice também. Pedir ao modelo para não mostrar não é controle; mascarar na ingestão é.'}],
+  pro:'Eu começo um RAG pelo gabarito de avaliação, não pelo modelo.'},
+{id:'r10',track:'ana',kind:'chain',mode:'entrevista',ctx:{who:'Coordenador de BI',say:'Teste rápido: quero a retenção de clientes no mês seguinte à primeira compra.'},steps:[
+  {q:'Qual é o primeiro passo?',opts:['Achar a primeira compra de cada cliente (MIN(data) por cliente) para definir a coorte','Contar todos os pedidos por mês','Fazer AVG do valor dos pedidos','Juntar a tabela de produtos'],why:'Retenção depende da coorte: o mês de entrada de cada cliente.'},
+  {q:'Como saber se o cliente voltou no mês seguinte?',opts:['Juntar os pedidos com a coorte e marcar quem tem pedido no mês de entrada + 1','Ver se o total de pedidos aumentou','Usar o último pedido de cada cliente','Contar pedidos com valor acima da média'],why:'É uma comparação por cliente entre dois meses. Uma CTE com a coorte e um LEFT JOIN resolvem.'},
+  {q:'A retenção deu 140%. O que aconteceu?',opts:['Você contou pedidos em vez de clientes: use COUNT(DISTINCT cliente_id)','Os clientes compraram muito, ótima notícia','Arredondamento','Faltou ORDER BY'],why:'Retenção acima de 100% é sinal de grão errado. Quem confere a ordem de grandeza pega o bug antes do entrevistador.'}],
+  pro:'Antes de entregar uma métrica, eu confiro se a ordem de grandeza faz sentido.'},
+{id:'r11',track:'ds',kind:'quiz',mode:'bolso',q:'Pesquisa com 400 respostas, resultado perto de 50%. Qual a margem de erro aproximada (95%)?',opts:['± 5 pontos percentuais','± 0,5 ponto','± 20 pontos','± 1 ponto'],why:'1,96 × √(0,5 × 0,5 / 400) ≈ 0,049. Guarde: n = 400 dá ±5 p.p.; n = 1.600 dá ±2,5 p.p. Para cortar o erro pela metade, a amostra quadruplica.',pro:'Com 400 respostas, a margem é de uns 5 pontos, então diferenças menores que isso não sustentam conclusão.'},
+{id:'r12',track:'ds',kind:'quiz',mode:'bolso',q:'Você testou 300 transações e não achou nenhuma fraude. Até quanto a taxa real ainda pode ser (95%)?',opts:['Cerca de 1% (regra do 3: 3 / 300)','Zero, com certeza','Cerca de 30%','Não dá para dizer nada'],why:'Regra do 3: com zero eventos em n tentativas, o limite superior de 95% é cerca de 3/n. Zero observado não é zero garantido.',pro:'Não ter visto nenhum caso em 300 ainda é compatível com até 1% de taxa real.'},
+{id:'r13',track:'ia',kind:'quiz',mode:'bolso',q:'Embeddings de 768 dimensões em float32. Quanto ocupa 1 milhão de chunks, só os vetores?',opts:['Cerca de 3 GB (768 × 4 bytes ≈ 3 KB por vetor)','Cerca de 3 MB','Cerca de 300 GB','Cerca de 30 KB'],why:'Conta de padaria que entra em decisão de infraestrutura: dimensão × 4 bytes × quantidade. Quantizar para int8 corta para cerca de 1/4.',pro:'Eu estimo memória do índice antes: dimensão × 4 bytes × número de chunks.'},
+{id:'r14',track:'ml',kind:'quiz',mode:'bolso',q:'Na prática, como ler a AUC de um modelo de negócio (crédito, churn)?',opts:['0,5 = moeda · 0,7 = útil · 0,8 = bom · acima de 0,95 = investigar vazamento','Abaixo de 0,99 é ruim','0,6 já é excelente sempre','AUC não tem relação com qualidade'],why:'Não é lei, mas essa régua evita os dois erros comuns: jogar fora um 0,72 que dá lucro e comemorar um 0,98 que vazou.',pro:'AUC de 0,75 bem calibrada e usada no topo da lista costuma pagar o projeto.'},
+{id:'r15',track:'ml',kind:'quiz',mode:'trabalho',ctx:{who:'Engenheiro de dados',say:'Seu modelo em produção começou a dar score alto para todo mundo desde segunda.'},q:'Primeira coisa a verificar:',opts:['Se a distribuição das features de entrada mudou: algum campo veio nulo, em outra unidade ou com nova categoria','Retreinar o modelo imediatamente','Aumentar o threshold','Trocar o algoritmo'],why:'Mudança brusca de um dia para o outro quase sempre é dado quebrado no pipeline, não drift lento. Retreinar com dado quebrado ensina o erro.',pro:'Mudou de repente, eu olho o dado de entrada antes de mexer no modelo.'},
+{id:'r16',track:'ia',kind:'quiz',mode:'reuniao',ctx:{who:'Diretor de atendimento',say:'Dá pra colocar o ChatGPT pra responder os clientes direto, sem ninguém revisar?'},q:'Resposta responsável e útil:',opts:['“Dá para começar com o assistente sugerindo respostas para o atendente aprovar, medindo acerto e tempo economizado. Com taxa de acerto alta num tipo de pedido, liberamos resposta direta só para ele.”','“Sim, a IA já é melhor que humano.”','“Não, IA alucina, é perigoso.”','“Só depois de treinar um modelo próprio.”'],why:'Entrar com humano no circuito gera dados de qualidade e confiança. A automação total vem por tipo de pedido, com métrica, não de uma vez.',pro:'IA entra primeiro sugerindo, com métrica; a automação vem por partes, onde o acerto já foi provado.'},
+
 /* ---- entrevista (flip) ---- */
 {id:'f1',track:'ml',kind:'flip',q:'“Explique overfitting para alguém do negócio.”',ans:'É quando o modelo decora o passado em vez de aprender o padrão. Como um aluno que memoriza as respostas da prova antiga: tira 10 nela e vai mal na prova nova. Eu detecto comparando o desempenho em dados que o modelo nunca viu e corrijo simplificando o modelo, regularizando ou trazendo mais dados.'},
 {id:'f2',track:'ml',kind:'flip',q:'“Como você escolheria o threshold de um classificador?”',ans:'Pelo custo de cada erro, não pelo 0,5 padrão. Levanto quanto custa um falso positivo e um falso negativo, calculo o custo esperado para vários thresholds no conjunto de validação e escolho o menor. Depois confirmo uma única vez no teste e monitoro em produção.'},
@@ -696,7 +738,9 @@ const CARDS=[
 {id:'f8',track:'ia',kind:'flip',q:'“Como você mede se um sistema RAG está funcionando?”',ans:'Em duas camadas. Recuperação: um conjunto de perguntas com o trecho correto conhecido, medindo recall@k e MRR. Geração: fidelidade à fonte, se responde a pergunta e se cita certo, com revisão humana numa amostra e LLM-como-juiz calibrado contra essa revisão. E métricas de produção: latência, custo e feedback do usuário.'},
 ];
 const byId={};CARDS.forEach(c=>byId[c.id]=c);
-const QUIZ=CARDS.filter(c=>c.kind==='quiz'||c.kind==='flip');
+CARDS.filter(c=>c.kind==='chain').forEach(c=>{c.q=c.ctx?c.ctx.say:c.steps[0].q});
+['f1','f2','f3','f4','f5','f6','f7','f8'].forEach(id=>{byId[id].mode='entrevista'});
+const QUIZ=CARDS.filter(c=>c.kind==='quiz'||c.kind==='flip'||c.kind==='chain');
 
 /* ================= estado ================= */
 const RANKS=[[1,'Estagiário de Dados'],[3,'Analista Jr'],[5,'Analista Pleno'],[8,'Cientista de Dados Jr'],[11,'ML Engineer'],[15,'AI Engineer'],[20,'Arquiteto de IA'],[30,'Sinapse Lendária']];
@@ -730,6 +774,24 @@ const SYL={
   ml:['Regressão logística','Árvores de decisão','Random Forest e bagging','Gradient boosting (XGBoost, LightGBM)','KNN e escala das features','SVM e margem','Naive Bayes','K-means e escolha de k','DBSCAN e clustering por densidade','PCA e redução de dimensionalidade','Métricas de classificação','Métricas de regressão (MAE, RMSE, R²)','Curva ROC e PR','Validação cruzada','Tuning de hiperparâmetros','Classes desbalanceadas','Regularização L1/L2','Gradiente descendente e learning rate','Viés x variância','MLOps: MLflow e versionamento de modelos','Deploy de modelo com API (FastAPI)','Monitoramento e data drift','Sistemas de recomendação','Previsão de séries temporais com ML'],
   ia:['Redes neurais e funções de ativação','Backpropagation e otimizadores (SGD, Adam)','CNNs para imagem','RNN e LSTM','Transformers e atenção','Tokenização','Embeddings e similaridade','Pré-treino, instruction tuning e RLHF','Prompt engineering','RAG: chunking e indexação','Bancos vetoriais e pgvector','Busca híbrida e reranking','Agentes e tool use','Avaliação de LLMs','Fine-tuning e LoRA','Quantização e modelos locais (Ollama)','Segurança: prompt injection','Custo, latência e tokens','Alucinação e grounding','LGPD, PII e ética em IA','Visão computacional na prática','LLMs em produção: cache, fallback e observabilidade']
 };
+/* Guia de escrita dos cards: o mesmo padrão que ROUTINE.md usa na rotina diária */
+const GEN_GUIDE=`Objetivo: que o conteúdo vire óbvio pela repetição em situações reais. Todo card parte de uma cena concreta de trabalho no Brasil (varejo, banco, fintech, telecom, saúde, e-commerce, SaaS de suporte), com números realistas, e termina numa frase que o aluno pode repetir em reunião ou entrevista.
+
+Gere exatamente 6 cards, todos sobre o tema:
+1. 2 "quiz" com "mode":"reuniao" ou "trabalho": "ctx" é a fala de uma pessoa real (diretor, PM, CFO, gestor no Slack, engenheiro de dados). As alternativas são respostas possíveis. A certa responde com número, trade-off e próximo passo, em linguagem de negócio; as erradas são as respostas comuns de júnior (concordar sem checar, jargão sem tradução, "não dá", "vou investigar").
+2. 1 "chain" com "mode":"entrevista": um gestor técnico pergunta e aprofunda em 3 rodadas de follow-up ("steps"), cada uma com 4 alternativas, como numa entrevista de verdade.
+3. 1 "quiz" com "mode":"codigo": "code" com até 8 linhas de Python, pandas, SQL ou scikit-learn com um bug ou efeito surpreendente que acontece no trabalho real.
+4. 1 "quiz" com "mode":"bolso": um número ou regra de bolso que um profissional sênior sabe de cabeça (ordem de grandeza, conta rápida, régua de interpretação), com a conta no "why". Se fizer sentido, inclua "chart" com dados realistas para interpretar.
+5. 1 "flip" com "mode":"entrevista": pergunta aberta de gestor e "ans" com resposta modelo de até 90 palavras, estruturada (contexto, decisão, trade-off, resultado).
+Regras para todos: a correta SEMPRE em opts[0]; as erradas são erros reais e plausíveis, nunca absurdas; "q" até 200 caracteres; "why" explica o porquê em até 60 palavras; "pro" é UMA frase de até 160 caracteres que o aluno pode dizer literalmente; conteúdo tecnicamente correto e atual; português do Brasil; sem markdown. Revise cada card: a alternativa em opts[0] precisa estar correta sem ambiguidade.
+
+Responda só com um array JSON. Formatos:
+{"kind":"quiz","mode":"reuniao","ctx":{"who":"Diretora comercial","say":"..."},"q":"Qual a melhor resposta?","opts":["certa","errada","errada","errada"],"why":"...","pro":"..."}
+{"kind":"chain","mode":"entrevista","ctx":{"who":"Gestor de dados","say":"..."},"steps":[{"q":"...","opts":["certa","...","...","..."],"why":"..."},{"q":"...","opts":[...],"why":"..."},{"q":"...","opts":[...],"why":"..."}],"pro":"..."}
+{"kind":"quiz","mode":"codigo","q":"...","code":"...","opts":[...],"why":"...","pro":"..."}
+{"kind":"quiz","mode":"bolso","q":"...","opts":[...],"why":"...","pro":"...","chart":{"type":"bar","title":"...","labels":["Jan","Fev","Mar"],"series":[{"name":"Receita","values":[120,135,98]}]}}
+{"kind":"flip","mode":"entrevista","q":"...","ans":"...","pro":"..."}
+"chart" é opcional; type pode ser "bar", "line" ou "scatter" (em "scatter" use "points":[[x,y],...] com 8 a 40 pontos, "xLabel" e "yLabel").`;
 const GKEY='sinapse.gen.v1';
 let GEN=[];try{GEN=JSON.parse(localStorage.getItem(GKEY)||'[]');if(!Array.isArray(GEN))GEN=[]}catch(e){GEN=[]}
 const gen={busy:false,backoff:0,fails:0,batches:0};
@@ -741,11 +803,15 @@ function validChart(ch){if(!ch||typeof ch!=='object')return null;const type=['ba
   const labels=(Array.isArray(ch.labels)?ch.labels:[]).slice(0,14).map(l=>String(l).slice(0,14));if(labels.length<2)return null;
   const series=(Array.isArray(ch.series)?ch.series:[]).slice(0,3).map(s=>({name:sstr(s&&s.name,24)||'',values:(Array.isArray(s&&s.values)?s.values:[]).slice(0,labels.length).map(Number)})).filter(s=>s.values.length===labels.length&&s.values.every(v=>isFinite(v)));
   return series.length?{type,title,labels,series}:null}
+const MODES=['reuniao','entrevista','trabalho','codigo','conceito','bolso'];
+function vctx(x){if(!x||typeof x!=='object')return null;const who=sstr(x.who,40),say=sstr(x.say,320);return who&&say?{who,say}:null}
+function vstep(o){if(!o||typeof o!=='object')return null;const q=sstr(o.q,420),why=sstr(o.why,900),opts=(Array.isArray(o.opts)?o.opts:[]).map(x=>sstr(x,320)).filter(Boolean);return q&&why&&opts.length>=3&&opts.length<=4&&new Set(opts).size===opts.length?{q,opts,why}:null}
 function validCard(o,track,b,topic){if(!o||typeof o!=='object')return null;const id='g'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);const base={id,track,gen:1,b,topic};
-  if(o.kind==='flip'){const q=sstr(o.q,260),ans=sstr(o.ans,900);return q&&ans?{...base,kind:'flip',q,ans}:null}
-  const q=sstr(o.q,420),why=sstr(o.why,900),opts=(Array.isArray(o.opts)?o.opts:[]).map(x=>sstr(x,240)).filter(Boolean);
-  if(!q||!why||opts.length<3||opts.length>4||new Set(opts).size!==opts.length)return null;
-  const c={...base,kind:'quiz',q,opts,why};const code=sstr(o.code,900);if(code)c.code=code;const ch=validChart(o.chart);if(ch){c.chart=ch;c.viz='gchart'}return c}
+  const extra={};if(MODES.includes(o.mode))extra.mode=o.mode;const cx=vctx(o.ctx);if(cx)extra.ctx=cx;const pro=sstr(o.pro,300);if(pro)extra.pro=pro;
+  if(o.kind==='flip'){const q=sstr(o.q,260),ans=sstr(o.ans,900);return q&&ans?{...base,...extra,kind:'flip',q,ans}:null}
+  if(o.kind==='chain'){const steps=(Array.isArray(o.steps)?o.steps:[]).slice(0,4).map(vstep);if(steps.length<2||steps.some(s=>!s))return null;return{...base,mode:'entrevista',...extra,kind:'chain',steps,q:cx?cx.say:steps[0].q}}
+  const s=vstep(o);if(!s)return null;
+  const c={...base,...extra,kind:'quiz',...s};const code=sstr(o.code,900);if(code)c.code=code;const ch=validChart(o.chart);if(ch){c.chart=ch;c.viz='gchart'}return c}
 function chooseTopic(track){const cnt={};SYL[track].forEach(t=>cnt[t]=0);GEN.forEach(c=>{if(c.track===track&&c.topic in cnt)cnt[c.topic]++});const low=SYL[track].slice().sort((a,b)=>cnt[a]-cnt[b]).slice(0,4);return low[Math.floor(Math.random()*low.length)]}
 function trackAcc(track){let ok=0,bad=0;QUIZ.forEach(c=>{if(c.track!==track)return;const a=ST.ans[c.id];if(a){ok+=a.ok;bad+=a.bad}});return ok+bad>=6?ok/(ok+bad):null}
 const unseenFor=tr=>QUIZ.filter(c=>(tr==='all'||c.track===tr)&&!ST.seen[c.id]).length;
@@ -768,19 +834,9 @@ Trilha: ${TRACKS[track]==='ML'?'Machine Learning':TRACKS[track]==='IA'?'Intelig�
 Tema deste lote: ${topic}
 Nível: ${level}
 
-Gere exatamente 6 cards, todos sobre o tema:
-- 4 do tipo "quiz": uma pergunta de previsão com 4 alternativas plausíveis. A correta SEMPRE em opts[0]. As erradas devem ser erros comuns de verdade, nunca absurdas. Pelo menos 1 com "code" (Python, pandas, SQL ou scikit-learn, até 8 linhas, pergunte o que acontece ou o que está errado). Se o tema permitir, 1 com "chart" para o aluno interpretar um gráfico com números realistas.
-- 1 "quiz" de situação real de trabalho (um caso concreto numa empresa).
-- 1 do tipo "flip": uma pergunta que um gestor técnico faria em entrevista, com "ans" sendo uma resposta modelo de até 90 palavras.
-Regras: conteúdo tecnicamente correto e atual; "q" com até 200 caracteres; "why" explica o porquê em até 60 palavras e cita o trade-off quando existir; português do Brasil; sem markdown.
+${GEN_GUIDE}
 Não repita nem parafraseie estas perguntas que já existem:
-${existing||'- (nenhuma)'}
-
-Responda só com um array JSON. Formatos aceitos:
-{"kind":"quiz","q":"...","opts":["correta","errada","errada","errada"],"why":"...","code":"opcional"}
-{"kind":"quiz","q":"...","opts":["...","...","...","..."],"why":"...","chart":{"type":"bar","title":"...","labels":["Jan","Fev","Mar"],"series":[{"name":"Receita","values":[120,135,98]}]}}
-{"kind":"flip","q":"...","ans":"..."}
-chart.type pode ser "bar", "line" ou "scatter". Em "scatter" use "points":[[x,y],...] (8 a 40 pontos), "xLabel" e "yLabel" no lugar de labels/series.`;
+${existing||'- (nenhuma)'}`;
   try{const out=await sampler.json(prompt,{modelTier:'default',cache:false});const arr=Array.isArray(out)?out:(out&&Array.isArray(out.cards)?out.cards:[]);const b='b'+Date.now().toString(36);
     const cards=arr.map(o=>validCard(o,track,b,topic)).filter(c=>c&&!QUIZ.some(x=>x.q===c.q));
     if(!cards.length)throw{code:'empty'};cards.forEach(registerCard);GEN.push(...cards);persistGen();cloudSaveBatch(b);gen.fails=0;gen.batches++;
@@ -862,33 +918,39 @@ function countDaily(){const t=today();if(ST.daily.day!==t)ST.daily={day:t,n:0};S
 
 /* ================= render dos cards ================= */
 const ICON={save:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',spark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg>',down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>'};
-const KIND={sim:'Simulação',quiz:'Preveja',code:'Código',flip:'Entrevista',neuro:'Neuro'};
+const KIND={sim:'Simulação',quiz:'Preveja',code:'Código',flip:'Entrevista',neuro:'Neuro',chain:'Entrevista'};
+const MODE_LABEL={reuniao:'Reunião',entrevista:'Entrevista',trabalho:'Trabalho real',codigo:'Código',conceito:'Conceito',bolso:'Número de bolso'};
+const PRO_LABEL={reuniao:'Leve para a reunião',entrevista:'Diga assim na entrevista',trabalho:'No trabalho, faça assim'};
+const initials=s=>s.replace(/,.*$/,'').split(/\s+/).filter(w=>w.length>2||/^[A-Z]{2,}$/.test(w)).slice(0,2).map(w=>w[0].toUpperCase()).join('')||'?';
+function ctxHTML(c){return c.ctx?`<div class="ctx"><span class="av" aria-hidden="true">${esc(initials(c.ctx.who))}</span><div class="bub"><span class="who">${esc(c.ctx.who)}</span>${esc(c.ctx.say)}</div></div>`:''}
+function proHTML(c){return c.pro?`<div class="pro"><span class="lab">${PRO_LABEL[c.mode]||'Frase de sênior'}</span>${esc(c.pro)}</div>`:''}
 function hl(code){return esc(code).replace(/(#.*$)/gm,'<span class="c">$1</span>').replace(/('[^']*'|&quot;[^&]*&quot;)/g,'<span class="s">$1</span>').replace(/\b(SELECT|FROM|WHERE|GROUP BY|HAVING|ORDER BY|OVER|PARTITION BY|AS|DESC|LIMIT|SUM|ROW_NUMBER)\b/g,'<span class="k">$1</span>')}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function railHTML(c,extra=''){const on=ST.saved.includes(c.id);return `<div class="rail"><button class="rbtn save${on?' on':''}" type="button" aria-pressed="${on}">${ICON.save}<span>${on?'Salvo':'Salvar'}</span></button><button class="rbtn ai-btn" type="button">${ICON.spark}<span>Explica de outro jeito</span></button>${extra}<span class="sp"></span><span class="nexthint">${ICON.down.replace('<svg','<svg width="14" height="14"')}deslize</span></div><div class="ai-out" hidden></div>`}
 
 function mount(item){const c=item.c,el=document.createElement('section');el.className='card t-'+(c.track||'neuro')+(item.gold?' gold':'');el.setAttribute('aria-roledescription','card');item.el=el;
-  const metaKind=c.kind==='quiz'&&c.code?KIND.code:c.track==='neuro'&&c.kind==='sim'?KIND.neuro:KIND[c.kind]||'';
-  const meta=`<div class="meta"><span class="chip">${TRACKS[c.track]||''}</span><span>${metaKind}</span>${item.review?'<span class="tag-rev">revisão · você errou esta</span>':''}${c.gen?'<span class="tag-ai">gerado pelo Claude</span>':''}<span class="tag-gold">card dourado ×3</span></div>`;
+  const metaKind=c.mode?MODE_LABEL[c.mode]:c.kind==='quiz'&&c.code?KIND.code:c.track==='neuro'&&c.kind==='sim'?KIND.neuro:KIND[c.kind]||'';
+  const meta=`<div class="meta"><span class="chip">${TRACKS[c.track]||''}</span><span>${metaKind}</span>${item.review==='spaced'?`<span class="tag-spaced">revisão espaçada · nível ${(ST.ans[c.id]||{}).box||0}</span>`:item.review?'<span class="tag-rev">revisão · você errou esta</span>':''}${c.gen?'<span class="tag-ai">gerado pelo Claude</span>':''}<span class="tag-gold">card dourado ×3</span></div>`;
   const report=c.gen?'<button class="rbtn report" type="button">Reportar erro</button>':'';
   let body='';
   if(c.kind==='intro')body=introHTML();
   else if(c.kind==='break')body=breakHTML();
   else if(c.kind==='sim')body=`${meta}<h2>${c.title}</h2><p class="hook">${c.hook}</p><div class="viz"></div><div class="ctrl"></div>${railHTML(c)}`;
-  else if(c.kind==='quiz'){item.order=shuffle(c.opts.map((_,i)=>i));body=`${meta}<div class="q"><h2>${esc(c.q)}</h2></div>${c.chart?'<div class="viz qviz"></div>':''}${c.code?`<pre class="code">${hl(c.code)}</pre>`:''}<div class="opts">${item.order.map((oi,k)=>`<button class="opt" type="button" data-oi="${oi}"><kbd>${k+1}</kbd><span>${esc(c.opts[oi])}</span></button>`).join('')}</div><div class="why-slot"></div>${railHTML(c,report)}`}
-  else if(c.kind==='flip')body=`${meta}<div class="q"><h2>${esc(c.q)}</h2></div><p class="hook">Responda em voz alta (ou mentalmente) antes de revelar. Falar a resposta treina exatamente o que o gestor vai cobrar.</p><button class="btn primary reveal" type="button">Revelar resposta modelo</button><div class="why-slot"></div>${railHTML(c,report)}`;
+  else if(c.kind==='quiz'){item.order=shuffle(c.opts.map((_,i)=>i));body=`${meta}${ctxHTML(c)}<div class="q"><h2>${esc(c.q)}</h2></div>${c.chart?'<div class="viz qviz"></div>':''}${c.code?`<pre class="code">${hl(c.code)}</pre>`:''}<div class="opts">${item.order.map((oi,k)=>`<button class="opt" type="button" data-oi="${oi}"><kbd>${k+1}</kbd><span>${esc(c.opts[oi])}</span></button>`).join('')}</div><div class="why-slot"></div>${railHTML(c,report)}`}
+  else if(c.kind==='chain')body=`${meta}${ctxHTML(c)}<div class="steps"></div>${railHTML(c,report)}`;
+  else if(c.kind==='flip')body=`${meta}${ctxHTML(c)}<div class="q"><h2>${esc(c.q)}</h2></div><p class="hook">Responda em voz alta, como se o gestor estivesse na sua frente: contexto, decisão, trade-off, resultado. Você tem 30 segundos.</p><button class="btn primary reveal" type="button">Revelar resposta modelo <span class="cd">30s</span></button><div class="why-slot"></div>${railHTML(c,report)}`;
   el.innerHTML=`<div class="card-in">${body}</div>`;
   wire(item);$('#feed').appendChild(el);feedList.push(item);visObs.observe(el);nearObs.observe(el)}
 
 function introHTML(){const li=levelInfo(ST.xp),back=ST.xp>0;return `<div class="intro" style="display:flex;flex-direction:column;gap:14px;flex:1">
-  <div class="meta"><span class="chip" style="background:var(--spark)">${back?'de volta':'bem-vindo'}</span><span>${back?`nível ${li.L} · ${esc(rankOf(li.L))}`:'dados · ml · ia'}</span>${window.SINAPSE_BUNDLE?`<span class="chip offline-chip">offline · ${CARDS.length} cards</span>`:''}${PWA?`<span class="chip offline-chip">${CARDS.length} cards${remoteMeta&&remoteMeta.updated?' · novos em '+esc(remoteMeta.updated.split('-').reverse().join('/')):''}${navigator.onLine?'':' · sem internet'}</span>`:''}</div>
+  <div class="meta"><span class="chip" style="background:var(--spark)">${back?'de volta':'bem-vindo'}</span><span>${back?`nível ${li.L} · ${esc(rankOf(li.L))}`:'dados · ml · ia'}</span>${dueCards().length?`<span class="chip" style="background:var(--neuro)">${dueCards().length} revisões hoje</span>`:''}${window.SINAPSE_BUNDLE?`<span class="chip offline-chip">offline · ${CARDS.length} cards</span>`:''}${PWA?`<span class="chip offline-chip">${CARDS.length} cards${remoteMeta&&remoteMeta.updated?' · novos em '+esc(remoteMeta.updated.split('-').reverse().join('/')):''}${navigator.onLine?'':' · sem internet'}</span>`:''}</div>
   <h1>Troque o <em>scroll</em> por sinapse.</h1>
   <p class="lede">Cards curtos de Análise de Dados, Ciência de Dados, Machine Learning e IA. Você mexe, prevê, erra, acerta. O cérebro aprende no erro de previsão.</p>
   <div class="rules">
     <div class="rule"><b>Preveja antes</b>Responder antes de ver a explicação grava mais do que ler.</div>
     <div class="rule"><b>Combo multiplica</b>Acertos seguidos valem até ×4 XP.</div>
-    <div class="rule"><b>Card dourado</b>Aparece ao acaso e vale ×3.</div>
-    <div class="rule"><b>Erros voltam</b>O que você errar reaparece poucos cards depois.</div>
+    <div class="rule"><b>Vida real</b>Reuniões, entrevistas em rodadas e frases prontas para usar. Card dourado vale ×3.</div>
+    <div class="rule"><b>Fixa sem esforço</b>Erros voltam em minutos; acertos voltam em 1, 3, 7, 16 e 35 dias.</div>
   </div>
   <div class="aibox ai-only"><b>Feed infinito com Claude</b><span>O Claude mantém sempre uns 40 minutos de cards que você ainda não viu, sobre os temas que as vagas cobram. Se a internet cair com o app aberto, você segue normalmente. Tudo fica salvo na sua conta (<span class="gen-count">${GEN.length}</span> gerados até agora) e entra na versão offline.</span><button class="btn primary gen-toggle" type="button" aria-pressed="${!!ST.autoGen}">${ST.autoGen?'Geração contínua ligada':'Ativar geração contínua'}</button></div>
   <div class="swipe" style="margin-top:auto">${ICON.down}<span>deslize, use ↓ ou J</span></div></div>`}
@@ -904,12 +966,30 @@ function wire(item){const c=item.c,el=item.el;
   const ab=el.querySelector('.ai-btn');if(ab)ab.addEventListener('click',()=>explain(item,el.querySelector('.ai-out'),ab));
   const rp=el.querySelector('.report');if(rp)rp.addEventListener('click',()=>{if(!rp.dataset.armed){rp.dataset.armed='1';rp.textContent='Toque de novo: remover este card';setTimeout(()=>{if(rp.isConnected&&!rp.disabled){delete rp.dataset.armed;rp.textContent='Reportar erro'}},4000);return}
     rp.disabled=true;removeCard(c.id);el.querySelector('.card-in').innerHTML='<div class="meta"><span class="chip">Removido</span></div><h2>Card removido.</h2><p class="hook">Ele não volta mais no seu feed. Conteúdo gerado por IA pode errar: desconfiar e conferir também é treino.</p>';const f=$('#feed');setTimeout(()=>f.scrollBy({top:f.clientHeight}),900)});
+  if(c.kind==='chain')renderStep(item,0);
   if(c.kind==='quiz')el.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>answer(item,b)));
-  if(c.kind==='flip'){const rv=el.querySelector('.reveal');rv.addEventListener('click',()=>{rv.remove();const slot=el.querySelector('.why-slot');slot.innerHTML=`<div class="why neutral"><span class="lab">resposta modelo</span><p>${esc(c.ans)}</p></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn primary" type="button" data-k="1">Eu sabia</button><button class="btn" type="button" data-k="0">Preciso revisar</button></div>`;
+  if(c.kind==='flip'){const rv=el.querySelector('.reveal');rv.addEventListener('click',()=>{rv.remove();const slot=el.querySelector('.why-slot');slot.innerHTML=`<div class="why neutral"><span class="lab">resposta modelo</span><p>${esc(c.ans)}</p></div>${proHTML(c)}<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn primary" type="button" data-k="1">Eu sabia</button><button class="btn" type="button" data-k="0">Preciso revisar</button></div>`;
     slot.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{const knew=b.dataset.k==='1';slot.querySelectorAll('button').forEach(x=>x.disabled=true);record(c,knew);countDaily();if(knew){combo++;ST.best=Math.max(ST.best,combo);sfx.ok();award(15*(item.gold?3:1),b,item.gold);fire(C.spark)}else{combo=0;sfx.tick();award(5,b)}}))})}
 }
 
-function record(c,ok){const a=ST.ans[c.id]||{ok:0,bad:0,box:0};if(ok){a.ok++;a.box=Math.min(5,a.box+1);ST.ok++;sess.ok++;ST.rev=ST.rev.filter(id=>id!==c.id)}else{a.bad++;a.box=0;ST.bad++;sess.bad++;if(!ST.rev.includes(c.id))ST.rev.push(c.id);ST.errs=[c.id,...ST.errs.filter(x=>x!==c.id)].slice(0,60);sessRev.push({id:c.id,at:fc+4})}ST.ans[c.id]=a;ST.seen[c.id]=1;save()}
+function renderStep(item,i){const c=item.c,s=c.steps[i],box=item.el.querySelector('.steps'),order=shuffle(s.opts.map((_,k)=>k)),d=document.createElement('div');d.className='step';
+  d.innerHTML=`<span class="steplab">${i===0?'Pergunta':'Follow-up'} ${i+1} de ${c.steps.length}</span><h3>${esc(s.q)}</h3><div class="opts">${order.map((oi,k)=>`<button class="opt" type="button" data-oi="${oi}"><kbd>${k+1}</kbd><span>${esc(s.opts[oi])}</span></button>`).join('')}</div><div class="why-slot"></div>`;
+  box.appendChild(d);item.stepEl=d;item.stepDone=false;d.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>answerStep(item,i,d,b)));
+  if(i>0)setTimeout(()=>d.scrollIntoView({block:'nearest',behavior:reduced?'auto':'smooth'}),60)}
+function answerStep(item,i,d,btn){if(item.stepDone)return;item.stepDone=true;const c=item.c,s=c.steps[i],ok=+btn.dataset.oi===0;item.allOk=item.allOk!==false&&ok;
+  d.querySelectorAll('.opt').forEach(b=>{b.disabled=true;const k=+b.dataset.oi;if(k===0)b.classList.add('ok');else if(b===btn)b.classList.add('bad');else b.classList.add('dim')});
+  const r=btn.getBoundingClientRect();
+  if(ok){combo++;ST.best=Math.max(ST.best,combo);sfx.ok();buzz(18);burst(r.left+r.width/2,r.top+r.height/2,item.gold?[C.gold,C.spark]:[C.ok,C.spark,C.ds]);fire(item.gold?C.gold:C.spark);award(15*mult()*(item.gold?3:1),btn,item.gold)}else{combo=0;sfx.bad();buzz([40,30,40]);hud()}
+  const last=i===c.steps.length-1,slot=d.querySelector('.why-slot');
+  slot.innerHTML=`<div class="why ${ok?'good':'miss'}"><span class="lab">${ok?'Boa':'O gestor esperava outra coisa'}</span><p>${esc(s.why)}</p></div>`+(last?'':'<button class="btn primary next-step" type="button" style="margin-top:10px">Próxima pergunta do entrevistador</button>');
+  if(last){item.done=true;record(c,item.allOk);countDaily();if(c.pro)slot.insertAdjacentHTML('beforeend',proHTML(c))}
+  else slot.querySelector('.next-step').addEventListener('click',e=>{e.currentTarget.remove();renderStep(item,i+1)});
+  setTimeout(()=>slot.scrollIntoView({block:'nearest',behavior:reduced?'auto':'smooth'}),80)}
+const IVL=[0,1,3,7,16,35];
+const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return dayStr(d)};
+const sessShown=new Set();
+const dueCards=()=>QUIZ.filter(c=>{const a=ST.ans[c.id];return a&&a.ok>0&&(a.due||'0000-00-00')<=today()&&!ST.rev.includes(c.id)&&!sessShown.has(c.id)});
+function record(c,ok){const a=ST.ans[c.id]||{ok:0,bad:0,box:0};if(ok){a.ok++;a.box=Math.min(5,a.box+1);ST.ok++;sess.ok++;ST.rev=ST.rev.filter(id=>id!==c.id)}else{a.bad++;a.box=0;ST.bad++;sess.bad++;if(!ST.rev.includes(c.id))ST.rev.push(c.id);ST.errs=[c.id,...ST.errs.filter(x=>x!==c.id)].slice(0,60);sessRev.push({id:c.id,at:fc+4})}a.due=ok?addDays(IVL[a.box]):today();ST.ans[c.id]=a;sessShown.add(c.id);ST.seen[c.id]=1;save()}
 
 function answer(item,btn){if(item.done)return;item.done=true;const c=item.c,el=item.el,oi=+btn.dataset.oi,ok=oi===0;
   el.querySelectorAll('.opt').forEach(b=>{b.disabled=true;const i=+b.dataset.oi;if(i===0)b.classList.add('ok');else if(b===btn)b.classList.add('bad');else b.classList.add('dim')});
@@ -917,11 +997,11 @@ function answer(item,btn){if(item.done)return;item.done=true;const c=item.c,el=i
   const r=btn.getBoundingClientRect();
   if(ok){combo++;ST.best=Math.max(ST.best,combo);const xp=20*mult()*(item.gold?3:1);sfx.ok();buzz(18);burst(r.left+r.width/2,r.top+r.height/2,item.gold?[C.gold,C.spark]:[C.ok,C.spark,C.ds]);fire(item.gold?C.gold:C.spark,combo>=4?10:7);award(xp,btn,item.gold);const cp=$('#comboPill');cp.classList.add('pop');setTimeout(()=>cp.classList.remove('pop'),220)}
   else{combo=0;sfx.bad();buzz([40,30,40]);hud()}
-  el.querySelector('.why-slot').innerHTML=`<div class="why ${ok?'good':'miss'}"><span class="lab">${ok?'Acertou':'Ainda não · volta daqui a pouco'}</span><p>${esc(c.why)}</p></div>`;
+  el.querySelector('.why-slot').innerHTML=`<div class="why ${ok?'good':'miss'}"><span class="lab">${ok?'Acertou':'Ainda não · volta daqui a pouco'}</span><p>${esc(c.why)}</p></div>`+proHTML(c);
   const slot=el.querySelector('.why-slot');setTimeout(()=>{const ci=el.querySelector('.card-in');if(ci.scrollHeight>ci.clientHeight)slot.scrollIntoView({block:'nearest',behavior:reduced?'auto':'smooth'})},80)}
 
 async function explain(item,out,btn){if(!sampler)return;const c=item.c;btn.disabled=true;out.hidden=false;out.textContent='Pensando…';
-  const ctx=c.kind==='sim'?`Tema: ${c.title}. Contexto: ${c.hook.replace(/<[^>]+>/g,'')}`:c.kind==='flip'?`Pergunta de entrevista: ${c.q}\nResposta modelo: ${c.ans}`:`Pergunta: ${c.q}\nResposta correta: ${c.opts[0]}\nExplicação original: ${c.why}${item.picked&&item.picked!==c.opts[0]?`\nO aluno escolheu (errado): ${item.picked}`:''}`;
+  const ctx=c.kind==='chain'?`Entrevista. ${c.ctx?c.ctx.who+': '+c.ctx.say:''}\n${c.steps.map((s,k)=>`Rodada ${k+1}: ${s.q}\nResposta certa: ${s.opts[0]}\nPor quê: ${s.why}`).join('\n')}`:c.kind==='sim'?`Tema: ${c.title}. Contexto: ${c.hook.replace(/<[^>]+>/g,'')}`:c.kind==='flip'?`Pergunta de entrevista: ${c.q}\nResposta modelo: ${c.ans}`:`Pergunta: ${c.q}\nResposta correta: ${c.opts[0]}\nExplicação original: ${c.why}${item.picked&&item.picked!==c.opts[0]?`\nO aluno escolheu (errado): ${item.picked}`:''}`;
   const prompt=`Você é um professor de dados muito didático. Explique de outro jeito, em português do Brasil, em no máximo 110 palavras, para alguém que aprende melhor com código do que com fórmula. Use uma analogia do dia a dia de suporte ou de uma loja, e, se fizer sentido, um trecho curto de Python ou SQL. Sem títulos nem markdown pesado.\n\n${ctx}`;
   try{const r=await sampler(prompt,{modelTier:'quick',onText:({text})=>{out.textContent=text}});out.textContent=r.text||out.textContent}
   catch(e){const code=e&&e.code;out.textContent=code==='rate_limited'?'Muitas perguntas seguidas. Tente de novo em alguns segundos.':code==='not_granted'?'Sem permissão para chamar o Claude nesta página.':'Não consegui gerar outra explicação agora.';if(code==='not_granted')document.body.classList.remove('ai-on')}
@@ -935,6 +1015,7 @@ function pick(){
   if(sinceBreak>=25){sinceBreak=0;return{c:{id:'break'+fc,kind:'break',track:'neuro'}}}
   if(pendingFollow){const c=byId[pendingFollow];pendingFollow=null;if(eligible(c)&&!recent.includes(c.id))return{c,gold:Math.random()<.12}}
   const di=sessRev.findIndex(r=>r.at<=fc&&eligible(byId[r.id])&&!recent.slice(-3).includes(r.id));if(di>=0){const r=sessRev.splice(di,1)[0];return{c:byId[r.id],review:true}}
+  if(Math.random()<.3){const d=dueCards().filter(c=>eligible(c)&&!recent.includes(c.id));if(d.length){const c=d[Math.floor(Math.random()*d.length)];sessShown.add(c.id);return{c,review:'spaced'}}}
   let pool=CARDS.filter(c=>eligible(c)&&!recent.includes(c.id));if(!pool.length)pool=CARDS.filter(eligible);
   const slot=fc%3;let want=slot===0?pool.filter(c=>c.kind==='sim'):pool.filter(c=>c.kind!=='sim');if(!want.length)want=pool;
   const unseen=want.filter(c=>!ST.seen[c.id]),src=unseen.length?unseen:want;
@@ -946,7 +1027,8 @@ function resetFeed(){feedList.forEach(it=>{visObs.unobserve(it.el);nearObs.unobs
 const visObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>=.6){const it=feedList.find(x=>x.el===e.target);if(it&&it!==cur)setCurrent(it)}})},{root:$('#feed'),threshold:[.6]});
 const nearObs=new IntersectionObserver(es=>{es.forEach(e=>{if(!e.isIntersecting)return;const it=feedList.find(x=>x.el===e.target);if(it&&!it.viz&&it.c.viz)initViz(it)})},{root:$('#feed'),rootMargin:'0px 0px 150% 0px'});
 function setCurrent(it){const now=performance.now();if(cur&&curStart&&cur.c.kind!=='intro'&&cur.c.kind!=='break'){const d=(now-curStart)/1000;if(d>=4&&d<=180)ST.avgSec=ST.avgSec?ST.avgSec*.9+d*.1:d}curStart=now;
-  cur=it;clearTimeout(dwellT);const idx=feedList.indexOf(it);if(idx>=feedList.length-4)append(8);maybeGen();
+  cur=it;clearTimeout(dwellT);
+  if(it.c.kind==='flip'&&!it.cdT){const cd=it.el.querySelector('.cd');let t=30;if(cd)it.cdT=setInterval(()=>{t--;if(!cd.isConnected||t<0){clearInterval(it.cdT);return}cd.textContent=t?t+'s':'tempo!'},1000)}const idx=feedList.indexOf(it);if(idx>=feedList.length-4)append(8);maybeGen();
   if(it.c.kind!=='intro'&&it.c.kind!=='break'&&!sess.seen.has(it.el)){sess.seen.add(it.el);sess.cards++}
   if(it.c.kind==='sim'&&!sess.seen.has(it.c.id)){dwellT=setTimeout(()=>{if(cur===it&&!sess.seen.has(it.c.id)){sess.seen.add(it.c.id);ST.seen[it.c.id]=1;award(5,it.el.querySelector('h2'))}},3000)}}
 function initViz(it){const host=it.el.querySelector('.viz');if(!host)return;const c=document.createElement('canvas');host.appendChild(c);const ctx=c.getContext('2d');const S={c,ctx,w:0,h:0};
@@ -960,13 +1042,14 @@ let lastT=performance.now();
 function loop(t){const dt=Math.min(64,t-lastT);lastT=t;if(cur&&cur.viz){try{cur.viz.draw(t,dt)}catch(e){}}drawBg();if(parts.length)drawFx();else if(fx._dirty!==false){fctx.clearRect(0,0,innerWidth,innerHeight);fx._dirty=false}if(parts.length)fx._dirty=true;requestAnimationFrame(loop)}
 
 /* ================= perfil ================= */
-function openSheet(){const li=levelInfo(ST.xp),tot=ST.ok+ST.bad;
+function openSheet(){const li=levelInfo(ST.xp),tot=ST.ok+ST.bad,phr=QUIZ.filter(c=>c.pro&&(ST.ans[c.id]||{}).ok>0).reverse();
   const tracks=['ana','ds','ml','ia'].map(k=>{const qs=QUIZ.filter(c=>c.track===k),m=qs.filter(c=>(ST.ans[c.id]||{}).box>=2).length;return{k,m,n:qs.length}});
   const item=id=>{const c=byId[id];if(!c)return'';const txt=c.q||c.title;return `<div class="li t-${c.track}"><span class="chip">${TRACKS[c.track]}</span><span>${esc(txt)}</span>${c.why?`<small>${esc(c.why)}</small>`:c.ans?`<small>${esc(c.ans)}</small>`:''}</div>`};
   $('#sheet').innerHTML=`<div class="sheet-in" role="dialog" aria-label="Seu progresso">
    <div class="sheet-head"><h3>Nível ${li.L} · ${esc(rankOf(li.L))}</h3><button class="icon-btn" id="closeSheet" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
    <div class="statgrid"><div class="stat"><b>${ST.xp.toLocaleString('pt-BR')}</b><span>XP total</span></div><div class="stat"><b>${tot?pct(ST.ok/tot,0):'–'}</b><span>acertos (${tot})</span></div><div class="stat"><b>${ST.best}</b><span>maior combo</span></div></div>
    <div><h4>Domínio por trilha (acertou 2× seguidas)</h4><div class="mastery">${tracks.map(t=>`<div class="mrow t-${t.k}"><span>${TRACKS[t.k]}</span><div class="mbar"><i style="width:${t.n?t.m/t.n*100:0}%"></i></div><output>${t.m}/${t.n}</output></div>`).join('')}</div></div>
+   <div><h4>Frases prontas (${phr.length})</h4><div class="list">${phr.length?phr.slice(0,25).map(c=>`<div class="li t-${c.track}"><span class="chip">${MODE_LABEL[c.mode]||TRACKS[c.track]}</span><span>${esc(c.pro)}</span></div>`).join(''):'<p class="empty">Cada card que você acerta deixa aqui uma frase pronta para reunião e entrevista. Releia antes de entrar numa.</p>'}</div></div>
    <div><h4>Caderno de erros (${ST.errs.length})</h4><div class="list">${ST.errs.length?ST.errs.slice(0,15).map(item).join(''):'<p class="empty">Nada aqui ainda. O que você errar entra aqui com a explicação.</p>'}</div></div>
    <div><h4>Salvos (${ST.saved.length})</h4><div class="list">${ST.saved.length?ST.saved.map(item).join(''):'<p class="empty">Toque em Salvar num card para guardar aqui.</p>'}</div></div>
    <div><h4>Conteúdo novo e uso offline</h4><p class="hook" style="margin-bottom:10px"><span class="gen-count">${GEN.length}</span> cards gerados pelo Claude, somando ${CARDS.length} no total. Reserva de cards ainda não vistos: <b class="reserve-min">~${Math.min(reserveMin(),RESERVE_MIN)}</b> de ${RESERVE_MIN} min (no seu ritmo de ~${Math.round(secPerCard())} s por card). A geração só roda com internet. Para estudar sem conexão, baixe o arquivo: ele leva todos os cards e seu progresso e abre em qualquer navegador.</p>
@@ -985,7 +1068,8 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{if(
 addEventListener('keydown',e=>{if(!$('#sheet').hidden){if(e.key==='Escape')closeSheet();return}if(e.target.tagName==='INPUT')return;const f=$('#feed');
   if(e.key==='ArrowDown'||e.key==='j'||e.key==='J'||e.key===' '){e.preventDefault();f.scrollBy({top:f.clientHeight})}
   else if(e.key==='ArrowUp'||e.key==='k'||e.key==='K'){e.preventDefault();f.scrollBy({top:-f.clientHeight})}
-  else if(/^[1-4]$/.test(e.key)&&cur&&cur.c.kind==='quiz'&&!cur.done){const b=cur.el.querySelectorAll('.opt')[+e.key-1];if(b)b.click()}});
+  else if(/^[1-4]$/.test(e.key)&&cur&&cur.c.kind==='quiz'&&!cur.done){const b=cur.el.querySelectorAll('.opt')[+e.key-1];if(b)b.click()}
+  else if(/^[1-4]$/.test(e.key)&&cur&&cur.c.kind==='chain'&&cur.stepEl&&!cur.stepDone){const b=cur.stepEl.querySelectorAll('.opt')[+e.key-1];if(b)b.click()}});
 addEventListener('resize',()=>{fitFx();fitBg()});
 
 /* ================= boot ================= */

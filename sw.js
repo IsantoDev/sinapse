@@ -1,5 +1,5 @@
 // Service worker do Sinapse: app abre sem internet; cards novos chegam quando há rede.
-const APP = 'sinapse-app-f12f712bba';
+const APP = 'sinapse-app-b7954e4216';
 const DATA = 'sinapse-data';
 const FONTS = 'sinapse-fonts';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './content/cards.json'];

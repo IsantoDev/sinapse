@@ -271,6 +271,48 @@ body.immersive .cv-in{padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))
   .tm-info .infolog p{padding:6px 0;border-bottom:1px dashed var(--line)}
   .nstrip.big i{width:calc(12px + var(--ns,0)*12px);height:calc(12px + var(--ns,0)*12px)}
 }
+/* Lista de casos */
+.cs.cl{max-width:1180px}
+.cs-body.clist{display:flex!important;flex-direction:column;gap:14px}
+.cstats{display:flex;gap:14px;font-size:12.5px;color:var(--muted);flex:none}.cstats b{color:var(--fg);font:800 16px var(--f-display);margin-right:3px}
+.rec{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:18px;border-radius:20px;border:1px solid color-mix(in srgb,var(--tc) 45%,var(--line));background:radial-gradient(120% 140% at 0% 0%,color-mix(in srgb,var(--tc) 20%,transparent),transparent 60%),var(--surface)}
+.rec-l{display:flex;flex-direction:column;gap:6px;min-width:0;flex:1 1 260px}
+.rec-k{font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--tc)}
+.rec b{font:800 clamp(1.25rem,4.6vw,1.6rem)/1.1 var(--f-display);letter-spacing:-.02em}
+.rec p{margin:0;color:var(--muted);font-size:14px}
+.rec-m{display:flex;align-items:center;gap:8px;font:12px var(--f-mono);color:var(--muted)}
+.rec .btn{min-height:46px;padding:0 22px;font-size:15px}
+.cc-ic{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb,var(--tc) 16%,transparent);color:var(--tc);flex:none}.cc-ic svg{width:16px;height:16px}
+.qtiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.qt{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px;cursor:pointer;min-width:0}
+.qt svg{width:20px;height:20px;color:var(--spark);margin-bottom:4px}.qt b{font:700 13.5px var(--f-body)}.qt small{font-size:11.5px;color:var(--muted);line-height:1.3}
+.qt:hover:not(:disabled){border-color:var(--spark)}.qt:disabled{opacity:.5}
+.career .co{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.coin{display:flex;flex-direction:column;gap:3px;text-align:left;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:10px 12px;cursor:pointer;min-width:0}
+.coin small{font:600 10px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}.coin b{font:700 14px var(--f-display)}.coin:hover:not(:disabled){border-color:var(--spark)}
+.career .row .chip{white-space:nowrap;flex:none}
+#careerBox.flash .career{box-shadow:0 0 0 2px var(--spark)}
+.fbar{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.fchips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}.fchips::-webkit-scrollbar{display:none}
+.fchips button{flex:none;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:99px;padding:6px 12px;min-height:34px;font:600 12.5px var(--f-body);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.fchips button i{width:7px;height:7px;border-radius:50%;background:var(--tc)}
+.fchips button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.cgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.ccard{display:flex;flex-direction:column;gap:7px;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;cursor:pointer;min-width:0;transition:border-color .2s,transform .15s}
+.ccard:hover:not(:disabled){border-color:var(--tc);transform:translateY(-2px)}.ccard:disabled{opacity:.55}
+.cc-top{display:flex;align-items:center;gap:8px;font:600 10.5px var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.cc-lvl{padding:2px 7px;border:1px solid var(--line);border-radius:6px}
+.cc-cat{display:inline-flex;align-items:center;gap:5px;margin-left:auto}.cc-cat i{width:7px;height:7px;border-radius:50%;background:var(--tc)}
+.ccard b{font:700 16.5px/1.2 var(--f-display);letter-spacing:-.01em}
+.ccard p{margin:0;font-size:13.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cc-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:4px;font:11.5px var(--f-mono);color:var(--muted)}
+.st{flex:none;padding:3px 8px;border-radius:99px;border:1px solid var(--line);font:600 11px var(--f-body);color:var(--muted)}
+.st.go{border-color:var(--spark);color:var(--spark)}.st.ok{border-color:var(--ok);color:var(--ok)}.st.mid{border-color:var(--gold);color:var(--gold)}
+.guide{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:14.5px}.guide b{color:var(--fg)}
+.gsub{margin:6px 0 0;font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+@media (max-width:520px){.career .co{grid-template-columns:minmax(0,1fr)}.cstats{display:none}.qt small{display:none}.rec .btn{width:100%}}
+@media (min-width:760px){.cgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1280px){.cgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* Perfil */
 .phead{display:flex;gap:14px;align-items:center;min-width:0;flex:1}
 .pring{width:58px;height:58px;border-radius:50%;flex:none;display:grid;place-items:center;background:conic-gradient(var(--spark) calc(var(--p)*360deg),var(--line) 0)}
@@ -1721,44 +1763,65 @@ function msgHTML(d,m,group){if(m.me)return`<div class="m me${m.deliv?' deliv':''
 function openCases(){if(!$('#sheet').hidden)closeSheet(true);$('#cases').hidden=false;setNav('cases');armBack();renderCases()}
 function closeCases(keep){$('#cases').hidden=true;clearInterval(mtClock);document.body.classList.remove('immersive');if(!keep)setNav($('#sheet').hidden?'feed':'profile')}
 function careerHTML(can){const c=ST.career;
-  if(!c)return`<div class="career"><div class="row"><span class="chip" style="background:var(--spark)">Modo carreira</span></div><b>Uma empresa, uma carreira</b><p>Você é contratado como Analista de Dados Júnior e fica: os mesmos colegas, a mesma empresa, casos que se seguem. Cada pessoa lembra do que você fez, e a promoção vem por desempenho.</p>
-   <div class="co">${Object.entries(COMPANIES).map(([k,v])=>`<button class="case" type="button" data-co="${k}" ${can?'':'disabled'}><span class="row"><span>${esc(v.tag)}</span></span><b>${esc(v.name)}</b><p>${esc(v.desc.split('. ')[0])}.</p></button>`).join('')}</div></div>`;
+  if(!c)return`<div class="career"><div class="row"><span class="chip" style="background:var(--spark)">Modo carreira</span><span>uma empresa, os mesmos colegas, promoção por desempenho</span></div><div class="co">${Object.entries(COMPANIES).map(([k,v])=>`<button class="coin" type="button" data-co="${k}" ${can?'':'disabled'}><small>${esc(v.tag)}</small><b>${esc(v.name)}</b></button>`).join('')}</div></div>`;
   const co=COMPANIES[c.co],lv=c.level,atLv=c.hist.filter(h=>h.level===lv),last3=atLv.slice(-3),avg=last3.length?last3.reduce((a,h)=>a+h.nota,0)/last3.length:0;
   const ac=ST.activeCase&&ST.activeCase.def.career&&!ST.activeCase.done;
   return`<div class="career"><div class="row"><span class="chip" style="background:var(--spark)">Modo carreira</span><span>${esc(co.name)}</span></div><b>${esc(CAREER_LEVELS[lv])}</b>
    <p>${lv<CAREER_LEVELS.length-1?`Promoção: 3 casos neste nível com média ≥ 7 nos últimos três. Agora: ${atLv.length} caso${atLv.length===1?'':'s'}${last3.length?`, média ${num(avg,1)}`:''}.`:'Topo da carreira. Continue jogando para manter o padrão.'}</p>
    <div class="rep">${co.cast.map(p=>{const v=c.rep[p.name]??50;return`<div class="rp" title="${esc(p.role)}"><span>${esc(p.name)}</span><div class="mbar"><i style="width:${v}%;background:${v>=65?'var(--ok)':v<40?'var(--bad)':'var(--gold)'}"></i></div></div>`}).join('')}</div>
    <div class="btnrow"><button class="btn primary" id="crNext" type="button" style="--tc:var(--spark)" ${can&&!caseBusy?'':'disabled'}>${ac?'Continuar o caso atual':caseBusy?'Preparando o dia…':'Próximo dia de trabalho'}</button><button class="rbtn" id="crQuit" type="button">Trocar de empresa</button></div></div>`}
+let caseFilter={lvl:'all',cat:'all'};
+const CICO={chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M19 9h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1v3l-4-3h-3"/></svg>',meet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>',data:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>',spark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg>',book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7M8 11h5"/></svg>',brief:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/></svg>'};
+function caseFmt(d){const meet=!!(d.scene||CASE_SCENE[d.id]),data=!!(DATASETS[d.id]||d.data);return{ico:data?CICO.data:meet?CICO.meet:CICO.chat,label:[meet?'reunião ao vivo':'chat',data?'dados reais':''].filter(Boolean).join(' + '),min:Math.max(10,d.stages.length*4)}}
+function bestNotes(){const m={};(ST.cases||[]).forEach(h=>{m[h.id]=Math.max(m[h.id]??-1,h.nota)});return m}
+function recommendCase(){const best=bestNotes(),ac=ST.activeCase;
+  if(ac&&!ac.done&&!ac.def.career)return{d:ac.def,why:`Você parou na etapa ${ac.stage} de ${ac.def.stages.length}. Terminar fecha o ciclo e gera a avaliação.`,cont:true};
+  if((ST.cases||[]).length<2&&best.c1==null)return{d:CASES.find(x=>x.id==='c1'),why:'Comece por aqui: é o caso mais guiado, com um banco de dados para investigar e pessoas fáceis de abordar.'};
+  const weak=CAT_KEYS.slice().sort((a,b)=>(liveSkill(a)??-1)-(liveSkill(b)??-1))[0];
+  const redo=CASES.filter(d=>best[d.id]!=null&&best[d.id]<7).sort((a,b)=>best[a.id]-best[b.id])[0];
+  if(redo&&Math.random()<.5)return{d:redo,why:`Você tirou ${best[redo.id]} aqui. Jogar de novo, fazendo o que o sênior faria, é o que mais fixa.`};
+  const d=CASES.filter(x=>x.cat===weak&&best[x.id]==null)[0]||CASES.find(x=>best[x.id]==null)||redo||CASES[0];
+  return{d,why:best[d.id]==null?`Treina ${CATS[d.cat]}, a categoria em que você tem menos sinal nos casos até agora.`:`Você tirou ${best[d.id]} aqui. Vale tentar de novo.`}}
+function caseCard(d,best,can){const f=caseFmt(d),b=best[d.id],ac=ST.activeCase&&!ST.activeCase.done&&ST.activeCase.def.id===d.id;
+  const st=ac?'<span class="st go">em andamento</span>':b!=null?`<span class="st ${b>=7?'ok':'mid'}">nota ${b} · jogar de novo</span>`:'<span class="st">novo</span>';
+  return`<button class="ccard t-${d.cat}" type="button" data-case="${d.id}" ${can?'':'disabled'}><span class="cc-top"><span class="cc-ic">${f.ico}</span><span class="cc-lvl">${esc(d.level)}</span><span class="cc-cat"><i></i>${CATS[d.cat]}</span></span><b>${esc(d.title)}</b><p>${esc(d.situation)}</p><span class="cc-foot"><span>${f.label} · ~${f.min} min</span>${st}</span></button>`}
 function renderCases(){const box=$('#cases');clearInterval(mtClock);document.body.classList.toggle('immersive',caseView==='chat'&&!!ST.activeCase);if(caseView==='chat'&&ST.activeCase)return renderChat();if(caseView==='debrief'&&ST.activeCase&&ST.activeCase.debrief)return renderDebrief();caseView='list';
-  const done={};(ST.cases||[]).forEach(h=>{done[h.id]=Math.max(done[h.id]||0,h.nota)});
-  const ac=ST.activeCase,can=!!sampler;
-  const card=d=>`<button class="case t-${d.cat}" type="button" data-case="${d.id}" ${can?'':'disabled'}><span class="row"><span class="chip">${CATS[d.cat]}</span><span>${esc(d.level)}</span><span>· ${esc(d.setting)}</span>${DATASETS[d.id]||d.data?'<span class="dtag">dados reais</span>':''}${done[d.id]!=null?`<span class="score">nota ${done[d.id]}</span>`:''}</span><b>${esc(d.title)}</b><p>${esc(d.situation)}</p></button>`;
-  box.innerHTML=`<div class="cs"><div class="cs-h"><button class="icon-btn" id="csBack" aria-label="Voltar ao feed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>Casos</b><span>simulações com pessoas da empresa, interpretadas pelo Claude</span></div></div>
-  <div class="cs-body">
-   <p class="cs-intro">Você escolhe com quem falar no chat da empresa, investiga os dados com SQL de verdade, manda entregáveis escritos e entra em reuniões ao vivo. Antes de decidir, registre sua hipótese e sua confiança. No final: nota por competência, o que um sênior faria, sua história para entrevista e as lições que voltam no feed.</p>
+  const can=!!sampler,best=bestNotes(),hist=ST.cases||[],avg=hist.length?num(hist.reduce((a,h)=>a+h.nota,0)/hist.length,1):'–',rec=recommendCase(),rf=caseFmt(rec.d);
+  const all=[...CASES,...(ST.genCases||[]).slice(-8).reverse()],lvls=['all','Júnior','Pleno','Sênior','Líder técnico','Entrevista'];
+  const shown=all.filter(d=>(caseFilter.lvl==='all'||d.level===caseFilter.lvl||(caseFilter.lvl==='Líder técnico'&&/Líder|Staff/.test(d.level)))&&(caseFilter.cat==='all'||caseFilter.cat==='novo'?(caseFilter.cat!=='novo'||best[d.id]==null):d.cat===caseFilter.cat));
+  box.innerHTML=`<div class="cs cl"><div class="cs-h"><button class="icon-btn" id="csBack" aria-label="Voltar ao feed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>Casos</b><span>simulações de trabalho com pessoas interpretadas pelo Claude</span></div><div class="cstats"><span><b>${hist.length}</b> jogados</span><span><b>${avg}</b> nota média</span></div></div>
+  <div class="cs-body clist">
    ${can?'':'<div class="note">Os casos usam o Claude para interpretar os personagens. Abra o Sinapse pelo link do Claude, com internet, para jogar.</div>'}
-   ${ac&&!ac.done&&!ac.def.career?`<div class="cs-sec">Em andamento</div><button class="case t-${ac.def.cat}" type="button" id="csResume" ${can?'':'disabled'}><span class="row"><span class="chip">${CATS[ac.def.cat]}</span><span>etapa ${ac.stage} de ${ac.def.stages.length}</span></span><b>Continuar: ${esc(ac.def.title)}</b><p>${esc(ac.def.objective)}</p></button>`:''}
-   ${careerHTML(can)}
-   <div class="cs-sec">Caso sob medida</div>
-   <div class="genform t-negocio"><div class="seg" id="gLevel"><span>Nível</span>${LEVELS.map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.level}">${l}</button>`).join('')}</div>
-    <div class="seg" id="gCat"><span>Foco</span>${['Aleatório',...Object.values(CATS)].map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.cat}">${l}</button>`).join('')}</div>
-    <div class="seg" id="gSet"><span>Situação</span>${SETTINGS.map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.setting}">${l.split(' (')[0]}</button>`).join('')}</div>
-    <textarea id="gWork" rows="3" placeholder="Descreva uma situação real do seu trabalho. Troque nomes de pessoas, empresa e clientes." ${genCaseOpt.setting===4?'':'hidden'}>${esc(genCaseOpt.work)}</textarea>
-    <button class="btn primary" type="button" id="gGo" ${can&&!caseBusy?'':'disabled'} style="--tc:var(--spark)">${caseBusy?'Criando o caso…':'Criar caso novo com o Claude'}</button></div>
-   <div class="cs-sec">Empresas-alvo: indústria, fintech e delivery</div>${CASES.filter(d=>/^c1[2-6]$/.test(d.id)).map(card).join('')}
-   <div class="cs-sec">Do júnior ao líder técnico</div>${CASES.filter(d=>!/^c1[2-6]$/.test(d.id)).map(card).join('')}
-   ${(ST.genCases||[]).length?`<div class="cs-sec">Criados para você</div>${ST.genCases.slice(-8).reverse().map(card).join('')}`:''}
+   <section class="rec t-${rec.d.cat}"><div class="rec-l"><span class="rec-k">${rec.cont?'Continue de onde parou':'Recomendado para você agora'}</span><b>${esc(rec.d.title)}</b><p>${esc(rec.why)}</p><span class="rec-m"><span class="cc-ic">${rf.ico}</span>${esc(rec.d.level)} · ${CATS[rec.d.cat]} · ${rf.label} · ~${rf.min} min</span></div><button class="btn primary" type="button" id="recGo" style="--tc:var(--spark)" ${can?'':'disabled'}>${rec.cont?'Continuar':'Começar'}</button></section>
+   <div class="qtiles"><button class="qt" type="button" id="qtGuide">${CICO.book}<b>Como jogar</b><small>5 jogadas e frases-ponte</small></button><button class="qt" type="button" id="qtGen" ${can&&!caseBusy?'':'disabled'}>${CICO.spark}<b>${caseBusy?'Criando…':'Caso sob medida'}</b><small>nível, foco ou seu trabalho</small></button><button class="qt" type="button" id="qtCareer">${CICO.brief}<b>Modo carreira</b><small>${ST.career?esc(CAREER_LEVELS[ST.career.level]):'escolha uma empresa'}</small></button></div>
+   <div id="careerBox">${careerHTML(can)}</div>
+   <div class="fbar"><div class="fchips" id="fLvl">${lvls.map(l=>`<button type="button" data-l="${l}" aria-pressed="${caseFilter.lvl===l}">${l==='all'?'Todos os níveis':l}</button>`).join('')}</div>
+    <div class="fchips" id="fCat">${[['all','Todas'],['novo','Não jogados'],...Object.entries(CATS)].map(([k,l])=>`<button type="button" data-c="${k}" aria-pressed="${caseFilter.cat===k}" class="${CATS[k]?'t-'+k:''}">${CATS[k]?'<i></i>':''}${l}</button>`).join('')}</div></div>
+   <div class="cgrid">${shown.length?shown.map(d=>caseCard(d,best,can)).join(''):'<p class="empty">Nenhum caso com esses filtros.</p>'}</div>
   </div></div>`;
   $('#csBack').addEventListener('click',closeCases);
-  box.querySelectorAll('[data-case]').forEach(b=>b.addEventListener('click',()=>{const d=CASES.find(x=>x.id===b.dataset.case)||(ST.genCases||[]).find(x=>x.id===b.dataset.case);if(d)startCase(d)}));
+  box.querySelectorAll('[data-case]').forEach(b=>b.addEventListener('click',()=>{const d=CASES.find(x=>x.id===b.dataset.case)||(ST.genCases||[]).find(x=>x.id===b.dataset.case);if(!d)return;const ac=ST.activeCase;if(ac&&!ac.done&&ac.def.id===d.id){caseView='chat';renderChat()}else startCase(d)}));
+  $('#recGo').addEventListener('click',()=>{if(rec.cont){caseView='chat';renderChat()}else startCase(rec.d)});
   box.querySelectorAll('[data-co]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.co;ST.career={co:k,level:0,rep:Object.fromEntries(COMPANIES[k].cast.map(p=>[p.name,50])),hist:[],started:today()};save();genCareerCase()}));
   const nx=$('#crNext');if(nx)nx.addEventListener('click',()=>{const a=ST.activeCase;if(a&&a.def.career&&!a.done){caseView='chat';renderChat()}else genCareerCase()});
   const qt=$('#crQuit');if(qt){let armed=false;qt.addEventListener('click',()=>{if(!armed){armed=true;qt.textContent='Toque de novo: a carreira atual será encerrada';setTimeout(()=>{if(qt.isConnected){armed=false;qt.textContent='Trocar de empresa'}},3500);return}ST.career=null;save();renderCases()})}
-  const rs=$('#csResume');if(rs)rs.addEventListener('click',()=>{caseView='chat';renderChat()});
-  [['#gLevel','level'],['#gCat','cat'],['#gSet','setting']].forEach(([sel,k])=>box.querySelectorAll(sel+' button').forEach(b=>b.addEventListener('click',()=>{genCaseOpt[k]=+b.dataset.i;box.querySelectorAll(sel+' button').forEach(x=>x.setAttribute('aria-pressed',x===b));if(k==='setting')$('#gWork').hidden=genCaseOpt.setting!==4})));
-  $('#gWork').addEventListener('input',e=>{genCaseOpt.work=e.target.value});
-  $('#gGo').addEventListener('click',genCase)}
-
+  $('#qtCareer').addEventListener('click',()=>{const c=$('#careerBox');c.scrollIntoView({block:'start',behavior:reduced?'auto':'smooth'});c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),900)});
+  $('#qtGuide').addEventListener('click',guideOverlay);
+  $('#qtGen').addEventListener('click',genOverlay);
+  box.querySelectorAll('#fLvl button').forEach(b=>b.addEventListener('click',()=>{caseFilter.lvl=b.dataset.l;renderCases()}));
+  box.querySelectorAll('#fCat button').forEach(b=>b.addEventListener('click',()=>{caseFilter.cat=b.dataset.c;renderCases()}))}
+function guideOverlay(){const o=overlay(`<h3>Como jogar um caso</h3><p class="cs-intro">Quase todo caso destrava com estas 5 jogadas, nesta ordem. Travou? Pergunte-se em qual delas você está: quase sempre é a 1 ou a 2.</p>
+   <ol class="guide"><li><b>Entender a decisão.</b> "O que você vai decidir com isso, e até quando?"</li><li><b>Confirmar que entendeu.</b> "Deixa eu ver se entendi: o problema é X e você precisa de Y até quinta. É isso?"</li><li><b>Achar quem sabe o quê.</b> Definição com o dono do número; dado com quem tem acesso.</li><li><b>Hipótese e dados.</b> Registre "acho que é X (70%)" e teste quebrando o número por data, status ou segmento.</li><li><b>Devolver com número, trade-off e próximo passo.</b> "A diferença é 3,3 mi: 1,9 de cancelamento e 1,4 de corte de mês. Proponho a definição do financeiro; valido hoje."</li></ol>
+   <h4 class="gsub">Frases-ponte para quando der branco</h4><ul class="guide"><li>"Antes de responder, posso confirmar uma coisa?"</li><li>"Me ajuda a entender qual decisão isso apoia?"</li><li>"Não tenho esse número agora. Vou checar no dado e te volto até as 15h."</li></ul>
+   <p class="cs-intro">Regra dos 2 minutos: travou por mais que isso, peça uma dica ao mentor. Jogue cada caso duas vezes: a primeira explorando, a segunda fazendo o que o sênior faria.</p><div class="btnrow"><button class="btn primary" type="button" id="gdOk" style="--tc:var(--spark)">Entendi</button></div>`);$('#gdOk').addEventListener('click',closeOverlay)}
+function genOverlay(){if(!sampler||caseBusy)return;const o=overlay(`<h3>Caso sob medida</h3><p class="cs-intro">O Claude monta empresa, pessoas, fatos escondidos e, se o problema for de dados, um banco para você investigar.</p>
+   <div class="genform t-negocio" style="border:0;padding:0;background:transparent"><div class="seg" id="gLevel"><span>Nível</span>${LEVELS.map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.level}">${l}</button>`).join('')}</div>
+    <div class="seg" id="gCat"><span>Foco</span>${['Aleatório',...Object.values(CATS)].map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.cat}">${l}</button>`).join('')}</div>
+    <div class="seg" id="gSet"><span>Situação</span>${SETTINGS.map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.setting}">${l.split(' (')[0]}</button>`).join('')}</div>
+    <textarea id="gWork" rows="4" placeholder="Descreva uma situação real do seu trabalho. Troque nomes de pessoas, empresa e clientes." ${genCaseOpt.setting===4?'':'hidden'}>${esc(genCaseOpt.work)}</textarea></div>
+   <div class="btnrow"><button class="btn primary" type="button" id="gGo" style="--tc:var(--spark)">Criar caso</button><button class="btn" type="button" id="gNo">Cancelar</button></div>`);
+  [['#gLevel','level'],['#gCat','cat'],['#gSet','setting']].forEach(([sel,k])=>o.querySelectorAll(sel+' button').forEach(b=>b.addEventListener('click',()=>{genCaseOpt[k]=+b.dataset.i;o.querySelectorAll(sel+' button').forEach(x=>x.setAttribute('aria-pressed',x===b));if(k==='setting')$('#gWork').hidden=genCaseOpt.setting!==4})));
+  $('#gWork').addEventListener('input',e=>{genCaseOpt.work=e.target.value});$('#gNo').addEventListener('click',closeOverlay);$('#gGo').addEventListener('click',()=>{closeOverlay();genCase()})}
 const CASE_JSON=lvl=>`{"title":"...","level":"${lvl}","cat":"dados|estat|modelo|negocio","setting":"...","company":"...","player":"Você é ...","cast":[{"name":"...","role":"...","style":"..."}],"group":"nome curto do grupo do projeto","situation":"...","objective":"...","stages":["..."],"hidden":["..."],"scene":{"mode":"meeting","title":"...","participants":["..."]},"opening":[{"who":"narrador","where":"...","text":"..."},{"who":"<nome de um personagem>","where":"...","text":"..."}],"data":{"tables":[{"name":"nome_snake","columns":["col_a","col_b"],"rows":[["valor",1]]}],"facts":["números verdadeiros que as tabelas mostram"]}}`;
 const CASE_RULES=`O jogador usa o chat corporativo da empresa (conversas privadas com cada personagem e um grupo do projeto) e às vezes entra em reuniões ao vivo. Se o caso começa numa reunião, entrevista ou conversa presencial, inclua "scene" com os participantes; senão omita "scene". A abertura tem 1 mensagem do narrador situando a cena e 1 ou 2 falas que já colocam o problema, cada uma com "where" (o nome de quem manda, no privado com o jogador; "grupo"; ou "reuniao" se começar ao vivo).
 Se o problema for de dados (análise, métrica, modelo), inclua "data": 1 a 3 tabelas pequenas (até 80 linhas cada, colunas em snake_case) com números coerentes, em que os fatos ocultos possam ser DESCOBERTOS com SQL (agrupar, filtrar, comparar). "facts" resume os números verdadeiros. Se o caso for só de conversa, omita "data".`;

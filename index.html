@@ -236,6 +236,64 @@ body.ai-on .ai-btn{display:inline-flex!important}
 .debrief .nota{font:800 44px/1 var(--f-display);color:var(--spark)}
 .debrief h5{margin:0;font:600 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .debrief ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px;font-size:14px}
+/* Chat corporativo dos casos */
+.tm{width:100%;max-width:1040px;height:100%;display:grid;grid-template-columns:minmax(0,1fr);min-height:0}
+.tm-side,.tm-main{display:flex;flex-direction:column;min-height:0;min-width:0}
+.tm-side{background:var(--bg2);border-right:1px solid var(--line)}
+.tm.show-thread .tm-side{display:none}.tm.show-list .tm-main{display:none}
+@media (min-width:760px){.tm{grid-template-columns:320px minmax(0,1fr)}.tm.show-thread .tm-side,.tm.show-list .tm-main{display:flex}.tm-back{display:none!important}}
+.tm-tools{display:flex;gap:4px;padding:0 10px 8px;flex-wrap:wrap}
+.tm-list{flex:1;min-height:0;overflow-y:auto;padding:4px 8px 12px;display:flex;flex-direction:column;gap:2px}
+.tm-item{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:0;background:transparent;padding:9px 10px;border-radius:12px;cursor:pointer}
+.tm-item:hover{background:var(--surface)}
+.tm-item.on{background:var(--surface2)}
+.tm-item .av,.tm-mh .av{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font:700 12px var(--f-mono);color:var(--bg);background:var(--pc)}
+.tm-item .tx{flex:1;min-width:0;display:flex;flex-direction:column}
+.tm-item b{font:600 14px var(--f-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-item small{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-item.unread b,.tm-item.unread small{color:var(--fg);font-weight:700}
+.badge{min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:var(--spark);color:var(--bg);font:700 11px/20px var(--f-mono);text-align:center;flex:none}
+.tm-mh{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.tm-mh .t{display:flex;flex-direction:column;min-width:0}
+.tm-mh .t b{font:700 15px var(--f-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-mh .t span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tm-mh .sp{flex:1}
+.rbtn.call{border:1px solid var(--line);color:var(--fg)}
+.tm-log{background:var(--bg)}
+.tm-toast{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:5;width:min(92%,420px);display:flex;flex-direction:column;gap:2px;text-align:left;background:var(--surface2);border:1px solid var(--line);border-left:0;box-shadow:0 10px 30px rgba(0,0,0,.5);border-radius:14px;padding:10px 14px;cursor:pointer;animation:rise .25s ease-out}
+.tm-toast b{font:600 12.5px var(--f-body);color:var(--pc)}
+.tm-toast span{font-size:13.5px}
+#cases{position:fixed}
+/* Reunião ao vivo */
+.mt{position:relative;width:100%;max-width:1040px;height:100%;display:flex;flex-direction:column;min-height:0;background:#04090a}
+.mt-top{display:flex;align-items:center;gap:10px;padding:12px 56px 8px 16px}
+.mt-top .t{flex:1;min-width:0;display:flex;flex-direction:column}
+.mt-top .t b{font:700 16px var(--f-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mt-top .t span{font:11px var(--f-mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.live{font:700 10px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--bad);padding:3px 7px;border-radius:6px;animation:pulse 1.6s ease-in-out infinite}
+.clock{font:600 12px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.mt-grid{display:grid;gap:8px;padding:4px 16px 10px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.mt-grid.n4,.mt-grid.n5,.mt-grid.n6{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (min-width:760px){.mt-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}}
+.tile{position:relative;aspect-ratio:16/11;max-height:170px;border-radius:14px;background:linear-gradient(160deg,var(--surface2),var(--bg2));border:2px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px;min-width:0;transition:border-color .2s,box-shadow .2s}
+.tile .av.big{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font:700 15px var(--f-mono);color:var(--bg);background:var(--pc)}
+.tile b{font:600 13px var(--f-body);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile small{font-size:10.5px;color:var(--muted);max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile.me{opacity:.85}
+.tile.speaking{border-color:var(--pc);box-shadow:0 0 0 4px color-mix(in srgb,var(--pc) 25%,transparent),0 0 30px -6px var(--pc)}
+.tile.speaking .av.big{animation:talk .5s ease-in-out infinite alternate}
+@keyframes talk{to{transform:scale(1.08);box-shadow:0 0 0 6px color-mix(in srgb,var(--pc) 30%,transparent)}}
+.mt-cap{flex:1;min-height:0;overflow-y:auto;padding:8px 16px;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line)}
+.cap{font-size:15px;line-height:1.42;white-space:pre-wrap;overflow-wrap:anywhere;animation:rise .25s ease-out}
+.cap b{display:block;font:600 11.5px var(--f-body);color:var(--pc,var(--muted))}
+.cap.me b{color:var(--spark)}
+.cap.nar{font-size:12.5px;color:var(--muted);font-style:italic;text-align:center}
+.cap.men{background:color-mix(in srgb,var(--ia) 14%,var(--bg2));border:1px dashed var(--ia);border-radius:12px;padding:8px 12px}
+.cap.men b{color:var(--ia)}
+.cap pre.art{margin:6px 0 2px;padding:8px 10px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font:11.5px/1.45 var(--f-mono);overflow-x:auto;white-space:pre}
+.rbtn.leave{color:var(--bad)}
+.mt-join{position:absolute;inset:0;display:grid;place-items:center;background:#04090a;z-index:6;font:700 18px var(--f-display);animation:rise .3s ease-out}
+.mt .cv-obj{max-height:30%}
 .ctx{display:flex;gap:10px;align-items:flex-start}
 .ctx .av{width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1.5px solid var(--tc);display:grid;place-items:center;font:700 12px var(--f-mono);color:var(--tc);flex:none}
 .ctx .bub{background:var(--bg2);border:1px solid var(--line);border-radius:4px 16px 16px 16px;padding:9px 13px;font-size:15px;line-height:1.4;min-width:0}
@@ -1215,9 +1273,14 @@ const CASES=[
 const PALETTE=()=>[C.ana,C.ds,C.ml,C.ia,C.neuro,C.gold];
 const LEVELS=['Júnior','Pleno','Sênior','Líder técnico','Entrevista'];
 const SETTINGS=['Social (relação com colegas)','Tático (resolver um problema com dados)','Liderança (decisão, time, prioridade)','Entrevista de emprego'];
-let caseView='list',caseBusy=false,genCaseOpt={level:1,cat:0,setting:1};
+/* Casos que já começam ao vivo, em reunião ou conversa direta */
+const CASE_SCENE={c2:{title:'Entrevista · etapa do gestor',participants:['Marcelo','Lívia']},c3:{title:'Reunião de produto: novo checkout',participants:['Thiago','Fernanda']},c6:{title:'Comitê de crédito',participants:['Henrique','Patrícia','Sérgio']},c8:{title:'Kickoff: previsão de atrasos',participants:['Gustavo','Kátia']},c10:{title:'1:1 com a Ana',participants:['Ana']}};
+const GROUP='grupo',MENTOR='mentor';
+const groupName=d=>d.group||'Equipe do projeto';
+let caseView='list',caseBusy=false,genCaseOpt={level:1,cat:0,setting:1},mtClock=null;
+const sleep=ms=>new Promise(r=>setTimeout(r,reduced?0:ms));
 
-function caseSetup(d){return `Você é o motor de uma simulação imersiva de trabalho que treina um profissional de dados no Brasil. Você interpreta TODOS os personagens do caso e um narrador. O jogador é a pessoa do outro lado: nunca escreva falas, decisões ou pensamentos do jogador.
+function caseSetup(d,scene){return `Você é o motor de uma simulação imersiva de trabalho que treina um profissional de dados no Brasil. Você interpreta TODOS os personagens do caso e um narrador. O jogador é a pessoa do outro lado: nunca escreva falas, decisões ou pensamentos do jogador.
 
 CASO: ${d.title} (${d.level} · ${d.setting})
 Empresa: ${d.company}
@@ -1228,45 +1291,65 @@ Etapas: ${d.stages.map((s,i)=>`${i+1}. ${s}`).join(' | ')}
 Personagens: ${d.cast.map(p=>`${p.name} (${p.role}): ${p.style}`).join(' | ')}
 Fatos ocultos (revele só quando o jogador investigar, perguntar ou pedir os dados certos; nunca entregue de graça): ${d.hidden.join(' | ')}
 
+A interface: o jogador usa o chat corporativo da empresa. Existem conversas privadas entre o jogador e cada personagem, e um grupo chamado "${groupName(d)}" com todos. Toda mensagem do jogador chega marcada com o lugar: [Privado com Nome], [No grupo ...], [Na reunião], ou é um evento entre colchetes (ex.: [Você ligou para Nome], [Você convocou uma reunião com o grupo agora], [Você saiu da reunião]).
+- Cada personagem só sabe o que viu ou ouviu. O que o jogador disse em privado ao Paulo, a Carla não sabe, a menos que alguém conte.
+- Em cada mensagem sua informe "where": o nome do personagem (é a conversa privada dele com o jogador), "grupo", ou "reuniao".
+- Personagens podem mandar mensagem por iniciativa própria em outra conversa quando fizer sentido (gestor cobrando prazo, colega respondendo mais tarde, alguém repassando informação).
+- Reunião ou conversa ao vivo: quando a história pedir (reunião marcada chegou, apresentação, conversa presencial, chamada aceita), devolva "scene":{"mode":"meeting","title":"...","participants":["nomes de quem está presente"]} e as falas com "where":"reuniao". Uma chamada pode ser recusada de forma realista ("em reunião, te ligo às 15h"). Na reunião todos os presentes ouvem tudo, conversam entre si e reagem em tempo real.
+- Quando a reunião terminar (assunto resolvido, horário acabou ou o jogador saiu), devolva "scene":{"mode":"chat"}. Sem mudança de cena, use "scene":null.
+${scene&&scene.mode==='meeting'?`Cena inicial: reunião ao vivo "${scene.title}" com ${scene.participants.join(', ')}.`:'Cena inicial: chat corporativo.'}
+
 Como conduzir:
 - Realismo de empresa brasileira: cada pessoa tem agenda, pressa, humor e interesses próprios; interrompe, pede números, resiste a mudanças, muda de assunto, elogia quando merecido. Linguagem natural de chat e de reunião, em português do Brasil.
-- Reaja à ação do jogador de forma coerente. Boas ações (perguntar a decisão, checar dados, propor número e próximo passo, respeitar as pessoas) destravam informação e confiança. Ações fracas (jargão sem tradução, prometer o impossível, culpar alguém, chutar) trazem consequências realistas, mas sempre dão chance de recuperar.
+- Reaja à ação do jogador de forma coerente. Boas ações (perguntar a decisão, checar dados, propor número e próximo passo, respeitar as pessoas, falar com a pessoa certa no canal certo) destravam informação e confiança. Ações fracas (jargão sem tradução, prometer o impossível, culpar alguém em público, chutar) trazem consequências realistas, mas sempre dão chance de recuperar.
 - Quando o jogador pedir dados, consultas ou arquivos, entregue artefatos plausíveis dentro do texto: resultado de SQL como tabela curta com linhas começando por "|", trecho de log, número de dashboard, mensagem encaminhada.
-- Mude de cena quando fizer sentido (reunião, 1:1, canal do Slack, dia seguinte) usando o narrador. Personagens podem conversar entre si.
+- Use o narrador ("who":"narrador") para passagem de tempo e contexto ("Duas horas depois...", "Quinta, 9h, a reunião com a diretoria começa").
 - "stage" é a etapa em andamento (1 a ${d.stages.length}). Avance quando o objetivo da etapa atual for cumprido. "done": true quando todas as etapas forem cumpridas ou quando o caso fracassar de forma irreversível (explique pelo narrador).
-- Se a mensagem do jogador for "[DICA]", responda só com o "mentor": uma dica curta e socrática (uma pergunta ou um empurrão), sem dar a resposta pronta. O mentor está fora da cena.
-- Mensagens curtas como chat real: 1 a 4 mensagens por turno, cada uma com até 3 frases (artefatos podem ser maiores).
+- Se a mensagem do jogador for "[DICA]", responda só com {"who":"mentor","where":"mentor","text":"..."}: uma dica curta e socrática, sem dar a resposta pronta. O mentor está fora da cena.
+- Mensagens curtas como chat real: 1 a 4 mensagens por turno, cada uma com até 3 frases (artefatos podem ser maiores). Em reunião, até 5 falas.
 
 Responda SEMPRE só com JSON neste formato:
-{"msgs":[{"who":"nome do personagem, ou narrador, ou mentor","text":"..."}],"stage":1,"done":false}`}
+{"msgs":[{"who":"nome do personagem, narrador ou mentor","where":"nome do personagem, grupo, reuniao ou mentor","text":"..."}],"stage":1,"done":false,"scene":null}`}
 
+function vscene(d,s){if(!s||typeof s!=='object')return null;if(s.mode==='chat')return{mode:'chat'};if(s.mode!=='meeting')return null;
+  const ps=(Array.isArray(s.participants)?s.participants:[]).map(n=>{const p=d.cast.find(x=>x.name.toLowerCase()===String(n).toLowerCase());return p&&p.name}).filter(Boolean);
+  return ps.length?{mode:'meeting',title:sstr(s.title,80)||'Reunião',participants:[...new Set(ps)]}:null}
 function validCase(o){if(!o||typeof o!=='object')return null;const s=(v,n)=>sstr(v,n);const arr=(v,n,m)=>(Array.isArray(v)?v:[]).map(x=>s(x,n)).filter(Boolean).slice(0,m);
   const cast=(Array.isArray(o.cast)?o.cast:[]).map(p=>p&&s(p.name,30)&&s(p.role,80)?{name:s(p.name,30),role:s(p.role,80),style:s(p.style,200)||''}:null).filter(Boolean).slice(0,5);
-  const d={id:'cg'+Date.now().toString(36),title:s(o.title,70),level:s(o.level,20)||'Pleno',cat:CAT_KEYS.includes(o.cat)?o.cat:'negocio',setting:s(o.setting,80)||'',company:s(o.company,120)||'',player:s(o.player,200),cast,situation:s(o.situation,600),objective:s(o.objective,400),stages:arr(o.stages,140,6),hidden:arr(o.hidden,300,6),opening:vmsgs(o.opening),gen:1};
+  const d={id:'cg'+Date.now().toString(36),title:s(o.title,70),level:s(o.level,20)||'Pleno',cat:CAT_KEYS.includes(o.cat)?o.cat:'negocio',setting:s(o.setting,80)||'',company:s(o.company,120)||'',player:s(o.player,200),cast,group:s(o.group,40)||'',situation:s(o.situation,600),objective:s(o.objective,400),stages:arr(o.stages,140,6),hidden:arr(o.hidden,300,6),opening:vmsgs(o.opening),gen:1};
+  if(o.scene){const sc=vscene(d,o.scene);if(sc&&sc.mode==='meeting')d.scene=sc}
   return d.title&&d.player&&d.situation&&d.objective&&cast.length&&d.stages.length>=2&&d.hidden.length&&d.opening.length?d:null}
-function vmsgs(v){return(Array.isArray(v)?v:[]).map(m=>m&&sstr(m.who,40)&&sstr(m.text,1500)?{who:sstr(m.who,40),text:sstr(m.text,1500)}:null).filter(Boolean).slice(0,5)}
+function vmsgs(v){return(Array.isArray(v)?v:[]).map(m=>m&&sstr(m.who,40)&&sstr(m.text,1500)?{who:sstr(m.who,40),where:sstr(m.where,40)||'',text:sstr(m.text,1500)}:null).filter(Boolean).slice(0,6)}
+function normWhere(a,m){const d=a.def,w=String(m.where||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''),who=String(m.who||'').toLowerCase();
+  if(who==='mentor'||w==='mentor')return MENTOR;
+  if(w.startsWith('reuni'))return a.scene.mode==='meeting'?'reuniao':GROUP;
+  if(w.startsWith('grupo'))return GROUP;
+  const p=d.cast.find(x=>x.name.toLowerCase()===w)||d.cast.find(x=>w&&w.includes(x.name.toLowerCase()));if(p)return p.name;
+  if(a.scene.mode==='meeting')return'reuniao';
+  if(who!=='narrador'){const q=d.cast.find(x=>x.name.toLowerCase()===who);if(q)return q.name}
+  return a.thread||GROUP}
 
 function personColor(d,who){const i=d.cast.findIndex(p=>p.name===who);return PALETTE()[(i<0?5:i)%6]}
 function fmtMsg(t){const lines=t.split('\n'),out=[];let buf=[],code=false;const flush=()=>{if(buf.length){out.push(`<pre class="art">${esc(buf.join('\n'))}</pre>`);buf=[]}};
   for(const l of lines){if(l.trim().startsWith('```')){if(code){flush();code=false}else code=true;continue}if(code||l.trim().startsWith('|')){buf.push(l);continue}flush();out.push(esc(l))}flush();
   return out.join('\n').replace(/\n?(<pre)/g,'$1').replace(/(<\/pre>)\n?/g,'$1')}
-function msgHTML(d,m){if(m.me)return`<div class="m me"><div class="b">${esc(m.text)}</div></div>`;const w=(m.who||'').toLowerCase();
-  if(w==='narrador')return`<div class="m nar">${fmtMsg(m.text)}</div>`;
+const roleOf=(d,who)=>(d.cast.find(x=>x.name===who)||{}).role||'';
+function msgHTML(d,m,group){if(m.me)return`<div class="m me"><div class="b">${esc(m.text)}</div></div>`;const w=(m.who||'').toLowerCase();
+  if(w==='narrador'||w==='sistema')return`<div class="m nar${w==='sistema'?' sys':''}">${fmtMsg(m.text)}</div>`;
   if(w==='mentor')return`<div class="m men"><div class="b"><span class="nm" style="--pc:var(--ia)">Mentor</span>${fmtMsg(m.text)}</div></div>`;
-  if(w==='sistema')return`<div class="m sys">${esc(m.text)}</div>`;
-  const p=d.cast.find(x=>x.name===m.who);return`<div class="m" style="--pc:${personColor(d,m.who)}"><span class="av" aria-hidden="true">${esc(initials(m.who||'?'))}</span><div class="b"><span class="nm">${esc(m.who)}${p?' · '+esc(p.role):''}</span>${fmtMsg(m.text)}</div></div>`}
+  return`<div class="m" style="--pc:${personColor(d,m.who)}"><span class="av" aria-hidden="true">${esc(initials(m.who||'?'))}</span><div class="b">${group?`<span class="nm">${esc(m.who)}</span>`:''}${fmtMsg(m.text)}</div></div>`}
 
 function openCases(){$('#cases').hidden=false;renderCases()}
-function closeCases(){$('#cases').hidden=true}
-function renderCases(){const box=$('#cases');if(caseView==='chat'&&ST.activeCase)return renderChat();caseView='list';
+function closeCases(){$('#cases').hidden=true;clearInterval(mtClock)}
+function renderCases(){const box=$('#cases');clearInterval(mtClock);if(caseView==='chat'&&ST.activeCase)return renderChat();if(caseView==='debrief'&&ST.activeCase&&ST.activeCase.debrief)return renderDebrief();caseView='list';
   const done={};(ST.cases||[]).forEach(h=>{done[h.id]=Math.max(done[h.id]||0,h.nota)});
   const ac=ST.activeCase,can=!!sampler;
   const card=d=>`<button class="case t-${d.cat}" type="button" data-case="${d.id}" ${can?'':'disabled'}><span class="row"><span class="chip">${CATS[d.cat]}</span><span>${esc(d.level)}</span><span>· ${esc(d.setting)}</span>${done[d.id]!=null?`<span class="score">nota ${done[d.id]}</span>`:''}</span><b>${esc(d.title)}</b><p>${esc(d.situation)}</p></button>`;
   box.innerHTML=`<div class="cs"><div class="cs-h"><button class="icon-btn" id="csBack" aria-label="Voltar ao feed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>Casos</b><span>simulações com pessoas da empresa, interpretadas pelo Claude</span></div></div>
   <div class="cs-body">
-   <p class="cs-intro">Você entra no personagem e resolve o problema conversando: perguntas, pedidos de dados, reuniões, Slack. Cada pessoa tem agenda própria e reage ao que você faz. No final você recebe nota por competência, o que um sênior faria e frases prontas.</p>
+   <p class="cs-intro">Você entra no personagem e resolve o problema como no trabalho: escolhe com quem falar no chat da empresa, manda mensagem no privado ou no grupo, liga, convoca reunião. Quando a história pede, o chat sai de cena e a conversa vira ao vivo. No final, nota por competência, o que um sênior faria e frases prontas.</p>
    ${can?'':'<div class="note">Os casos usam o Claude para interpretar os personagens. Abra o Sinapse pelo link do Claude, com internet, para jogar.</div>'}
-   ${ac&&!ac.done?`<div class="cs-sec">Em andamento</div>${`<button class="case t-${ac.def.cat}" type="button" id="csResume" ${can?'':'disabled'}><span class="row"><span class="chip">${CATS[ac.def.cat]}</span><span>etapa ${ac.stage} de ${ac.def.stages.length}</span></span><b>Continuar: ${esc(ac.def.title)}</b><p>${esc(ac.def.objective)}</p></button>`}`:''}
+   ${ac&&!ac.done?`<div class="cs-sec">Em andamento</div><button class="case t-${ac.def.cat}" type="button" id="csResume" ${can?'':'disabled'}><span class="row"><span class="chip">${CATS[ac.def.cat]}</span><span>etapa ${ac.stage} de ${ac.def.stages.length}</span>${ac.scene&&ac.scene.mode==='meeting'?'<span>· em reunião</span>':''}</span><b>Continuar: ${esc(ac.def.title)}</b><p>${esc(ac.def.objective)}</p></button>`:''}
    <div class="cs-sec">Caso sob medida</div>
    <div class="genform t-negocio"><div class="seg" id="gLevel"><span>Nível</span>${LEVELS.map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.level}">${l}</button>`).join('')}</div>
     <div class="seg" id="gCat"><span>Foco</span>${['Aleatório',...Object.values(CATS)].map((l,i)=>`<button type="button" data-i="${i}" aria-pressed="${i===genCaseOpt.cat}">${l}</button>`).join('')}</div>
@@ -1286,89 +1369,179 @@ async function genCase(){if(!sampler||caseBusy)return;caseBusy=true;renderCases(
   const prev=[...CASES,...(ST.genCases||[])].map(c=>'- '+c.title).join('\n');
   const prompt=`Crie um caso de simulação de trabalho para treinar um profissional de dados no Brasil.
 Nível do jogador: ${lvl}. Foco de competência: ${CATS[cat]}. Tipo de situação: ${set}.
-O caso precisa ser realista e do dia a dia: empresa brasileira plausível (setor variado), problema concreto com números, 2 a 4 personagens com personalidades e interesses diferentes (pelo menos um com algum conflito ou resistência), 3 a 5 etapas que levam ao objetivo, e 3 a 5 fatos ocultos que o jogador só descobre investigando ou perguntando bem. A abertura tem 1 mensagem do narrador situando a cena e 1 ou 2 falas de personagens que já colocam o problema.
+O caso precisa ser realista e do dia a dia: empresa brasileira plausível (setor variado), problema concreto com números, 2 a 4 personagens com personalidades e interesses diferentes (pelo menos um com algum conflito ou resistência), 3 a 5 etapas que levam ao objetivo, e 3 a 5 fatos ocultos que o jogador só descobre investigando ou perguntando bem.
+O jogador usa o chat corporativo da empresa (conversas privadas com cada personagem e um grupo do projeto) e às vezes entra em reuniões ao vivo. Se o caso começa numa reunião, entrevista ou conversa presencial, inclua "scene" com os participantes; senão omita "scene". A abertura tem 1 mensagem do narrador situando a cena e 1 ou 2 falas que já colocam o problema, cada uma com "where" (o nome de quem manda, no privado com o jogador; "grupo"; ou "reuniao" se começar ao vivo).
 Não repita estes casos:
 ${prev}
 Responda só com JSON:
-{"title":"...","level":"${lvl}","cat":"${cat}","setting":"...","company":"...","player":"Você é ...","cast":[{"name":"...","role":"...","style":"..."}],"situation":"...","objective":"...","stages":["..."],"hidden":["..."],"opening":[{"who":"narrador","text":"..."},{"who":"<nome de um personagem>","text":"..."}]}`;
+{"title":"...","level":"${lvl}","cat":"${cat}","setting":"...","company":"...","player":"Você é ...","cast":[{"name":"...","role":"...","style":"..."}],"group":"nome curto do grupo do projeto","situation":"...","objective":"...","stages":["..."],"hidden":["..."],"scene":{"mode":"meeting","title":"...","participants":["..."]},"opening":[{"who":"narrador","where":"...","text":"..."},{"who":"<nome de um personagem>","where":"...","text":"..."}]}`;
   try{const o=await sampler.json(prompt,{modelTier:'default',cache:false});const d=validCase(o);if(!d)throw{code:'invalid'};ST.genCases=[...(ST.genCases||[]),d].slice(-20);save();caseBusy=false;startCase(d)}
   catch(e){caseBusy=false;genChip(e&&e.code==='rate_limited'?'Limite de uso do Claude. Tente de novo em alguns minutos.':'Não consegui criar o caso agora. Tente de novo.',3500);renderCases()}}
 
-function startCase(d){const opening=d.opening.map(m=>({...m}));
-  ST.activeCase={def:d,stage:1,done:false,log:opening.map(m=>({who:m.who,text:m.text})),api:[{role:'user',content:caseSetup(d)+'\n\nA cena começa com as mensagens abaixo (já mostradas ao jogador). Depois disso, aguarde a ação do jogador.'},{role:'assistant',content:JSON.stringify({msgs:opening,stage:1,done:false})}],debrief:null};
-  save();caseView='chat';renderChat();sfx.tick()}
+function startCase(d){const sc=d.scene||CASE_SCENE[d.id]||null;
+  const scene=sc&&sc.participants?{mode:'meeting',title:sc.title||d.title,participants:sc.participants.filter(n=>d.cast.some(p=>p.name===n))}:{mode:'chat'};
+  const a={v:2,def:d,stage:1,done:false,scene,meet:scene.mode==='meeting'?1:0,meetStart:Date.now(),thread:null,unread:{},view:'thread',log:[],api:[],debrief:null};
+  const first=d.opening.find(m=>m.who!=='narrador');a.thread=first&&d.cast.some(p=>p.name===first.who)?first.who:(d.cast[0]||{}).name;
+  const opening=d.opening.map(m=>({who:m.who,text:m.text,where:m.where||(scene.mode==='meeting'?'reuniao':m.who)}));
+  opening.forEach(m=>{m.where=normWhere(a,m);a.log.push({...m,meet:m.where==='reuniao'?a.meet:0})});
+  if(scene.mode==='chat'){const w=a.log.find(m=>m.who!=='narrador');if(w)a.thread=w.where;a.log.forEach(m=>{if(m.who==='narrador')m.where=a.thread})}
+  a.api=[{role:'user',content:caseSetup(d,scene)+'\n\nA cena começa com as mensagens abaixo (já mostradas ao jogador). Depois disso, aguarde a ação do jogador.'},{role:'assistant',content:JSON.stringify({msgs:opening,stage:1,done:false,scene:null})}];
+  ST.activeCase=a;save();caseView='chat';renderChat();sfx.tick()}
 
-function renderChat(){const a=ST.activeCase,d=a.def,box=$('#cases');caseView='chat';
-  box.innerHTML=`<div class="cs t-${d.cat}"><div class="cs-h"><button class="icon-btn" id="cvBack" aria-label="Voltar para a lista de casos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>${esc(d.title)}</b><span id="cvStage"></span></div><button class="rbtn" id="cvObjBtn" type="button" aria-expanded="false">Objetivo</button></div>
-   <div class="stagebar" id="cvBar"></div>
-   <div class="cv-obj" id="cvObj" hidden><div><b>Você:</b> ${esc(d.player)}</div><div><b>Situação:</b> ${esc(d.situation)}</div><div><b>Objetivo:</b> ${esc(d.objective)}</div><ol id="cvSteps"></ol></div>
-   <div class="cs-body" id="cvLog" aria-live="polite"></div>
-   <div class="cv-in"><textarea id="cvText" rows="1" placeholder="Fale, pergunte, peça dados…" aria-label="Sua mensagem"></textarea><button class="send" id="cvSend" aria-label="Enviar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
-   <div class="cv-act"><button class="rbtn" id="cvHint" type="button">Pedir dica ao mentor</button><button class="rbtn" id="cvEnd" type="button">Encerrar e receber avaliação</button><span class="sp"></span><button class="rbtn" id="cvRestart" type="button">Recomeçar</button></div></div>`;
-  const log=$('#cvLog');log.innerHTML=a.log.map(m=>msgHTML(d,m)).join('');if(a.debrief)log.insertAdjacentHTML('beforeend',debriefHTML(a.debrief));
-  updStage();log.scrollTop=log.scrollHeight;
-  $('#cvBack').addEventListener('click',()=>{caseView='list';renderCases()});
-  $('#cvObjBtn').addEventListener('click',e=>{const o=$('#cvObj');o.hidden=!o.hidden;e.currentTarget.setAttribute('aria-expanded',!o.hidden)});
-  const ta=$('#cvText');ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=Math.min(140,ta.scrollHeight)+'px'});
-  ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendCase(ta.value)}});
-  $('#cvSend').addEventListener('click',()=>sendCase(ta.value));
-  $('#cvHint').addEventListener('click',()=>sendCase('[DICA]',true));
-  $('#cvEnd').addEventListener('click',endCase);
-  const rs=$('#cvRestart');let armed=false;rs.addEventListener('click',()=>{if(!armed){armed=true;rs.textContent='Toque de novo para recomeçar';setTimeout(()=>{if(rs.isConnected){armed=false;rs.textContent='Recomeçar'}},3500);return}startCase(d)});
+/* migra casos salvos na versão de chat único */
+function migrateCase(a){if(a.v===2)return a;const first=(a.def.cast[0]||{}).name;Object.assign(a,{v:2,scene:{mode:'chat'},meet:0,unread:{},view:'thread',thread:first});a.log.forEach(m=>{m.where=m.me||m.who==='narrador'?first:(a.def.cast.some(p=>p.name===m.who)?m.who:m.who==='mentor'?MENTOR:first);m.meet=0});return a}
+
+function renderChat(){const a=migrateCase(ST.activeCase);caseView='chat';clearInterval(mtClock);if(a.scene.mode==='meeting')renderMeeting();else renderTeams()}
+
+/* ---------- chat corporativo ---------- */
+function threadsOf(a){const d=a.def;return[{id:MENTOR,name:'Mentor',role:'fora da cena · dicas'},{id:GROUP,name:groupName(d),role:d.cast.map(p=>p.name).join(', ')},...d.cast.map(p=>({id:p.name,name:p.name,role:p.role}))]}
+function lastIn(a,id){for(let i=a.log.length-1;i>=0;i--){const m=a.log[i];if(m.where===id&&!m.meet)return m}return null}
+function listHTML(a){const d=a.def;return threadsOf(a).map(t=>{const l=lastIn(a,t.id),u=a.unread[t.id]||0,col=t.id===MENTOR?C.ia:t.id===GROUP?C.spark:personColor(d,t.id);
+  const prev=l?(l.me?'Você: ':t.id===GROUP&&l.who!=='narrador'?l.who+': ':'')+l.text.replace(/\s+/g,' ').slice(0,60):t.role;
+  return`<button class="tm-item${a.thread===t.id?' on':''}${u?' unread':''}" type="button" data-th="${esc(t.id)}" style="--pc:${col}"><span class="av" aria-hidden="true">${t.id===GROUP?'#':esc(initials(t.name))}</span><span class="tx"><b>${esc(t.name)}</b><small>${esc(prev)}</small></span>${u?`<span class="badge">${u}</span>`:''}</button>`}).join('')}
+function threadLog(a){return a.log.filter(m=>m.where===a.thread&&!m.meet)}
+function renderTeams(){const a=ST.activeCase,d=a.def,box=$('#cases'),th=a.thread,isP=d.cast.some(p=>p.name===th);
+  const head=th===MENTOR?{name:'Mentor',role:'fora da cena: pede uma dica quando travar',col:C.ia,ini:'M'}:th===GROUP?{name:groupName(d),role:d.cast.map(p=>p.name).join(', '),col:C.spark,ini:'#'}:{name:th,role:roleOf(d,th),col:personColor(d,th),ini:initials(th)};
+  box.innerHTML=`<div class="tm t-${d.cat} ${a.view==='list'?'show-list':'show-thread'}">
+   <aside class="tm-side"><div class="cs-h"><button class="icon-btn" id="cvBack" aria-label="Voltar para a lista de casos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>${esc(d.title)}</b><span id="cvStage"></span></div></div>
+    <div class="stagebar" id="cvBar"></div>
+    <div class="tm-tools"><button class="rbtn" id="cvObjBtn" type="button" aria-expanded="false">Objetivo</button><button class="rbtn" id="cvEnd" type="button">Encerrar e avaliar</button><span class="sp"></span><button class="rbtn" id="cvRestart" type="button">Recomeçar</button></div>
+    <div class="cv-obj" id="cvObj" hidden><div><b>Você:</b> ${esc(d.player)}</div><div><b>Situação:</b> ${esc(d.situation)}</div><div><b>Objetivo:</b> ${esc(d.objective)}</div><ol id="cvSteps"></ol></div>
+    <div class="tm-list" id="tmList">${listHTML(a)}</div></aside>
+   <section class="tm-main"><div class="tm-mh" style="--pc:${head.col}"><button class="icon-btn tm-back" id="tmBack" aria-label="Ver conversas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><span class="av" aria-hidden="true">${esc(head.ini)}</span><div class="t"><b>${esc(head.name)}</b><span>${esc(head.role)}</span></div><span class="sp"></span>
+     ${isP?`<button class="rbtn call" id="tmCall" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Ligar</button>`:th===GROUP?`<button class="rbtn call" id="tmMeet" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>Reunião agora</button>`:''}</div>
+    <div class="cs-body tm-log" id="cvLog" aria-live="polite"></div>
+    ${th===MENTOR?`<div class="cv-in"><button class="btn primary" id="cvHint" type="button" style="--tc:var(--ia);flex:1">Pedir uma dica ao mentor</button></div>`:`<div class="cv-in"><textarea id="cvText" rows="1" placeholder="Mensagem para ${esc(head.name)}" aria-label="Sua mensagem"></textarea><button class="send" id="cvSend" aria-label="Enviar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>`}
+   </section></div>`;
+  a.unread[th]=0;fillThread();updStage();bindCommon();
+  $('#tmList').addEventListener('click',e=>{const b=e.target.closest('[data-th]');if(!b)return;a.thread=b.dataset.th;a.view='thread';save();renderTeams()});
+  $('#tmBack').addEventListener('click',()=>{a.view='list';renderTeams()});
+  const call=$('#tmCall');if(call)call.addEventListener('click',()=>{addLog({who:'narrador',text:`Chamando ${th}…`,where:th});sendCase(`[Você ligou para ${th}]`,'event')});
+  const mt=$('#tmMeet');if(mt)mt.addEventListener('click',()=>{addLog({who:'narrador',text:'Você convocou uma reunião com o grupo.',where:GROUP});sendCase('[Você convocou uma reunião com o grupo agora]','event')});
+  const h=$('#cvHint');if(h)h.addEventListener('click',()=>sendCase('[DICA]','hint'));
   lockChat(caseBusy||a.done)}
+function fillThread(){const a=ST.activeCase,log=$('#cvLog');if(!log)return;const g=a.thread===GROUP;
+  const items=threadLog(a);log.innerHTML=items.length?items.map(m=>msgHTML(a.def,m,g)).join(''):`<div class="m nar">${a.thread===MENTOR?'O mentor não participa da cena. Peça uma dica quando travar: ele responde com uma pergunta, não com a resposta.':'Nenhuma mensagem ainda. Comece a conversa.'}</div>`;
+  if(a.debrief&&a.thread!==MENTOR)log.insertAdjacentHTML('beforeend',`<button class="btn" type="button" id="seeDebrief" style="align-self:center">Ver avaliação</button>`);
+  const sd=$('#seeDebrief');if(sd)sd.addEventListener('click',()=>{caseView='debrief';renderDebrief()});
+  log.scrollTop=log.scrollHeight}
+function bindCommon(){const a=ST.activeCase,d=a.def;
+  $('#cvBack').addEventListener('click',()=>{caseView='list';renderCases()});
+  const ob=$('#cvObjBtn');if(ob)ob.addEventListener('click',e=>{const o=$('#cvObj');o.hidden=!o.hidden;e.currentTarget.setAttribute('aria-expanded',!o.hidden)});
+  const ta=$('#cvText');if(ta){ta.addEventListener('input',()=>{ta.style.height='auto';ta.style.height=Math.min(140,ta.scrollHeight)+'px'});ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendCase(ta.value)}})}
+  const sb=$('#cvSend');if(sb)sb.addEventListener('click',()=>sendCase($('#cvText').value));
+  const en=$('#cvEnd');if(en)en.addEventListener('click',endCase);
+  const rs=$('#cvRestart');if(rs){let armed=false;rs.addEventListener('click',()=>{if(!armed){armed=true;rs.textContent='Toque de novo para recomeçar';setTimeout(()=>{if(rs.isConnected){armed=false;rs.textContent='Recomeçar'}},3500);return}startCase(d)})}}
+
+/* ---------- reunião ao vivo ---------- */
+function renderMeeting(){const a=ST.activeCase,d=a.def,sc=a.scene,box=$('#cases');
+  const tile=(n,me)=>`<div class="tile${me?' me':''}" data-who="${esc(n)}" style="--pc:${me?C.spark:personColor(d,n)}"><span class="av big" aria-hidden="true">${me?'VC':esc(initials(n))}</span><b>${me?'Você':esc(n)}</b><small>${me?'':esc(roleOf(d,n))}</small></div>`;
+  box.innerHTML=`<div class="mt t-${d.cat}"><div class="mt-top"><span class="live">ao vivo</span><div class="t"><b>${esc(sc.title)}</b><span id="cvStage"></span></div><span class="clock" id="mtClock">00:00</span></div>
+   <div class="stagebar" id="cvBar"></div>
+   <div class="mt-grid n${Math.min(sc.participants.length+1,6)}">${sc.participants.map(n=>tile(n)).join('')}${tile('Você',true)}</div>
+   <div class="mt-cap" id="cvLog" aria-live="polite"></div>
+   <div class="cv-in"><textarea id="cvText" rows="1" placeholder="Fale na reunião…" aria-label="Sua fala"></textarea><button class="send" id="cvSend" aria-label="Falar"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+   <div class="cv-act"><button class="rbtn" id="cvHint" type="button">Dica do mentor</button><button class="rbtn" id="cvObjBtn" type="button" aria-expanded="false">Objetivo</button><span class="sp"></span><button class="rbtn leave" id="mtLeave" type="button">Sair da reunião</button><button class="rbtn" id="cvEnd" type="button">Encerrar e avaliar</button></div>
+   <div class="cv-obj" id="cvObj" hidden><div><b>Objetivo:</b> ${esc(d.objective)}</div><ol id="cvSteps"></ol></div>
+   <button class="rbtn" id="cvBack" type="button" style="position:absolute;top:10px;right:12px" aria-label="Voltar para a lista de casos">✕</button></div>`;
+  const log=$('#cvLog');log.innerHTML=a.log.filter(m=>m.meet===a.meet||(m.where===MENTOR&&m.meetHint===a.meet)).map(capHTML).join('')||'<div class="cap nar">A reunião começou.</div>';log.scrollTop=log.scrollHeight;
+  updStage();bindCommon();
+  $('#cvHint').addEventListener('click',()=>sendCase('[DICA]','hint'));
+  $('#mtLeave').addEventListener('click',()=>sendCase('[Você saiu da reunião]','event'));
+  const t0=a.meetStart||Date.now(),ck=$('#mtClock');const tick=()=>{const s=Math.floor((Date.now()-t0)/1000);ck.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};tick();mtClock=setInterval(()=>{if(!ck.isConnected)return clearInterval(mtClock);tick()},1000);
+  lockChat(caseBusy||a.done)}
+function capHTML(m){const d=ST.activeCase.def;if(m.me)return`<div class="cap me"><b>Você</b>${esc(m.text)}</div>`;const w=(m.who||'').toLowerCase();
+  if(w==='narrador'||w==='sistema')return`<div class="cap nar">${fmtMsg(m.text)}</div>`;if(w==='mentor')return`<div class="cap men"><b>Mentor</b>${fmtMsg(m.text)}</div>`;
+  return`<div class="cap" style="--pc:${personColor(d,m.who)}"><b>${esc(m.who)}</b>${fmtMsg(m.text)}</div>`}
+function speak(who,on){const t=document.querySelector(`.tile[data-who="${CSS.escape(who)}"]`);if(t)t.classList.toggle('speaking',on)}
+async function enterMeeting(sc){const a=ST.activeCase,prev=a.thread;addLog({who:'narrador',text:`Reunião “${sc.title}” com ${sc.participants.join(', ')}.`,where:sc.participants.length===1&&a.def.cast.some(p=>p.name===sc.participants[0])?sc.participants[0]:GROUP});
+  a.scene=sc;a.meet=(a.meet||0)+1;a.meetStart=Date.now();a.prevThread=prev;save();
+  if(caseView==='chat'){$('#cases').insertAdjacentHTML('beforeend','<div class="mt-join">Entrando na reunião…</div>');await sleep(900);renderMeeting()}}
+async function exitMeeting(){const a=ST.activeCase;a.scene={mode:'chat'};a.view='thread';a.thread=a.prevThread||a.thread||GROUP;save();if(caseView==='chat'){await sleep(1100);renderTeams()}}
+
+/* ---------- mensagens ---------- */
+function addLog(m){const a=ST.activeCase;a.log.push(m);if(a.log.length>160)a.log.shift();if(caseView!=='chat')return;const log=$('#cvLog');if(!log)return;
+  if(a.scene.mode==='meeting'){if(m.where==='reuniao'||m.where===MENTOR){log.insertAdjacentHTML('beforeend',capHTML(m));log.scrollTop=log.scrollHeight}}
+  else if(m.where===a.thread&&!m.meet){const e=log.querySelector('.m.nar:only-child');if(e&&!a.log.some(x=>x!==m&&x.where===a.thread))e.remove();log.insertAdjacentHTML('beforeend',msgHTML(a.def,m,a.thread===GROUP));log.scrollTop=log.scrollHeight}
+  const l=$('#tmList');if(l)l.innerHTML=listHTML(a)}
+function toast(a,m){const box=$('#cases');const el=document.createElement('button');el.type='button';el.className='tm-toast';el.style.setProperty('--pc',m.where===GROUP?C.spark:personColor(a.def,m.who));
+  el.innerHTML=`<b>${esc(m.where===GROUP?groupName(a.def)+' · '+m.who:m.who)}</b><span>${esc(m.text.replace(/\s+/g,' ').slice(0,90))}</span>`;
+  el.addEventListener('click',()=>{if(a.scene.mode==='meeting')return;a.thread=m.where;a.view='thread';renderTeams();el.remove()});box.appendChild(el);setTimeout(()=>el.remove(),4200)}
+function typing(who){const a=ST.activeCase,log=$('#cvLog');if(!log)return null;if(a.scene.mode==='meeting'){speak(who,true);return{remove(){speak(who,false)}}}
+  const el=document.createElement('div');el.className='m typing';el.style.setProperty('--pc',who==='Mentor'?C.ia:personColor(a.def,who));el.innerHTML=`<span class="av">${esc(initials(who||'?'))}</span><div class="b"><i></i><i></i><i></i></div>`;log.appendChild(el);log.scrollTop=log.scrollHeight;return el}
+async function playMsgs(msgs){const a=ST.activeCase;
+  for(const raw of msgs){const m={who:raw.who,text:raw.text,where:normWhere(a,raw)};const w=m.who.toLowerCase();
+    if(m.where==='reuniao'){m.meet=a.meet;if(w!=='narrador'&&caseView==='chat'){speak(m.who,true);await sleep(Math.min(2400,600+m.text.length*13));addLog(m);await sleep(350);speak(m.who,false)}else addLog(m)}
+    else{m.meet=0;if(m.where===MENTOR&&a.scene.mode==='meeting')m.meetHint=a.meet;
+      const visible=caseView==='chat'&&(a.scene.mode==='meeting'?m.where===MENTOR:m.where===a.thread&&a.view==='thread');
+      if(visible&&w!=='narrador'&&w!=='mentor'){const t=typing(m.who);await sleep(Math.min(2200,500+m.text.length*12));if(t)t.remove()}
+      addLog(m);if(!visible&&m.where!==MENTOR){a.unread[m.where]=(a.unread[m.where]||0)+1;const l=$('#tmList');if(l)l.innerHTML=listHTML(a);if(w!=='narrador')toast(a,m)}}
+    sfx.tick()}}
+
+async function sendCase(text,kind='msg'){const a=ST.activeCase;if(!a||a.done||caseBusy||!sampler)return;text=(text||'').trim();if(!text)return;
+  const inMeet=a.scene.mode==='meeting',ta=$('#cvText');
+  const content=kind==='hint'?'[DICA]':kind==='event'?text:(inMeet?'[Na reunião] ':a.thread===GROUP?`[No grupo ${groupName(a.def)}] `:`[Privado com ${a.thread}] `)+text;
+  let mine=null;if(kind==='msg'){mine={me:true,text,where:inMeet?'reuniao':a.thread,meet:inMeet?a.meet:0};addLog(mine);if(ta){ta.value='';ta.style.height='auto'}}
+  caseBusy=true;lockChat(true);a.api.push({role:'user',content});
+  const who=kind==='hint'?'Mentor':inMeet?(a.scene.participants[0]):(a.thread===GROUP?(a.def.cast[0]||{}).name:a.thread);
+  const tip=kind==='hint'&&!inMeet&&a.thread!==MENTOR?null:typing(who);
+  try{const r=await sampler.json(a.api,{modelTier:'default',cache:false});if(tip)tip.remove();
+    const msgs=vmsgs(r&&r.msgs),sc=vscene(a.def,r&&r.scene);if(!msgs.length&&!sc)throw{code:'empty'};
+    a.api.push({role:'assistant',content:JSON.stringify({msgs,stage:r.stage,done:!!r.done,scene:sc})});
+    if(kind==='hint'&&!inMeet&&a.thread!==MENTOR){a.thread=MENTOR;a.view='thread';renderTeams()}
+    if(sc&&sc.mode==='meeting'&&!inMeet)await enterMeeting(sc);
+    await playMsgs(msgs);
+    const ns=clamp(parseInt(r.stage,10)||a.stage,1,a.def.stages.length);if(ns>a.stage){award(15*(ns-a.stage),$('#cvStage'));fire(C.spark)}a.stage=Math.max(a.stage,ns);
+    if(sc&&sc.mode==='chat'&&a.scene.mode==='meeting')await exitMeeting();
+    if(r.done){a.done=true;updStage();save();caseBusy=false;await endCase();return}
+    updStage();save()}
+  catch(e){if(tip)tip.remove();a.api.pop();
+    if(mine){const i=a.log.lastIndexOf(mine);if(i>=0)a.log.splice(i,1);if(caseView==='chat'){renderChat();const t=$('#cvText');if(t)t.value=text}}
+    const note={who:'sistema',text:e&&e.code==='rate_limited'?'Limite de uso do Claude. Espere um pouco e tente de novo.':'A cena não respondeu. Sua mensagem voltou para a caixa; envie de novo.',where:inMeet?'reuniao':a.thread,meet:inMeet?a.meet:0};
+    addLog(note);a.log.splice(a.log.indexOf(note),1)}
+  caseBusy=false;lockChat(a.done)}
+
 function updStage(){const a=ST.activeCase;if(!a)return;const d=a.def,n=d.stages.length,st=Math.min(a.stage,n);
   const s=$('#cvStage');if(s)s.textContent=a.done?'caso encerrado':`etapa ${st} de ${n} · ${d.stages[st-1]}`;
   const bar=$('#cvBar');if(bar)bar.innerHTML=d.stages.map((_,i)=>`<i class="${a.done||i<st-1?'on':''}"></i>`).join('');
   const ol=$('#cvSteps');if(ol)ol.innerHTML=d.stages.map((x,i)=>`<li class="${i<st-1||a.done?'done':i===st-1?'now':''}">${esc(x)}</li>`).join('')}
-function lockChat(on){['#cvSend','#cvHint','#cvEnd'].forEach(s=>{const e=$(s);if(e)e.disabled=on});const ta=$('#cvText');if(ta){ta.disabled=on;ta.placeholder=ST.activeCase&&ST.activeCase.done?'Caso encerrado':'Fale, pergunte, peça dados…'}}
-function addLog(m){const a=ST.activeCase,log=$('#cvLog');a.log.push(m);if(a.log.length>120)a.log.shift();if(log&&caseView==='chat'){log.insertAdjacentHTML('beforeend',msgHTML(a.def,m));log.scrollTop=log.scrollHeight}}
-function typing(who){const log=$('#cvLog');if(!log)return null;const d=ST.activeCase.def;const el=document.createElement('div');el.className='m typing';el.style.setProperty('--pc',personColor(d,who));el.innerHTML=`<span class="av">${esc(initials(who||'?'))}</span><div class="b"><i></i><i></i><i></i></div>`;log.appendChild(el);log.scrollTop=log.scrollHeight;return el}
+function lockChat(on){['#cvSend','#cvHint','#cvEnd','#tmCall','#tmMeet','#mtLeave'].forEach(s=>{const e=$(s);if(e)e.disabled=on});const ta=$('#cvText');if(ta){ta.disabled=on;if(ST.activeCase&&ST.activeCase.done)ta.placeholder='Caso encerrado'}}
 
-async function sendCase(text,hint){const a=ST.activeCase;if(!a||a.done||caseBusy||!sampler)return;text=(text||'').trim();if(!text)return;
-  const ta=$('#cvText');if(ta&&!hint){ta.value='';ta.style.height='auto'}
-  if(!hint)addLog({me:true,text});caseBusy=true;lockChat(true);
-  a.api.push({role:'user',content:hint?'[DICA]':text});
-  const tip=typing(hint?'Mentor':(a.def.cast[0]||{}).name);
-  try{const r=await sampler.json(a.api,{modelTier:'default',cache:false});if(tip)tip.remove();
-    const msgs=vmsgs(r&&r.msgs);if(!msgs.length)throw{code:'empty'};
-    a.api.push({role:'assistant',content:JSON.stringify({msgs,stage:r.stage,done:!!r.done})});
-    for(const m of msgs){const w=m.who.toLowerCase();if(w!=='narrador'&&w!=='mentor'&&!reduced){const t=typing(m.who);await new Promise(res=>setTimeout(res,Math.min(2200,500+m.text.length*12)));if(t)t.remove()}addLog(m);sfx.tick()}
-    const ns=clamp(parseInt(r.stage,10)||a.stage,1,a.def.stages.length);if(ns>a.stage){award(15*(ns-a.stage),$('#cvStage'));fire(C.spark)}a.stage=Math.max(a.stage,ns);
-    if(r.done){a.done=true;updStage();save();caseBusy=false;await endCase();return}
-    updStage();save()}
-  catch(e){if(tip)tip.remove();a.api.pop();if(!hint){a.log.pop();const log=$('#cvLog');if(log&&log.lastElementChild)log.lastElementChild.remove();if(ta)ta.value=text}
-    addLog({who:'sistema',text:e&&e.code==='rate_limited'?'Limite de uso do Claude. Espere um pouco e envie de novo.':'A cena não respondeu. Sua mensagem voltou para a caixa; envie de novo.'});a.log.pop()}
-  caseBusy=false;lockChat(a.done)}
-
-async function endCase(){const a=ST.activeCase;if(!a||caseBusy||!sampler)return;if(a.debrief){renderChat();return}caseBusy=true;lockChat(true);
-  const tip=typing('Mentor');const d=a.def;
-  const transcript=a.log.filter(m=>m.who!=='sistema').map(m=>m.me?`JOGADOR: ${m.text}`:`${m.who}: ${m.text}`).join('\n').slice(-14000);
-  const prompt=`Você é um mentor sênior de ciência de dados avaliando como um profissional se saiu numa simulação de trabalho. Seja honesto, específico e construtivo, citando momentos do diálogo.
+async function endCase(){const a=ST.activeCase;if(!a||caseBusy||!sampler)return;if(a.debrief){caseView='debrief';renderDebrief();return}caseBusy=true;lockChat(true);
+  genChip('O mentor está lendo a conversa…');const d=a.def;
+  const where=m=>m.where==='reuniao'?'reunião':m.where===GROUP?'grupo':m.where===MENTOR?'mentor':'privado com '+m.where;
+  const transcript=a.log.filter(m=>m.who!=='sistema').map(m=>`[${where(m)}] ${m.me?'JOGADOR':m.who}: ${m.text}`).join('\n').slice(-16000);
+  const prompt=`Você é um mentor sênior de ciência de dados avaliando como um profissional se saiu numa simulação de trabalho. Seja honesto, específico e construtivo, citando momentos do diálogo. Avalie também se ele falou com as pessoas certas, no canal certo (privado, grupo, reunião) e no momento certo.
 Caso: ${d.title} (${d.level}). Objetivo: ${d.objective}
 Etapas: ${d.stages.join(' | ')}
 Fatos ocultos que podiam ser descobertos: ${d.hidden.join(' | ')}
-Transcrição:
+Transcrição (entre colchetes, onde cada mensagem aconteceu):
 ${transcript}
 
 Responda só com JSON:
 {"nota":0-10,"resumo":"2 frases sobre o desempenho","fortes":["até 3 acertos concretos"],"melhorar":["até 3 pontos concretos, cada um com o que dizer ou fazer em vez disso"],"senior":"como um profissional sênior teria conduzido o caso, em até 70 palavras","frases":["2 ou 3 frases prontas que o jogador pode usar em situações parecidas"],"comp":{"dados":0-5 ou null,"estat":0-5 ou null,"modelo":0-5 ou null,"negocio":0-5 ou null}}
 Use null nas competências que o caso não exercitou.`;
-  try{const r=await sampler.json(prompt,{modelTier:'default',cache:false});if(tip)tip.remove();
+  try{const r=await sampler.json(prompt,{modelTier:'default',cache:false});genChip('');
     const nota=clamp(Math.round(+r.nota||0),0,10),list=(v,n)=>(Array.isArray(v)?v:[]).map(x=>sstr(x,400)).filter(Boolean).slice(0,n);
     const comp={};CAT_KEYS.forEach(k=>{const v=r.comp&&r.comp[k];comp[k]=v==null||!isFinite(v)?null:clamp(Math.round(+v),0,5)});
     a.debrief={nota,resumo:sstr(r.resumo,500)||'',fortes:list(r.fortes,3),melhorar:list(r.melhorar,3),senior:sstr(r.senior,700)||'',frases:list(r.frases,3),comp};a.done=true;
     ST.cases=[...(ST.cases||[]),{id:d.id,title:d.title,cat:d.cat,nota,date:today()}].slice(-40);
     ST.casePhrases=[...a.debrief.frases.map(t=>({t,cat:d.cat})),...(ST.casePhrases||[])].slice(0,40);
     award(40+nota*8,$('#cvStage'));if(nota>=7){confetti();sfx.lvl()}touchDay();save();
-    const log=$('#cvLog');if(log){log.insertAdjacentHTML('beforeend',debriefHTML(a.debrief));log.scrollTop=log.scrollHeight}updStage()}
-  catch(e){if(tip)tip.remove();addLog({who:'sistema',text:'Não consegui gerar a avaliação agora. Toque em "Encerrar e receber avaliação" de novo.'});a.log.pop()}
+    caseBusy=false;caseView='debrief';renderDebrief();return}
+  catch(e){genChip('Não consegui gerar a avaliação agora. Toque em "Encerrar e avaliar" de novo.',4000)}
   caseBusy=false;lockChat(a.done)}
-function debriefHTML(r){const comp=CAT_KEYS.filter(k=>r.comp[k]!=null);return`<div class="debrief"><h5>Avaliação do mentor</h5><div style="display:flex;align-items:baseline;gap:10px"><span class="nota">${r.nota}</span><span style="color:var(--muted)">de 10</span></div><p style="margin:0">${esc(r.resumo)}</p>
+function renderDebrief(){const a=ST.activeCase,d=a.def,r=a.debrief,box=$('#cases');clearInterval(mtClock);const comp=CAT_KEYS.filter(k=>r.comp[k]!=null);
+  box.innerHTML=`<div class="cs t-${d.cat}"><div class="cs-h"><button class="icon-btn" id="dbBack" aria-label="Voltar para a lista de casos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t"><b>Avaliação</b><span>${esc(d.title)}</span></div></div>
+  <div class="cs-body"><div class="debrief"><h5>Avaliação do mentor</h5><div style="display:flex;align-items:baseline;gap:10px"><span class="nota">${r.nota}</span><span style="color:var(--muted)">de 10</span></div><p style="margin:0">${esc(r.resumo)}</p>
   ${comp.length?`<div class="mastery">${comp.map(k=>`<div class="mrow t-${k}"><span>${CATS[k]}</span><div class="mbar"><i style="width:${r.comp[k]*20}%"></i></div><output>${r.comp[k]}/5</output></div>`).join('')}</div>`:''}
   ${r.fortes.length?`<h5>O que funcionou</h5><ul>${r.fortes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
   ${r.melhorar.length?`<h5>Para a próxima</h5><ul>${r.melhorar.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
   ${r.senior?`<h5>Como um sênior conduziria</h5><p style="margin:0">${esc(r.senior)}</p>`:''}
-  ${r.frases.length?`<div class="pro" style="--tc:var(--spark)"><span class="lab">Frases prontas</span>${r.frases.map(esc).join('<br>')}</div>`:''}</div>`}
+  ${r.frases.length?`<div class="pro" style="--tc:var(--spark)"><span class="lab">Frases prontas</span>${r.frases.map(esc).join('<br>')}</div>`:''}</div>
+  <div class="btnrow"><button class="btn" id="dbConv" type="button">Rever a conversa</button><button class="btn primary" id="dbAgain" type="button" style="--tc:var(--spark)">Jogar de novo</button><button class="btn" id="dbList" type="button">Outros casos</button></div></div></div>`;
+  $('#dbBack').addEventListener('click',()=>{caseView='list';renderCases()});$('#dbList').addEventListener('click',()=>{caseView='list';renderCases()});
+  $('#dbConv').addEventListener('click',()=>{a.scene={mode:'chat'};caseView='chat';renderTeams()});$('#dbAgain').addEventListener('click',()=>startCase(d))}
 $('#openCases').addEventListener('click',openCases);
 
 /* ================= perfil ================= */

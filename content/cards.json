@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-17",
+ "updated": "2026-10-18",
  "cards": [
   {
    "id": "d20261009-ana-01",
@@ -16752,6 +16752,1954 @@
    "q": "Como você apresentaria uma análise complexa para a diretoria em 2 minutos?",
    "ans": "Começo com a resposta em uma frase e o impacto em reais. Depois, no máximo três evidências, cada uma com um gráfico simples e título-conclusão. Fecho com a decisão pedida e os riscos principais. A metodologia fica no anexo para quem perguntar. Antes, ensaio e cronometro, e preparo respostas para as duas perguntas mais prováveis.",
    "pro": "Começo pela resposta e pelo impacto, mostro três evidências e termino com a decisão que eu preciso deles."
+  },
+  {
+   "id": "d20261018-dados-01",
+   "cat": "dados",
+   "topic": "SQL: JOINs, grão e cardinalidade",
+   "kind": "quiz",
+   "mode": "reuniao",
+   "ctx": {
+    "who": "Diretora financeira",
+    "say": "O faturamento do dashboard está 18% acima do ERP desde que juntamos a tabela de itens do pedido."
+   },
+   "q": "O que você responde a Diretora financeira (SQL: JOINs, grão e cardinalidade)?",
+   "opts": [
+    "Provável duplicação de grão: o pedido tem 1 linha e os itens têm N, então o valor do pedido se repete. Agrego os itens por pedido_id antes do JOIN e concilio com o ERP hoje; deve fechar em até 0,1%.",
+    "Deve ser diferença de fuso horário nas datas; vou ajustar o filtro e te aviso.",
+    "O ERP costuma estar desatualizado, então confio mais no dashboard.",
+    "Vou investigar o dashboard e te retorno quando tiver novidade."
+   ],
+   "why": "Juntar pedido (1 linha) com itens (N linhas) repete o valor do pedido em cada item e infla a soma. Agregar o lado N na granularidade do pedido antes do JOIN restaura o grão e a conciliação com o ERP.",
+   "pro": "O valor do pedido estava repetido a cada item; agreguei os itens por pedido antes do JOIN e o total voltou a bater com o ERP."
+  },
+  {
+   "id": "d20261018-dados-02",
+   "cat": "dados",
+   "topic": "SQL: JOINs, grão e cardinalidade",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor de BI",
+    "say": "A tabela clientes tem 1 milhão de linhas e transacoes tem 30 milhões. Um LEFT JOIN de clientes com transacoes devolveu mais de 30 milhões de linhas."
+   },
+   "steps": [
+    {
+     "q": "Por que o resultado passou de 30 milhões de linhas?",
+     "opts": [
+      "O LEFT JOIN repete o cliente a cada transação e ainda mantém uma linha com NULL para cada cliente sem transação.",
+      "O LEFT JOIN cria linhas duplicadas por erro do banco, é preciso rodar DISTINCT.",
+      "Clientes são limitados a 1 milhão, então o excedente vem de transações órfãs.",
+      "O banco soma as duas tabelas, 1 milhão mais 30 milhões."
+     ],
+     "why": "O grão do resultado é a transação. Cada cliente aparece uma vez por transação, e quem nunca comprou aparece uma vez com colunas NULL. Por isso passa de 30 milhões sem haver bug do banco."
+    },
+    {
+     "q": "Como contar quantos clientes distintos compraram?",
+     "opts": [
+      "COUNT(DISTINCT t.cliente_id), pois COUNT(*) conta linhas do join.",
+      "COUNT(*), porque cada linha é um cliente.",
+      "COUNT(c.id), que já conta cada cliente uma vez.",
+      "SUM(t.valor) dividido pela média de valor."
+     ],
+     "why": "Com o grão na transação, COUNT(*) e COUNT(c.id) contam repetições, e quem não comprou entra com NULL. COUNT(DISTINCT t.cliente_id) ignora NULL e conta cada comprador uma vez."
+    },
+    {
+     "q": "Como evitar essa surpresa nos próximos joins?",
+     "opts": [
+      "Antes de juntar, comparar COUNT(*) com COUNT(DISTINCT chave) em cada lado e escrever o grão esperado do resultado.",
+      "Sempre usar INNER JOIN, que nunca duplica.",
+      "Sempre aplicar DISTINCT no SELECT final.",
+      "Confiar no resultado se a query rodou sem erro."
+     ],
+     "why": "Duplicação nasce quando a chave não é única no lado N. Checar unicidade e declarar o grão antes do join pega o problema cedo. DISTINCT no final só esconde o sintoma e pode apagar linhas legítimas."
+    }
+   ],
+   "pro": "Antes de qualquer join eu declaro o grão do resultado e confiro se a chave é única no lado que eu espero."
+  },
+  {
+   "id": "d20261018-dados-03",
+   "cat": "dados",
+   "topic": "SQL: JOINs, grão e cardinalidade",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "A área quer clientes sem pedido pago na contagem, mas eles sumiram e o número parece de pedidos, não de clientes. O que a query faz?",
+   "code": "SELECT c.segmento, COUNT(*) AS clientes\nFROM clientes c\nLEFT JOIN pedidos p ON p.cliente_id = c.id\nWHERE p.status = 'pago'\nGROUP BY c.segmento;",
+   "opts": [
+    "O WHERE em p.status descarta os NULL do LEFT JOIN e o transforma em INNER; COUNT(*) ainda conta pedidos. Filtrar no ON e usar COUNT(DISTINCT c.id).",
+    "O LEFT JOIN só funciona com ORDER BY; basta adicionar ORDER BY c.id.",
+    "GROUP BY remove clientes sem pedido; trocar por GROUP BY c.id.",
+    "COUNT(*) já conta clientes únicos, o problema é o tipo da coluna status."
+   ],
+   "why": "Filtro de tabela do lado direito no WHERE elimina as linhas NULL do LEFT JOIN. No ON ele filtra só os pedidos. COUNT(*) conta linhas do join, enquanto COUNT(DISTINCT c.id) conta clientes.",
+   "pro": "Mudei o filtro para o ON e a contagem para DISTINCT cliente, então o número agora representa clientes e inclui quem não comprou."
+  },
+  {
+   "id": "d20261018-dados-04",
+   "cat": "dados",
+   "topic": "SQL: JOINs, grão e cardinalidade",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "A tem 60 mil linhas com 20 mil chaves, cada uma repetida 3 vezes. B tem 80 mil linhas, as mesmas 20 mil chaves repetidas 4 vezes. Quantas linhas dá o INNER JOIN?",
+   "opts": [
+    "240 mil: por chave são 3 × 4 = 12 combinações, e 20 mil chaves × 12.",
+    "140 mil, a soma das duas tabelas.",
+    "80 mil, o tamanho da maior tabela.",
+    "20 mil, uma linha por chave."
+   ],
+   "why": "Em join muitos-para-muitos, cada chave gera o produto das repetições: 3 × 4 = 12. Com 20 mil chaves, 20.000 × 12 = 240.000 linhas, quatro vezes a tabela A.",
+   "pro": "Join muitos-para-muitos multiplica: 3 por 4 repetições vira 12 linhas por chave, então 20 mil chaves viram 240 mil linhas.",
+   "chart": {
+    "type": "bar",
+    "title": "Linhas (mil)",
+    "labels": [
+     "Tabela A",
+     "Tabela B",
+     "JOIN"
+    ],
+    "series": [
+     {
+      "name": "Linhas (mil)",
+      "values": [
+       60,
+       80,
+       240
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-dados-05",
+   "cat": "dados",
+   "topic": "SQL: JOINs, grão e cardinalidade",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Como você garante que um JOIN não duplica linhas num relatório de receita?",
+   "ans": "Primeiro declaro o grão do resultado, por exemplo uma linha por pedido. Depois confiro se a chave é única em cada lado com COUNT(*) contra COUNT(DISTINCT). Se o lado N tem várias linhas, agrego por pedido numa CTE antes do join. No fim concilio a soma com a fonte oficial, como o ERP, e deixo essa checagem como teste automático. Assim o número que vai para a diretoria fecha com o financeiro.",
+   "pro": "Declaro o grão, confiro unicidade da chave, agrego o lado N antes do join e concilio a soma com o ERP."
+  },
+  {
+   "id": "d20261018-dados-06",
+   "cat": "dados",
+   "topic": "Python e pandas para dados",
+   "kind": "quiz",
+   "mode": "trabalho",
+   "ctx": {
+    "who": "Analista de dados no Slack",
+    "say": "Meu merge de 2 milhões de linhas travou o notebook de 16 GB. O dataframe tem 40 colunas, a maioria texto repetido."
+   },
+   "q": "O que você responde a Analista de dados no Slack (Python e pandas para dados)?",
+   "opts": [
+    "Seleciono só as colunas necessárias antes do merge, converto texto repetido para category e reduzo tipos numéricos (int64 para int32). Isso costuma cortar a memória pela metade ou mais. Se ainda estourar, processo em partes ou uso DuckDB.",
+    "Peça mais RAM para a TI, 16 GB é pouco para qualquer análise.",
+    "Rode de novo, às vezes o notebook só estava com cache cheio.",
+    "Exporte para Excel e faça o merge com PROCV."
+   ],
+   "why": "Texto em object ocupa muita memória; category guarda um código por linha, e downcast reduz números. Cortar colunas antes do merge evita carregar o que não será usado. Excel é pior em 2 milhões de linhas.",
+   "pro": "Reduzi a memória do merge selecionando colunas, usando category e tipos menores antes de juntar, em vez de comprar mais máquina."
+  },
+  {
+   "id": "d20261018-dados-07",
+   "cat": "dados",
+   "topic": "Python e pandas para dados",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor de dados",
+    "say": "Tenho um dataframe de vendas com colunas loja, data e valor. Quero a média móvel de 7 dias por loja."
+   },
+   "steps": [
+    {
+     "q": "Como você calcula?",
+     "opts": [
+      "df.sort_values(['loja','data']).groupby('loja')['valor'].rolling(7).mean()",
+      "df['valor'].rolling(7).mean(), que já respeita as lojas.",
+      "df.groupby('loja')['valor'].mean() repetido 7 vezes.",
+      "Um for sobre as linhas somando as 7 anteriores."
+     ],
+     "why": "Sem groupby, a janela mistura linhas de lojas diferentes. Ordenar por data antes é necessário, pois rolling usa a ordem das linhas. O for funciona, mas é lento e propenso a erro."
+    },
+    {
+     "q": "Os 6 primeiros dias de cada loja saem NaN. O que fazer?",
+     "opts": [
+      "Manter NaN ou definir min_periods de forma explícita conforme a regra de negócio, e documentar a escolha.",
+      "Preencher com 0 para não aparecer vazio no gráfico.",
+      "Apagar as lojas novas do relatório.",
+      "Repetir o primeiro valor 6 vezes."
+     ],
+     "why": "NaN diz que ainda não há 7 dias de histórico. Preencher com 0 finge que a venda foi nula e distorce a média. Se a regra aceitar janela parcial, min_periods deixa isso explícito."
+    },
+    {
+     "q": "Dias sem venda não existem como linhas. Qual o efeito?",
+     "opts": [
+      "rolling(7) conta 7 linhas, não 7 dias; reindexar para o calendário completo ou usar rolling('7D') com índice de data.",
+      "Nenhum, o pandas preenche as datas faltantes sozinho.",
+      "A média fica menor, mas só nos feriados.",
+      "O pandas lança erro e interrompe o cálculo."
+     ],
+     "why": "Janela por número de linhas cobre mais de 7 dias quando há buracos. Com índice datetime, rolling(\"7D\") usa a duração real; reindexar com dias zerados também resolve quando ausência significa venda zero."
+    }
+   ],
+   "pro": "Calculo a janela por loja e por tempo real, então dias sem linha não esticam a média móvel."
+  },
+  {
+   "id": "d20261018-dados-08",
+   "cat": "dados",
+   "topic": "Python e pandas para dados",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "Aparece SettingWithCopyWarning e às vezes a coluna nova não aparece como esperado. Qual a correção?",
+   "code": "df2 = df[df['valor'] > 0]\ndf2['categoria'] = df2['categoria'].str.lower()\nprint(df2.head())",
+   "opts": [
+    "Criar a cópia explícita: df2 = df[df['valor'] > 0].copy(), e alterar df2 depois.",
+    "Silenciar com pd.options.mode.chained_assignment = None.",
+    "Adicionar inplace=True na linha do str.lower().",
+    "Rodar df2.reset_index() antes de atribuir."
+   ],
+   "why": "O filtro pode devolver uma view ou uma cópia, e o pandas não garante qual. Escrever nela gera o aviso e comportamento imprevisível. .copy() deixa claro que df2 é um dataframe independente.",
+   "pro": "Filtrei e usei .copy() antes de alterar, então a escrita afeta só o df2 e o aviso some pela causa."
+  },
+  {
+   "id": "d20261018-dados-09",
+   "cat": "dados",
+   "topic": "Python e pandas para dados",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Quanta memória só os dados ocupam em um dataframe de 10 milhões de linhas e 5 colunas float64?",
+   "opts": [
+    "Cerca de 400 MB: 10 milhões × 5 colunas × 8 bytes.",
+    "Cerca de 50 MB, 1 byte por valor.",
+    "Cerca de 4 GB, 80 bytes por valor.",
+    "Cerca de 40 MB, 1 byte por linha."
+   ],
+   "why": "float64 usa 8 bytes. 10.000.000 × 5 × 8 = 400.000.000 bytes, ou 400 MB. Operações como merge e groupby criam cópias, então reserve 2 a 3 vezes isso de RAM livre.",
+   "pro": "Cada float64 pesa 8 bytes, então 10 milhões por 5 colunas dá 400 MB antes das cópias que as operações criam.",
+   "chart": {
+    "type": "bar",
+    "title": "Memória por tipo (MB)",
+    "labels": [
+     "float64",
+     "float32",
+     "float16"
+    ],
+    "series": [
+     {
+      "name": "MB",
+      "values": [
+       400,
+       200,
+       100
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-dados-10",
+   "cat": "dados",
+   "topic": "Python e pandas para dados",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Como você analisa um dado que não cabe na memória do seu computador?",
+   "ans": "Primeiro reduzo o problema: leio só as colunas e o período necessários e uso tipos menores, como category e float32. Se ainda não couber, processo em chunks agregando por parte, ou uso DuckDB ou Parquet para consultar em disco com SQL. Só escalo para Spark se o volume passar de dezenas de GB e a análise for recorrente. Assim evito complexidade e entrego a resposta no mesmo dia.",
+   "pro": "Antes de escalar a infra, eu reduzo colunas e tipos, processo em partes ou consulto Parquet com DuckDB."
+  },
+  {
+   "id": "d20261018-dados-11",
+   "cat": "dados",
+   "topic": "Git, testes e código reprodutível",
+   "kind": "quiz",
+   "mode": "trabalho",
+   "ctx": {
+    "who": "Gerente de produto no Slack",
+    "say": "O notebook que você mandou roda na sua máquina, mas na minha dá erro e o número da retenção é outro. Preciso disso amanhã."
+   },
+   "q": "O que você responde a Gerente de produto no Slack (Git, testes e código reprodutível)?",
+   "opts": [
+    "Vou congelar as versões das bibliotecas, fixar a semente aleatória e subir tudo num repositório com README de 3 comandos. Em uma hora você roda e deve bater o mesmo número da minha máquina.",
+    "Provavelmente seu computador está desatualizado; atualize o Python e tente de novo.",
+    "Te mando um print do resultado que gerei, assim você não precisa rodar.",
+    "Vou investigar por que difere e te retorno."
+   ],
+   "why": "Diferença de versão de biblioteca e semente aleatória não fixada são as causas mais comuns de resultado diferente. Dependências travadas e passos de execução documentados tornam a análise reproduzível por terceiros.",
+   "pro": "Congelei dependências e semente e documentei a execução, então você consegue rodar a análise e chegar no mesmo número."
+  },
+  {
+   "id": "d20261018-dados-12",
+   "cat": "dados",
+   "topic": "Git, testes e código reprodutível",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor técnico",
+    "say": "Um PR seu mudou a função de limpeza e o relatório mensal mudou 3% sem ninguém perceber."
+   },
+   "steps": [
+    {
+     "q": "Como evitar que isso se repita?",
+     "opts": [
+      "Teste unitário com amostra pequena e saída esperada, rodando automaticamente no CI a cada PR.",
+      "Pedir a alguém para olhar o relatório antes de cada mês.",
+      "Proibir alterações na função de limpeza.",
+      "Registrar a mudança no Slack depois de publicar."
+     ],
+     "why": "Teste automático com entrada pequena e resultado esperado falha no PR, antes de chegar ao relatório. Revisão manual mensal é lenta e depende de atenção, e congelar o código impede melhorias."
+    },
+    {
+     "q": "O teste falha porque a mudança foi intencional. E agora?",
+     "opts": [
+      "Revisar a diferença, justificar no PR e atualizar o valor esperado num commit separado e revisável.",
+      "Desativar o teste até o próximo mês.",
+      "Aumentar a tolerância até o teste passar.",
+      "Apagar o teste, já que o código mudou."
+     ],
+     "why": "Teste que falha por mudança intencional documenta o impacto. Atualizar o esperado em commit claro deixa o revisor ver o efeito de negócio. Desativar ou afrouxar tolerância esconde o risco."
+    },
+    {
+     "q": "Uma chave de acesso foi commitada por engano. O que faz?",
+     "opts": [
+      "Revogar e rotacionar a chave imediatamente; depois limpar o histórico e adicionar um hook que detecta segredos.",
+      "Apagar o arquivo num novo commit, que resolve.",
+      "Tornar o repositório privado e seguir.",
+      "Esperar para ver se alguém usa."
+     ],
+     "why": "O segredo continua no histórico do Git mesmo após apagar o arquivo, e pode já ter sido copiado. A chave precisa ser trocada na hora. Hook de pré-commit evita nova ocorrência."
+    }
+   ],
+   "pro": "Todo PR que mexe em limpeza roda um teste com resultado esperado no CI, então a diferença aparece antes do relatório."
+  },
+  {
+   "id": "d20261018-dados-13",
+   "cat": "dados",
+   "topic": "Git, testes e código reprodutível",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "Cada execução devolve uma divisão diferente e o AUC do relatório não se repete. Como corrigir?",
+   "code": "import numpy as np\ndef split(df):\n    idx = np.random.permutation(len(df))\n    return df.iloc[idx[:800]], df.iloc[idx[800:]]",
+   "opts": [
+    "Usar gerador com semente fixa, como rng = np.random.default_rng(42), e registrar a semente junto do resultado.",
+    "Rodar 10 vezes e reportar o maior AUC.",
+    "Aumentar o tamanho do treino para 900 linhas.",
+    "Nada: np.random.permutation já é determinístico."
+   ],
+   "why": "Sem semente, cada execução sorteia outra divisão e o AUC varia. Fixar e registrar a semente torna o resultado repetível. Escolher o melhor de várias rodadas infla a métrica.",
+   "pro": "Fixei a semente da divisão e registrei no relatório, então qualquer pessoa chega no mesmo AUC."
+  },
+  {
+   "id": "d20261018-dados-14",
+   "cat": "dados",
+   "topic": "Git, testes e código reprodutível",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Num teste que confere se a média não mudou após uma refatoração, qual comparação usar para floats?",
+   "opts": [
+    "np.isclose ou pytest.approx com tolerância relativa (por exemplo 1e-6), pois somar em outra ordem muda o último dígito.",
+    "assert media_nova == media_antiga, igualdade exata.",
+    "Arredondar para inteiro antes de comparar.",
+    "Comparar as duas médias como texto."
+   ],
+   "why": "Ponto flutuante não é exato: em Python 0,1 + 0,2 dá 0,30000000000000004. Somar valores em outra ordem altera os últimos dígitos. Comparar com tolerância evita falso alarme sem aceitar mudanças reais.",
+   "pro": "Em teste numérico eu comparo com tolerância relativa, porque somar em outra ordem muda o último dígito do float."
+  },
+  {
+   "id": "d20261018-dados-15",
+   "cat": "dados",
+   "topic": "Git, testes e código reprodutível",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Como você organiza um projeto de análise para outra pessoa reproduzir em 10 minutos?",
+   "ans": "Repositório Git com pastas claras para dados, código e saídas, um README com 3 comandos, dependências com versões travadas e semente fixa. Dados brutos ficam fora do repo, com script para baixá-los. Incluo um teste que roda o pipeline numa amostra pequena e confere o resultado esperado. Com isso um colega novo reproduz o número em minutos e eu reduzo o risco de ficar dependente da minha máquina.",
+   "pro": "Deixo README com 3 comandos, dependências travadas, semente fixa e um teste em amostra pequena."
+  },
+  {
+   "id": "d20261018-dados-16",
+   "cat": "dados",
+   "topic": "Modelo em produção: API e batch",
+   "kind": "quiz",
+   "mode": "reuniao",
+   "ctx": {
+    "who": "PM de e-commerce",
+    "say": "Quero o score de propensão de compra em tempo real no app, respondendo em menos de 100 ms."
+   },
+   "q": "O que você responde a PM de e-commerce (Modelo em produção: API e batch)?",
+   "opts": [
+    "Dá para servir online se o modelo for leve, como boosting com cerca de 10 ms por predição, e as features vierem prontas de um cache. Features com join pesado ficam num batch noturno. Em 3 semanas entrego com P95 abaixo de 100 ms como meta.",
+    "Batch resolve tudo, tempo real é desnecessário.",
+    "Sim, é só subir o notebook num servidor e chamar.",
+    "Depende; preciso estudar o assunto antes de responder."
+   ],
+   "why": "Latência total soma busca de features e predição. Features calculadas no pedido via join pesado estouram 100 ms; deixá-las pré-calculadas e servir só o modelo leve cumpre a meta. Medir P95, não média, mostra a experiência real.",
+   "pro": "Precalculo as features pesadas em batch e sirvo só o modelo leve online, com meta de P95 abaixo de 100 ms."
+  },
+  {
+   "id": "d20261018-dados-17",
+   "cat": "dados",
+   "topic": "Modelo em produção: API e batch",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor de dados",
+    "say": "Temos um modelo de churn e precisamos gerar o score diário de 5 milhões de clientes."
+   },
+   "steps": [
+    {
+     "q": "Você coloca em API ou roda em batch?",
+     "opts": [
+      "Batch: a decisão é diária, então grava os scores numa tabela e a campanha lê dali. Uma API faria 5 milhões de chamadas sem ganho.",
+      "API, porque tudo em produção precisa ser online.",
+      "Notebook rodando manualmente toda manhã.",
+      "API para cada cliente, chamada pelo CRM em tempo real."
+     ],
+     "why": "Quando a decisão é periódica, batch é mais simples, barato e fácil de monitorar. API só compensa quando a decisão precisa do score no momento do evento."
+    },
+    {
+     "q": "O batch passou a levar 6 h e estoura a janela de 4 h. Primeiro passo?",
+     "opts": [
+      "Medir onde o tempo vai (leitura, features ou predição) e então particionar por data ou cliente e usar predição vetorizada.",
+      "Comprar uma máquina maior sem medir.",
+      "Rodar só para metade dos clientes.",
+      "Reduzir a janela de 4 h para 2 h."
+     ],
+     "why": "Sem medir, otimiza-se o trecho errado. Perfilar mostra o gargalo; particionar e paralelizar ataca o tempo total, e predição em lote vetorizada é muito mais rápida que linha a linha."
+    },
+    {
+     "q": "Como saber que o score de hoje não quebrou em silêncio?",
+     "opts": [
+      "Checagens depois do job: contagem de linhas, percentual de nulos e distribuição do score comparada à de ontem, com alerta fora do limite.",
+      "Esperar a área de negócio reclamar.",
+      "Olhar se o job terminou sem erro.",
+      "Conferir 3 clientes manualmente toda semana."
+     ],
+     "why": "Job que termina sem erro pode gerar scores errados, por exemplo tudo nulo ou deslocado. Validar volume e distribuição automaticamente detecta o problema antes de a campanha usar os dados."
+    }
+   ],
+   "pro": "Se a decisão é diária eu uso batch e valido volume e distribuição do score antes de liberar para a campanha."
+  },
+  {
+   "id": "d20261018-dados-18",
+   "cat": "dados",
+   "topic": "Modelo em produção: API e batch",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "A API leva 800 ms por chamada, num modelo que prevê em 5 ms. Qual o problema?",
+   "code": "@app.post(\"/score\")\ndef score(x: Entrada):\n    model = joblib.load(\"model.pkl\")\n    p = model.predict_proba([x.features])[0][1]\n    return {\"p\": p}",
+   "opts": [
+    "O modelo é lido do disco a cada requisição. Carregar uma vez na inicialização do serviço e reutilizar na memória.",
+    "predict_proba é lento; trocar por predict.",
+    "Falta decorar a função com um cache de resposta de 1 hora.",
+    "O JSON de retorno é grande demais."
+   ],
+   "why": "joblib.load desserializa o arquivo inteiro e domina o tempo da chamada. O modelo deve ser carregado uma vez ao subir o serviço, assim cada requisição paga só os 5 ms de predição.",
+   "pro": "Passei o carregamento do modelo para a inicialização, então cada chamada só prevê, e a latência caiu de 800 ms para poucos milissegundos."
+  },
+  {
+   "id": "d20261018-dados-19",
+   "cat": "dados",
+   "topic": "Modelo em produção: API e batch",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Um modelo prevê 20 microssegundos por linha em CPU. Qual o tempo de um batch de 10 milhões de linhas, só de predição?",
+   "opts": [
+    "Cerca de 3 minutos: 10 milhões × 20 µs = 200 segundos.",
+    "Cerca de 20 segundos.",
+    "Cerca de 55 minutos.",
+    "Cerca de 3 horas."
+   ],
+   "why": "Tempo = linhas × latência. 10.000.000 × 0,00002 s = 200 s, ou cerca de 3,3 minutos. Leitura de dados e escrita costumam pesar mais que a predição.",
+   "pro": "Dez milhões de linhas a 20 microssegundos dão 200 segundos de predição, então o gargalo do batch quase sempre é I/O.",
+   "chart": {
+    "type": "bar",
+    "title": "Tempo de predição para 10 milhões de linhas (s)",
+    "labels": [
+     "5 µs",
+     "20 µs",
+     "100 µs"
+    ],
+    "series": [
+     {
+      "name": "Segundos",
+      "values": [
+       50,
+       200,
+       1000
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-dados-20",
+   "cat": "dados",
+   "topic": "Modelo em produção: API e batch",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Como você coloca um modelo em produção sem prejudicar o negócio se ele falhar?",
+   "ans": "Primeiro rodo em modo sombra: o modelo calcula mas não decide, e comparo com o processo atual por algumas semanas. Depois libero para 5% do tráfego com um fallback para a regra antiga em caso de erro ou timeout. Monitoro latência, taxa de erro e distribuição do score, e defino um critério claro de rollback. Só amplio quando o resultado de negócio se mantém.",
+   "pro": "Subo em modo sombra, depois com 5% do tráfego e fallback para a regra antiga, com critério de rollback definido."
+  },
+  {
+   "id": "d20261018-estat-01",
+   "cat": "estat",
+   "topic": "Teste A/B: desenho e poder",
+   "kind": "quiz",
+   "mode": "reuniao",
+   "ctx": {
+    "who": "PM de e-commerce",
+    "say": "A conversão do checkout é 5%. Quero detectar um aumento de 0,5 ponto percentual com um A/B. Em 3 dias dá?"
+   },
+   "q": "O que você responde a PM de e-commerce (Teste A/B: desenho e poder)?",
+   "opts": [
+    "Precisamos de cerca de 32 mil usuários por grupo, 64 mil no total. Com 10 mil visitantes por dia são uns 7 dias, o que cobre um ciclo semanal. Em 3 dias teríamos poder perto de 50% e o teste seria quase uma moeda.",
+    "Dá, olhamos a significância no terceiro dia e paramos se der verde.",
+    "Rodamos até dar significativo, não importa quanto tempo.",
+    "Com tanto tráfego o poder estatístico não é problema."
+   ],
+   "why": "Para 5% contra 5,5%, alfa 5% e poder 80%, n é cerca de 32 mil por grupo (16·p(1-p)/δ²). A 10 mil por dia, 3 dias dão 15 mil por grupo e poder em torno de 50%. Rodar semana completa também evita viés de dia da semana.",
+   "pro": "Para detectar meio ponto de 5% precisamos de uns 32 mil por grupo, então são cerca de 7 dias e não 3."
+  },
+  {
+   "id": "d20261018-estat-02",
+   "cat": "estat",
+   "topic": "Teste A/B: desenho e poder",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor de dados",
+    "say": "Preciso que você planeje um A/B para uma mudança na página de preço."
+   },
+   "steps": [
+    {
+     "q": "Como define o tamanho da amostra?",
+     "opts": [
+      "Fixo o efeito mínimo que vale detectar para o negócio, a taxa base, alfa de 5% e poder de 80%, e calculo o n. O efeito mínimo vem da decisão de negócio.",
+      "Uso 1.000 usuários por grupo, que é o padrão do mercado.",
+      "Rodo até o valor-p ficar abaixo de 0,05.",
+      "Pego o máximo de tráfego disponível e vejo o que dá."
+     ],
+     "why": "O tamanho depende do efeito mínimo detectável, da variância, do alfa e do poder. Não existe n padrão, e parar quando o valor-p cai abaixo de 0,05 infla falsos positivos."
+    },
+    {
+     "q": "O cliente quer detectar um efeito pela metade do tamanho. O que acontece com n?",
+     "opts": [
+      "Quadruplica, pois n é proporcional a 1 sobre o efeito ao quadrado.",
+      "Dobra.",
+      "Fica igual, só muda o poder.",
+      "Cai pela metade."
+     ],
+     "why": "n ∝ 1/δ². Metade do efeito significa (1/0,5)² = 4 vezes mais amostra. Por isso efeitos pequenos exigem testes muito mais longos."
+    },
+    {
+     "q": "O tráfego não comporta esse n. Quais as alternativas?",
+     "opts": [
+      "Aceitar um efeito mínimo maior, reduzir variância com uma covariável pré-experimento (CUPED) ou usar uma métrica mais sensível; não encurtar o teste.",
+      "Encurtar o teste e torcer.",
+      "Trocar o alfa para 30% para ficar significativo.",
+      "Rodar em apenas um dia de alto tráfego."
+     ],
+     "why": "CUPED usa dados pré-teste para tirar variância e aumenta o poder sem mais usuários. Encurtar ou relaxar o alfa gera conclusões frágeis, e um único dia traz viés sazonal."
+    }
+   ],
+   "pro": "O tamanho do teste vem do efeito mínimo que vale detectar, e se o tráfego não comporta eu mudo o desenho, não encurto o prazo."
+  },
+  {
+   "id": "d20261018-estat-03",
+   "cat": "estat",
+   "topic": "Teste A/B: desenho e poder",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "O que o número impresso representa?",
+   "code": "from statsmodels.stats.power import NormalIndPower\nfrom statsmodels.stats.proportion import proportion_effectsize\nes = proportion_effectsize(0.055, 0.05)\nn = NormalIndPower().solve_power(es, alpha=0.05, power=0.8)\nprint(round(n))  # cerca de 31 mil",
+   "opts": [
+    "O tamanho por grupo, então o total do experimento é cerca do dobro.",
+    "O total de usuários de todo o experimento.",
+    "O número de dias necessários de teste.",
+    "O número de conversões esperadas no grupo controle."
+   ],
+   "why": "solve_power devolve nobs1, a amostra do grupo 1. Com razão 1 entre grupos, o total é 2n, ou cerca de 62 mil. Confundir n por grupo com total subestima o tempo pela metade.",
+   "pro": "O cálculo dá cerca de 31 mil por grupo, então o experimento inteiro precisa de uns 62 mil usuários."
+  },
+  {
+   "id": "d20261018-estat-04",
+   "cat": "estat",
+   "topic": "Teste A/B: desenho e poder",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Regra de bolso n ≈ 16·p(1-p)/δ² por grupo. Com conversão de 10% e efeito mínimo de 1 ponto percentual, quanto dá?",
+   "opts": [
+    "Cerca de 14 mil por grupo: 16 × 0,09 / 0,01² = 14.400.",
+    "Cerca de 1,4 mil por grupo.",
+    "Cerca de 144 mil por grupo.",
+    "Cerca de 400 por grupo."
+   ],
+   "why": "p(1-p) = 0,1 × 0,9 = 0,09 e δ = 0,01, então δ² = 0,0001. n = 16 × 0,09 / 0,0001 = 14.400 por grupo. Metade do efeito quadruplica: 57.600.",
+   "pro": "Com 10% de base e 1 ponto de efeito, a regra de bolso dá cerca de 14 mil usuários por grupo.",
+   "chart": {
+    "type": "bar",
+    "title": "Usuários por grupo (mil) por efeito mínimo, base 10%",
+    "labels": [
+     "2 pp",
+     "1 pp",
+     "0,5 pp"
+    ],
+    "series": [
+     {
+      "name": "Mil",
+      "values": [
+       3.6,
+       14.4,
+       57.6
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-estat-05",
+   "cat": "estat",
+   "topic": "Teste A/B: desenho e poder",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Explique poder estatístico para um diretor sem formação em estatística.",
+   "ans": "Poder é a chance de o teste enxergar um efeito que realmente existe. Com poder de 80%, se a mudança melhora a conversão no tamanho que esperamos, em 8 de 10 testes ele mostra isso. Teste com pouco poder falha em achar ganhos reais e leva a decisões erradas, como descartar uma boa ideia. Por isso calculo a amostra antes de começar e digo quanto tempo o teste precisa.",
+   "pro": "Poder é a chance de o teste enxergar um ganho que existe de verdade; com 80%, em 2 de 10 testes um ganho real passaria batido."
+  },
+  {
+   "id": "d20261018-estat-06",
+   "cat": "estat",
+   "topic": "Validação: treino, validação, teste e CV",
+   "kind": "quiz",
+   "mode": "trabalho",
+   "ctx": {
+    "who": "Cientista sênior no Slack",
+    "say": "O modelo tem AUC 0,91 na validação e 0,74 no teste. Posso apresentar o 0,91 ao cliente?"
+   },
+   "q": "O que você responde a Cientista sênior no Slack (Validação: treino, validação, teste e CV)?",
+   "opts": [
+    "Não, apresente o 0,74: o teste é a estimativa honesta. A queda de 17 pontos indica que ajustamos tanto à validação que superajustamos nela, ou que há vazamento. Vou revisar as features e repetir com validação cruzada.",
+    "Sim, 0,91 é o melhor resultado e mostra o potencial do modelo.",
+    "Apresente a média dos dois, 0,825, para ficar equilibrado.",
+    "Reaproveito o conjunto de teste para ajustar mais o modelo até chegar a 0,91."
+   ],
+   "why": "A validação é usada em muitas escolhas e fica otimista. O teste, tocado uma vez, estima o desempenho real. Queda grande sugere overfit de seleção ou vazamento, e reportar a validação engana o cliente.",
+   "pro": "O número que apresento é o do teste, 0,74, porque a validação foi usada para escolhas e ficou otimista."
+  },
+  {
+   "id": "d20261018-estat-07",
+   "cat": "estat",
+   "topic": "Validação: treino, validação, teste e CV",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor técnico",
+    "say": "Tenho dois anos de vendas diárias por loja e quero prever a demanda das próximas 4 semanas."
+   },
+   "steps": [
+    {
+     "q": "Como divide treino, validação e teste?",
+     "opts": [
+      "Por tempo: treino nos períodos mais antigos, validação depois e teste nas últimas semanas, sem embaralhar.",
+      "Sorteio aleatório de 70%, 15% e 15% das linhas.",
+      "Treino com as lojas A a M e teste com as demais.",
+      "Uso todos os dados no treino e o mesmo para avaliar."
+     ],
+     "why": "Em previsão, o modelo usará o passado para prever o futuro. Sorteio aleatório mistura dias futuros no treino e superestima a qualidade. Divisão temporal imita o uso real."
+    },
+    {
+     "q": "Como fazer validação cruzada nesse caso?",
+     "opts": [
+      "Janelas temporais crescentes, como TimeSeriesSplit: treina até um mês e valida no seguinte, repetindo.",
+      "KFold embaralhado com 5 dobras.",
+      "Leave-one-out nas linhas.",
+      "Não é possível validar séries temporais."
+     ],
+     "why": "Cada dobra treina só com o que veio antes da janela de validação. KFold embaralhado deixa o futuro no treino e vaza informação."
+    },
+    {
+     "q": "Quando você usa o conjunto de teste?",
+     "opts": [
+      "Uma única vez, no final, depois de congelar modelo e hiperparâmetros.",
+      "A cada novo experimento, para acompanhar o progresso.",
+      "Para escolher os hiperparâmetros.",
+      "Junto com o treino para ter mais dados."
+     ],
+     "why": "Cada consulta ao teste que influencia decisões o transforma em validação e o estimador fica otimista. Ele deve ser a medida final, tocada uma vez."
+    }
+   ],
+   "pro": "Em previsão a divisão é por tempo, a validação é em janelas crescentes e o teste eu só abro uma vez no final."
+  },
+  {
+   "id": "d20261018-estat-08",
+   "cat": "estat",
+   "topic": "Validação: treino, validação, teste e CV",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "A validação cruzada dá AUC 0,95, mas em pacientes novos cai para 0,78. Por quê?",
+   "code": "cv = KFold(5, shuffle=True, random_state=0)\nscores = cross_val_score(model, X, y, cv=cv, scoring='roc_auc')\nprint(scores.mean())  # 0.95\n# X tem várias consultas por paciente (coluna paciente_id fora de X)",
+   "opts": [
+    "O mesmo paciente aparece no treino e na validação. Usar GroupKFold com paciente_id para separar pacientes entre as dobras.",
+    "shuffle=True invalida a validação cruzada.",
+    "Cinco dobras são poucas; usar 50 resolve.",
+    "scoring roc_auc só funciona com mais de 100 pacientes."
+   ],
+   "why": "Com várias linhas por paciente, o modelo memoriza o paciente e acerta nas linhas do mesmo indivíduo da validação. GroupKFold garante que todas as linhas de um paciente ficam na mesma dobra.",
+   "pro": "Troquei KFold por GroupKFold por paciente, então a validação mede pacientes novos, como será em produção."
+  },
+  {
+   "id": "d20261018-estat-09",
+   "cat": "estat",
+   "topic": "Validação: treino, validação, teste e CV",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Um conjunto de teste tem 50 casos positivos e o recall medido foi 80%. Qual a margem de erro aproximada, com 95% de confiança?",
+   "opts": [
+    "Cerca de ±11 pontos: 1,96 × √(0,8 × 0,2 / 50) ≈ 0,11.",
+    "Cerca de ±1 ponto.",
+    "Cerca de ±3 pontos.",
+    "Cerca de ±25 pontos."
+   ],
+   "why": "Erro padrão = √(0,8·0,2/50) = √0,0032 = 0,057. Multiplicando por 1,96 dá 0,111, ou 11 pontos. Recall entre 69% e 91% com 50 positivos é uma faixa ampla.",
+   "pro": "Com 50 positivos no teste, um recall de 80% tem margem de ±11 pontos, então comparar modelos por 2 pontos é ruído.",
+   "chart": {
+    "type": "bar",
+    "title": "Margem de erro do recall de 80% (pontos)",
+    "labels": [
+     "50 positivos",
+     "200 positivos",
+     "800 positivos"
+    ],
+    "series": [
+     {
+      "name": "Pontos",
+      "values": [
+       11.1,
+       5.5,
+       2.8
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-estat-10",
+   "cat": "estat",
+   "topic": "Validação: treino, validação, teste e CV",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Qual a diferença entre conjunto de validação e de teste, e por que importa?",
+   "ans": "A validação serve para escolher modelo e hiperparâmetros, então a gente a consulta várias vezes e ela fica um pouco otimista. O teste fica guardado e é usado uma única vez no fim, para estimar o desempenho real em dados novos. Se eu usar o teste para decidir, ele vira validação e perco a estimativa honesta. Quando os dados são poucos, uso validação cruzada no desenvolvimento e mantenho um teste separado.",
+   "pro": "Validação é para escolher, teste é para reportar; se eu escolho olhando o teste, ele deixa de ser honesto."
+  },
+  {
+   "id": "d20261018-estat-11",
+   "cat": "estat",
+   "topic": "Data leakage",
+   "kind": "quiz",
+   "mode": "reuniao",
+   "ctx": {
+    "who": "Diretor de crédito",
+    "say": "O modelo de inadimplência acerta 98% no teste. Já posso colocar em produção na segunda?"
+   },
+   "q": "O que você responde a Diretor de crédito (Data leakage)?",
+   "opts": [
+    "Um número tão alto me deixa desconfiado: em crédito, AUC entre 0,70 e 0,85 é o comum. Vou checar se alguma variável nasce depois da concessão, como dias de atraso, e refazer com corte por data. Te trago o número honesto na sexta.",
+    "Sim, 98% é excelente, pode ir para produção.",
+    "Vamos subir e acompanhar; se cair, ajustamos.",
+    "Acho que está bom, mas vou rodar de novo para confirmar."
+   ],
+   "why": "Desempenho altíssimo em problema ruidoso costuma indicar vazamento: uma variável que só existe depois do evento. Teste com corte por data e a pergunta \"essa coluna existe na hora da decisão?\" revelam o problema antes de produção.",
+   "pro": "Desempenho de 98% em crédito me faz checar vazamento antes de ir para produção, com um corte por data."
+  },
+  {
+   "id": "d20261018-estat-12",
+   "cat": "estat",
+   "topic": "Data leakage",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor técnico",
+    "say": "No modelo de churn de uma telecom, uma das features é \"fez_chamada_cancelamento\"."
+   },
+   "steps": [
+    {
+     "q": "Por que essa feature é perigosa?",
+     "opts": [
+      "Ela é registrada junto ou depois da decisão de cancelar; na hora da previsão ainda não existe, é vazamento temporal.",
+      "Porque variáveis binárias não funcionam em modelos.",
+      "Porque tem poucos valores distintos.",
+      "Não há perigo, ela prevê bem o churn."
+     ],
+     "why": "Leakage é usar informação indisponível no momento da previsão. A chamada de cancelamento já é o efeito. O modelo parece ótimo offline e falha em produção."
+    },
+    {
+     "q": "Como você audita o modelo à procura de outros vazamentos?",
+     "opts": [
+      "Pergunto de cada coluna se ela existe no momento da previsão, olho features dominantes na importância e avalio com corte por data.",
+      "Removo todas as colunas com alta correlação com o alvo.",
+      "Aumento o conjunto de treino.",
+      "Confio no AUC de validação."
+     ],
+     "why": "Vazamento costuma aparecer como uma feature muito dominante. A checagem de disponibilidade no momento da decisão e a divisão temporal são os testes decisivos. Correlação alta isolada também pode ser sinal legítimo."
+    },
+    {
+     "q": "Você imputou valores faltantes com a média de todo o dataset antes de dividir. Problema?",
+     "opts": [
+      "Vazamento leve: a média usa dados da validação e do teste; ajustar o imputer só no treino, dentro de um Pipeline.",
+      "Nenhum, a média é uma estatística simples.",
+      "Só é problema se houver mais de 50% de faltantes.",
+      "O problema é usar a média; a mediana resolve."
+     ],
+     "why": "Qualquer transformação ajustada nos dados deve aprender só do treino. Pipeline repete esse ajuste dentro de cada dobra. Trocar média por mediana não muda o problema."
+    }
+   ],
+   "pro": "Eu pergunto de cada coluna se ela existe na hora da previsão e avalio com corte por data para pegar vazamento."
+  },
+  {
+   "id": "d20261018-estat-13",
+   "cat": "estat",
+   "topic": "Data leakage",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "O resultado offline é excelente, mas em produção o modelo decepciona. Onde está o vazamento?",
+   "code": "df['media_cliente'] = df.groupby('cliente')['y'].transform('mean')\nX_tr, X_te = train_test_split(df, test_size=0.2)\nmodel.fit(X_tr[['media_cliente']], X_tr['y'])\nprint(roc_auc_score(X_te['y'], model.predict_proba(X_te[['media_cliente']])[:, 1]))",
+   "opts": [
+    "A média por cliente usa o próprio alvo y, inclusive de linhas do teste e da própria linha. Calcular só com histórico do treino ou anterior à data.",
+    "train_test_split não embaralha, então o resultado é viesado.",
+    "predict_proba precisa de duas colunas.",
+    "roc_auc_score só aceita classes balanceadas."
+   ],
+   "why": "A feature carrega o alvo (target leakage): a média de y por cliente inclui a linha prevista e linhas do teste. Features baseadas no alvo devem usar apenas dados passados ou calcular dentro de cada dobra.",
+   "pro": "Features construídas com o alvo precisam usar só o passado do cliente, senão o modelo decora a resposta."
+  },
+  {
+   "id": "d20261018-estat-14",
+   "cat": "estat",
+   "topic": "Data leakage",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Qual desempenho de AUC num modelo de churn ou crédito deve acender a suspeita de vazamento?",
+   "opts": [
+    "AUC acima de cerca de 0,95 sem explicação: em churn e crédito, valores típicos ficam entre 0,70 e 0,85.",
+    "AUC abaixo de 0,6.",
+    "AUC igual a 0,80.",
+    "Nunca: AUC alto só indica um bom modelo."
+   ],
+   "why": "Problemas de comportamento humano têm ruído irredutível, então AUC perto de 1 é raro. AUC muito alto pede checar colunas pós-evento, duplicatas entre treino e teste e a divisão temporal.",
+   "pro": "AUC acima de 0,95 em churn ou crédito é sinal para caçar vazamento antes de comemorar."
+  },
+  {
+   "id": "d20261018-estat-15",
+   "cat": "estat",
+   "topic": "Data leakage",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Me dê um exemplo de vazamento de dados que você já viu ou evitaria, e como detectaria.",
+   "ans": "Um caso clássico é prever inadimplência usando \"dias de atraso\", que só existe depois da concessão. O modelo vai muito bem no teste e falha na vida real. Detecto olhando uma feature com importância desproporcional, perguntando se cada coluna existe no momento da decisão e validando com corte por data. Para evitar, monto as features com a data de corte e coloco o pré-processamento dentro de um Pipeline.",
+   "pro": "Pergunto de cada coluna se ela existe no momento da decisão e valido com corte por data."
+  },
+  {
+   "id": "d20261018-estat-16",
+   "cat": "estat",
+   "topic": "Métricas de classificação e threshold",
+   "kind": "quiz",
+   "mode": "reuniao",
+   "ctx": {
+    "who": "Diretor de antifraude",
+    "say": "O modelo pega 90% das fraudes, mas o time de análise está afogado em alertas. O que fazemos?"
+   },
+   "q": "O que você responde a Diretor de antifraude (Métricas de classificação e threshold)?",
+   "opts": [
+    "Subo o ponto de corte. Hoje, com precisão de 5%, são 36 mil alertas para 1.800 fraudes. Se chegarmos a 20% de precisão com recall de 80%, caem para 8 mil alertas e 1.600 fraudes. Trago a curva e você escolhe o ponto conforme a capacidade do time.",
+    "Contratamos mais analistas para revisar todos os alertas.",
+    "Mantemos como está, recall alto é o que importa.",
+    "Treinamos de novo com mais dados e vemos se melhora."
+   ],
+   "why": "O corte move precisão e recall em sentidos opostos. Com 2.000 fraudes no mês, 1.800/0,05 = 36 mil alertas; 1.600/0,2 = 8 mil. A escolha depende do custo da fraude perdida e da capacidade de revisão.",
+   "pro": "Subir o corte troca recall por precisão: perdemos 200 fraudes, mas reduzimos de 36 mil para 8 mil alertas por mês."
+  },
+  {
+   "id": "d20261018-estat-17",
+   "cat": "estat",
+   "topic": "Métricas de classificação e threshold",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor de risco",
+    "say": "O modelo de crédito tem 97% de acurácia e só 3% dos clientes são inadimplentes."
+   },
+   "steps": [
+    {
+     "q": "Esse 97% é bom?",
+     "opts": [
+      "Não diz nada: prever \"ninguém inadimplente\" já daria 97%. Olho recall, precisão e PR-AUC da classe inadimplente.",
+      "Sim, 97% é quase perfeito.",
+      "Sim, mas só se treinarmos com mais dados.",
+      "Depende apenas do número de variáveis."
+     ],
+     "why": "Com classes desbalanceadas, a acurácia reflete a classe majoritária. Métricas da classe rara mostram se o modelo realmente encontra os inadimplentes."
+    },
+    {
+     "q": "Como escolhe o ponto de corte?",
+     "opts": [
+      "Pelo custo: comparo o custo de aprovar um inadimplente com o de recusar um bom cliente e escolho o corte que minimiza o custo esperado.",
+      "Sempre 0,5, que é o padrão.",
+      "O corte que maximiza a acurácia.",
+      "O que deixa o recall em 100%."
+     ],
+     "why": "Os erros têm custos diferentes e o corte ótimo depende disso. 0,5 é só convenção. Recall de 100% exigiria recusar quase todos os clientes."
+    },
+    {
+     "q": "Ao mudar o corte, o que acontece com o AUC?",
+     "opts": [
+      "Nada: o AUC mede a ordenação dos scores e não depende do corte; muda só o ponto de operação.",
+      "Sobe junto com o recall.",
+      "Cai quando a precisão aumenta.",
+      "Fica igual à acurácia."
+     ],
+     "why": "AUC avalia como o modelo ordena positivos acima de negativos em todos os cortes. Escolher um corte apenas seleciona um ponto da curva."
+    }
+   ],
+   "pro": "Em classes raras eu ignoro a acurácia e escolho o corte pelo custo do erro de cada tipo."
+  },
+  {
+   "id": "d20261018-estat-18",
+   "cat": "estat",
+   "topic": "Métricas de classificação e threshold",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "O gestor quer recall de 80% na classe fraude, mas o código usa o corte padrão. Como ajustar?",
+   "code": "y_pred = model.predict(X_val)\nprint(precision_score(y_val, y_pred), recall_score(y_val, y_pred))\n# recall = 0.62, meta = 0.80",
+   "opts": [
+    "Usar predict_proba(X_val)[:, 1] >= t, escolhendo t na curva precision_recall da validação para atingir recall de 80%.",
+    "Trocar precision_score por accuracy_score.",
+    "Chamar predict() de novo até o recall subir.",
+    "Multiplicar y_pred por 1,3."
+   ],
+   "why": "predict() usa o corte 0,5 fixo. Baixar o corte transforma mais scores em positivos e eleva o recall, com queda na precisão. O corte deve ser escolhido na validação, não no teste.",
+   "pro": "Escolhi o corte na curva precisão-recall da validação para atingir 80% de recall, e mostrei quanto cai a precisão."
+  },
+  {
+   "id": "d20261018-estat-19",
+   "cat": "estat",
+   "topic": "Métricas de classificação e threshold",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Prevalência de 1%, sensibilidade de 90% e especificidade de 90%. Qual a precisão aproximada entre os alertas, em 1 milhão de casos?",
+   "opts": [
+    "Cerca de 8%: 9.000 verdadeiros em 108.000 alertas.",
+    "Cerca de 90%, igual à sensibilidade.",
+    "Cerca de 50%.",
+    "Cerca de 1%."
+   ],
+   "why": "Em 1 milhão, 10.000 são positivos e 9.000 são pegos. Dos 990.000 negativos, 10% viram falsos positivos: 99.000. Precisão = 9.000 / (9.000 + 99.000) ≈ 8,3%.",
+   "pro": "Com 1% de prevalência, até um teste com 90% de acerto gera só cerca de 8% de precisão, porque os falsos positivos dominam.",
+   "chart": {
+    "type": "bar",
+    "title": "Alertas em 1 milhão de casos",
+    "labels": [
+     "Verdadeiros",
+     "Falsos positivos"
+    ],
+    "series": [
+     {
+      "name": "Alertas",
+      "values": [
+       9000,
+       99000
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-estat-20",
+   "cat": "estat",
+   "topic": "Métricas de classificação e threshold",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Como você explicaria o trade-off entre precisão e recall para um executivo?",
+   "ans": "Recall é quantos dos casos reais a gente pega, precisão é quantos dos alertas realmente valem a pena. Se baixo o corte, pego mais casos mas gero mais alertas falsos, e o time gasta tempo. Num modelo de fraude, por exemplo, subir o recall de 80% para 90% pode dobrar os alertas. Eu levo a curva e o custo de cada erro, e o executivo escolhe o ponto conforme a capacidade e o prejuízo.",
+   "pro": "Recall é quantos casos pegamos e precisão é quantos alertas valem; eu mostro o custo de cada ponto para você escolher."
+  },
+  {
+   "id": "d20261018-modelo-01",
+   "cat": "modelo",
+   "topic": "Regressão linear e logística",
+   "kind": "quiz",
+   "mode": "reuniao",
+   "ctx": {
+    "who": "Diretora comercial",
+    "say": "A regressão diz que cada R$ 1 mil em mídia gera 3 vendas a mais. Então se eu dobrar a verba, dobro as vendas?"
+   },
+   "q": "O que você responde a Diretora comercial (Regressão linear e logística)?",
+   "opts": [
+    "Não necessariamente. O coeficiente vale na faixa observada, de R$ 20 a 60 mil, e mídia tem retornos decrescentes. Proponho subir 20% em duas regiões por um mês e medir o efeito antes de dobrar o orçamento.",
+    "Sim, o modelo mostra uma relação linear, então dobrar a verba dobra as vendas.",
+    "Não dá para saber, regressão não serve para decisão de verba.",
+    "Sim, mas só se o R² for maior que 0,5."
+   ],
+   "why": "Extrapolar fora da faixa dos dados é o erro clássico de regressão. Retornos decrescentes fazem a inclinação cair com o volume. Um teste incremental pequeno mede o efeito real antes de comprometer o orçamento.",
+   "pro": "O coeficiente vale na faixa que observamos; antes de dobrar a verba eu testo um aumento de 20% em duas regiões."
+  },
+  {
+   "id": "d20261018-modelo-02",
+   "cat": "modelo",
+   "topic": "Regressão linear e logística",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor de dados",
+    "say": "Rodei uma regressão logística de conversão e o odds ratio de \"usou cupom\" saiu 1,5."
+   },
+   "steps": [
+    {
+     "q": "Como interpreta esse 1,5?",
+     "opts": [
+      "As chances (odds) de converter são 50% maiores para quem usou cupom, mantendo as outras variáveis; não é 50% mais probabilidade.",
+      "A probabilidade de converter é 50% maior.",
+      "O cupom aumenta a conversão em 1,5 ponto percentual.",
+      "O cupom causa 1,5 vez mais conversões."
+     ],
+     "why": "Odds ratio compara chances, não probabilidades. Também descreve associação condicional no modelo, e causalidade exigiria experimento ou desenho causal."
+    },
+    {
+     "q": "Com conversão base de 10%, qual a probabilidade de quem usou cupom?",
+     "opts": [
+      "Cerca de 14,3%: odds de 0,111 vezes 1,5 dá 0,167, e p = 0,167/1,167.",
+      "15%, pois 10% vezes 1,5.",
+      "11,5%.",
+      "60%."
+     ],
+     "why": "Odds base = 0,10/0,90 = 0,111. Multiplicando por 1,5 dá 0,1667. Probabilidade = 0,1667/(1+0,1667) = 14,3%. Por isso o odds ratio não é multiplicador direto de probabilidade."
+    },
+    {
+     "q": "Duas variáveis do modelo são muito correlacionadas. Qual o efeito?",
+     "opts": [
+      "Coeficientes instáveis e com erro padrão inflado, embora a previsão possa seguir boa; checo VIF, removo uma ou uso regularização.",
+      "O modelo para de convergir sempre.",
+      "A previsão fica pior e sempre viesada.",
+      "Nenhum, correlação entre features nunca importa."
+     ],
+     "why": "Multicolinearidade dificulta atribuir efeito a cada variável, pois elas se confundem. A capacidade preditiva geral costuma sobreviver, mas a interpretação dos coeficientes não."
+    }
+   ],
+   "pro": "Odds ratio de 1,5 significa chances 50% maiores, e com base de 10% isso dá cerca de 14,3% de probabilidade."
+  },
+  {
+   "id": "d20261018-modelo-03",
+   "cat": "modelo",
+   "topic": "Regressão linear e logística",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "Os coeficientes saem pequenos para a renda e grandes para o número de filhos. Dá para comparar importância?",
+   "code": "from sklearn.linear_model import LogisticRegression\nX = df[['renda', 'idade', 'n_filhos']]  # renda em R$\nm = LogisticRegression().fit(X, y)\nprint(m.coef_)",
+   "opts": [
+    "Não: as escalas são diferentes e o sklearn aplica regularização L2 por padrão. Padronizar com StandardScaler antes, num Pipeline.",
+    "Sim, o maior coeficiente em módulo é sempre a variável mais importante.",
+    "Não, só é possível com árvores.",
+    "Sim, desde que se aumente max_iter."
+   ],
+   "why": "Renda em reais tem desvio enorme e recebe coeficiente minúsculo; a penalidade L2 também depende da escala. Padronizar coloca as variáveis em pé de igualdade e ajuda a convergência.",
+   "pro": "Padronizei as variáveis antes da logística, então os coeficientes agora são comparáveis entre si."
+  },
+  {
+   "id": "d20261018-modelo-04",
+   "cat": "modelo",
+   "topic": "Regressão linear e logística",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Pela regra de 10 eventos por variável, quantas variáveis cabem numa logística com 200 inadimplentes entre 5.000 clientes?",
+   "opts": [
+    "Cerca de 20 variáveis: o que conta é o número de eventos (200), não o de linhas.",
+    "Cerca de 500 variáveis, uma para cada 10 clientes.",
+    "Cerca de 2 variáveis.",
+    "Cerca de 200 variáveis, uma por evento."
+   ],
+   "why": "Na logística o limite vem da classe menos frequente. 200 eventos ÷ 10 por variável = 20 variáveis (ou parâmetros). Passar disso aumenta o risco de overfitting, e regularização ajuda.",
+   "pro": "Na logística o que limita é o número de eventos: com 200 inadimplentes, uso cerca de 20 variáveis.",
+   "chart": {
+    "type": "bar",
+    "title": "Variáveis máximas pela regra de 10 eventos",
+    "labels": [
+     "100 eventos",
+     "200 eventos",
+     "500 eventos"
+    ],
+    "series": [
+     {
+      "name": "Variáveis",
+      "values": [
+       10,
+       20,
+       50
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-modelo-05",
+   "cat": "modelo",
+   "topic": "Regressão linear e logística",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Quando você prefere uma regressão logística a um modelo mais complexo, como boosting?",
+   "ans": "Prefiro a logística quando preciso explicar a decisão com clareza, como em crédito regulado, quando há poucos dados ou quando a relação é aproximadamente linear. Ela é rápida, estável e fácil de monitorar. Faço o baseline com ela e só migro para boosting se o ganho de AUC justificar a perda de transparência, por exemplo mais de 3 pontos. Em muitos casos a diferença é pequena.",
+   "pro": "Começo pela logística como baseline e só troco por boosting se o ganho compensar a perda de explicabilidade."
+  },
+  {
+   "id": "d20261018-modelo-06",
+   "cat": "modelo",
+   "topic": "Feature engineering",
+   "kind": "quiz",
+   "mode": "trabalho",
+   "ctx": {
+    "who": "Engenheiro de dados no Slack",
+    "say": "Para a feature \"estado do cliente\" tenho 27 UFs. O modelo é uma regressão logística. Uso one-hot ou codifico de 0 a 26?"
+   },
+   "q": "O que você responde a Engenheiro de dados no Slack (Feature engineering)?",
+   "opts": [
+    "One-hot, com 27 colunas ou agrupando UFs raras em \"outros\". Codificar de 0 a 26 imporia uma ordem falsa, como se SP fosse maior que RJ. Em árvores, target encoding com validação cruzada também serve.",
+    "Codificar de 0 a 26, é mais simples e economiza colunas.",
+    "Descartar a feature, categoria não entra em modelo linear.",
+    "Usar a sigla como texto direto no modelo."
+   ],
+   "why": "Modelos lineares tratam números como grandezas ordenadas. Um código inteiro cria relação que não existe. One-hot dá a cada estado seu próprio efeito. Cardinalidade maior pede agrupamento ou target encoding.",
+   "pro": "Uso one-hot para categorias em modelo linear, porque código inteiro cria uma ordem que não existe."
+  },
+  {
+   "id": "d20261018-modelo-07",
+   "cat": "modelo",
+   "topic": "Feature engineering",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor de dados",
+    "say": "Vamos prever atraso de entrega num app de delivery."
+   },
+   "steps": [
+    {
+     "q": "Quais features você cria primeiro?",
+     "opts": [
+      "Distância, hora e dia da semana, clima, e a fila do restaurante no momento do pedido, tudo disponível na hora da previsão.",
+      "O tempo real que a entrega levou.",
+      "A nota que o cliente deu depois da entrega.",
+      "O ID do pedido."
+     ],
+     "why": "Features precisam existir quando o pedido é feito. Tempo real e nota são resultado da entrega e vazariam o alvo. ID não generaliza."
+    },
+    {
+     "q": "Você usa a hora do dia como número de 0 a 23. Qual o problema?",
+     "opts": [
+      "Meia-noite (0) e 23h parecem distantes, embora estejam próximas; usar seno e cosseno da hora ou categorias de período.",
+      "Nenhum, hora é uma variável numérica comum.",
+      "Hora nunca influencia o atraso.",
+      "O modelo não aceita inteiros."
+     ],
+     "why": "Hora é uma variável cíclica. Codificar com seno e cosseno coloca 23h e 0h próximas. Em árvores o problema é menor, mas ainda vale testar."
+    },
+    {
+     "q": "Você cria \"pedidos do cliente nos últimos 30 dias\". O que cuidar?",
+     "opts": [
+      "Calcular a janela só com dados anteriores ao pedido (point-in-time), senão a feature inclui o futuro.",
+      "Nada, o histórico é sempre seguro.",
+      "Usar a janela de 30 dias apenas no teste.",
+      "Preencher os nulos com o valor máximo."
+     ],
+     "why": "Agregações históricas precisam respeitar o instante da previsão. Janela que inclui pedidos posteriores vaza informação e infla a métrica offline."
+    }
+   ],
+   "pro": "Toda feature precisa existir na hora da previsão, e agregações históricas eu calculo point-in-time."
+  },
+  {
+   "id": "d20261018-modelo-08",
+   "cat": "modelo",
+   "topic": "Feature engineering",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "Clientes novos ficam com ticket 0 e o modelo os trata como compradores baratos. O que fazer?",
+   "code": "df['ticket'] = df['receita'] / df['pedidos']\ndf['ticket'] = df['ticket'].fillna(0)\n# clientes novos: receita=0 e pedidos=0 -> NaN",
+   "opts": [
+    "Manter NaN (ou usar a mediana) e criar a flag 'sem_pedido', separando 'sem dado' de 'gasto baixo'.",
+    "Preencher com a média máxima da base.",
+    "Remover todos os clientes novos do treino.",
+    "Trocar a divisão por multiplicação."
+   ],
+   "why": "0/0 gera NaN, e fillna(0) mistura ausência de dado com gasto baixo. Uma flag de ausência preserva a informação e permite ao modelo tratar o grupo de forma própria.",
+   "pro": "Em vez de preencher com zero, mantenho o valor ausente e crio uma flag, para o modelo distinguir sem dado de gasto baixo."
+  },
+  {
+   "id": "d20261018-modelo-09",
+   "cat": "modelo",
+   "topic": "Feature engineering",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "One-hot de CEP em 100 mil linhas com 12 mil CEPs distintos. Quantas linhas por CEP em média, e o que isso sugere?",
+   "opts": [
+    "Cerca de 8 linhas por CEP: muito esparso, melhor agrupar por prefixo de 3 dígitos ou usar target encoding com validação cruzada.",
+    "Cerca de 800 linhas por CEP, suficiente.",
+    "Cerca de 80 mil linhas por CEP.",
+    "Uma linha por CEP, então o ideal é one-hot."
+   ],
+   "why": "100.000 ÷ 12.000 ≈ 8,3 linhas por CEP. Com tão poucos exemplos, o efeito de cada coluna é ruído. Agrupar por região (supondo cerca de 600 prefixos) leva a cerca de 167 linhas por categoria.",
+   "pro": "Com 8 linhas por CEP, one-hot vira ruído; agrupo por prefixo e chego a cerca de 167 linhas por categoria.",
+   "chart": {
+    "type": "bar",
+    "title": "Linhas médias por categoria",
+    "labels": [
+     "CEP completo",
+     "Prefixo de 3 dígitos"
+    ],
+    "series": [
+     {
+      "name": "Linhas",
+      "values": [
+       8,
+       167
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-modelo-10",
+   "cat": "modelo",
+   "topic": "Feature engineering",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Conte um exemplo de feature que melhorou muito um modelo e como você chegou nela.",
+   "ans": "Em previsão de atraso de pagamento, a melhor feature foi a razão entre o valor da parcela e a renda declarada, em vez dos dois valores isolados. Cheguei nela conversando com o time de cobrança, que olhava essa proporção na prática. O AUC subiu de 0,71 para 0,76. Aprendi que conhecimento de domínio vale mais que variações de algoritmo, e sempre valido que a feature existe na hora da decisão.",
+   "pro": "As melhores features nascem de conversar com quem decide: uma razão parcela/renda subiu meu AUC de 0,71 para 0,76."
+  },
+  {
+   "id": "d20261018-modelo-11",
+   "cat": "modelo",
+   "topic": "Interpretabilidade (SHAP)",
+   "kind": "quiz",
+   "mode": "reuniao",
+   "ctx": {
+    "who": "Diretora de risco",
+    "say": "Um cliente teve o crédito recusado e perguntou o motivo. O que você consegue me entregar?"
+   },
+   "q": "O que você responde a Diretora de risco (Interpretabilidade (SHAP))?",
+   "opts": [
+    "Para cada recusa gero as 3 variáveis que mais pesaram, usando SHAP local, e traduzo em motivos simples, como alta utilização do limite. SHAP explica o modelo, não prova causa; o texto passa por revisão jurídica antes de ir ao cliente.",
+    "O modelo é uma caixa-preta, não tem como explicar.",
+    "Mando a lista completa das 120 variáveis com os valores.",
+    "Digo que a decisão foi do algoritmo, e isso basta."
+   ],
+   "why": "SHAP decompõe cada previsão em contribuições por variável, que somadas dão o score. Isso permite justificativas individuais. Ressalvar que é explicação do modelo, não da realidade, evita promessas que o jurídico não aprova.",
+   "pro": "Para cada recusa eu mostro as 3 variáveis que mais pesaram no score, e o jurídico revisa o texto antes de enviar."
+  },
+  {
+   "id": "d20261018-modelo-12",
+   "cat": "modelo",
+   "topic": "Interpretabilidade (SHAP)",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor técnico",
+    "say": "Seu modelo de crédito está com um gráfico de SHAP pronto para a diretoria."
+   },
+   "steps": [
+    {
+     "q": "Qual a diferença entre SHAP global e local?",
+     "opts": [
+      "Global: média do valor absoluto do SHAP por variável, mostra o que pesa em geral. Local: contribuição de cada variável em uma previsão específica.",
+      "Global usa o conjunto de treino e local o de teste.",
+      "Global serve para regressão e local para classificação.",
+      "Não há diferença."
+     ],
+     "why": "A importância global resume o modelo todo, enquanto a explicação local responde por que este cliente recebeu este score. As duas saem dos mesmos valores SHAP."
+    },
+    {
+     "q": "\"Idade\" tem SHAP alto. Podemos dizer que mudar a idade muda o risco?",
+     "opts": [
+      "Não: SHAP explica como o modelo usa a variável, não o efeito causal no mundo. Idade pode estar correlacionada com outros fatores.",
+      "Sim, SHAP mede causalidade.",
+      "Sim, mas só se for positivo.",
+      "Não, SHAP alto significa erro no modelo."
+     ],
+     "why": "SHAP é descritivo do modelo. Variáveis correlacionadas com o resultado ganham peso mesmo sem causar nada. Decisões de intervenção exigem desenho causal ou experimento."
+    },
+    {
+     "q": "Duas features são quase idênticas. Como afeta o SHAP?",
+     "opts": [
+      "A contribuição se divide entre elas, então cada uma parece menos importante; agrupar as variáveis correlatas ao interpretar.",
+      "Uma recebe tudo e a outra zero, sempre.",
+      "O SHAP deixa de funcionar.",
+      "A soma dos SHAPs deixa de bater com a previsão."
+     ],
+     "why": "Com features redundantes o modelo reparte o crédito. A soma continua exata, mas a leitura individual subestima o grupo. Somar ou agrupar mostra a importância real do conceito."
+    }
+   ],
+   "pro": "SHAP me diz como o modelo decidiu, mas não prova o que causa o risco no mundo real."
+  },
+  {
+   "id": "d20261018-modelo-13",
+   "cat": "modelo",
+   "topic": "Interpretabilidade (SHAP)",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "A importância de \"id_cliente\" aparece alta no relatório. Por quê?",
+   "code": "from sklearn.inspection import permutation_importance\nr = permutation_importance(model, X_tr, y_tr, n_repeats=5, random_state=0)\nfor i in r.importances_mean.argsort()[::-1][:3]:\n    print(X_tr.columns[i], r.importances_mean[i])",
+   "opts": [
+    "Calculada no treino, a importância reflete o que o modelo memorizou, incluindo o ID. Calcular no conjunto de validação.",
+    "permutation_importance só funciona com árvores.",
+    "n_repeats=5 é pouco; com 50 o ID some.",
+    "O argsort está invertido."
+   ],
+   "why": "No treino, o modelo conhece as respostas e embaralhar uma coluna que ele memorizou derruba o desempenho. Na validação, embaralhar o ID não muda nada. Importância medida em dados novos mostra o que generaliza.",
+   "pro": "Calculo a importância na validação, porque no treino o modelo memorizou até o ID e a lista engana."
+  },
+  {
+   "id": "d20261018-modelo-14",
+   "cat": "modelo",
+   "topic": "Interpretabilidade (SHAP)",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Um modelo prevê o preço de um imóvel com média da base de R$ 300 mil. SHAPs: área +45 mil, bairro +20 mil, idade do prédio −15 mil, outras +5 mil. Qual a previsão?",
+   "opts": [
+    "R$ 355 mil: base + soma dos SHAPs (300 + 45 + 20 − 15 + 5).",
+    "R$ 365 mil.",
+    "R$ 70 mil.",
+    "R$ 300 mil."
+   ],
+   "why": "SHAP é aditivo: previsão = valor base + soma das contribuições. 300 + 45 + 20 − 15 + 5 = 355 mil. Essa conta fecha a explicação ao cliente.",
+   "pro": "Em SHAP a previsão é o valor base mais a soma das contribuições, e a conta precisa fechar na explicação."
+  },
+  {
+   "id": "d20261018-modelo-15",
+   "cat": "modelo",
+   "topic": "Interpretabilidade (SHAP)",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Como você explica um modelo complexo para uma área que precisa confiar nele?",
+   "ans": "Começo com o que o modelo faz em termos de negócio e depois mostro as variáveis mais importantes com SHAP, em português simples. Trago 3 ou 4 exemplos reais de clientes, explicando por que cada um recebeu aquele score. Também mostro onde o modelo erra e como monitoramos. Deixo claro que SHAP explica o modelo, não a causa. Com isso a área valida se a lógica faz sentido de negócio.",
+   "pro": "Explico em termos de negócio, mostro casos reais com SHAP e deixo claro onde o modelo erra."
+  },
+  {
+   "id": "d20261018-modelo-16",
+   "cat": "modelo",
+   "topic": "Agentes e tool use",
+   "kind": "quiz",
+   "mode": "trabalho",
+   "ctx": {
+    "who": "PM no Slack",
+    "say": "O agente de suporte às vezes reembolsa errado. Podemos liberar para 100% dos clientes?"
+   },
+   "q": "O que você responde a PM no Slack (Agentes e tool use)?",
+   "opts": [
+    "Ainda não. Libero para 5% com teto de R$ 200 por reembolso, aprovação humana acima disso, log de cada chamada e avaliação em 200 casos reais. Se o erro ficar abaixo de 1% por 2 semanas, amplio.",
+    "Sim, o modelo é bom o bastante.",
+    "Não, agentes não servem para ações com dinheiro.",
+    "Libero para todos e corrijo os erros quando aparecerem reclamações."
+   ],
+   "why": "Ações com impacto financeiro pedem liberação gradual, limites, humano no circuito e avaliação com critério numérico. Assim o dano máximo é conhecido e a ampliação é baseada em dados.",
+   "pro": "Libero o agente aos poucos, com teto de valor, aprovação humana acima dele e meta de erro abaixo de 1%."
+  },
+  {
+   "id": "d20261018-modelo-17",
+   "cat": "modelo",
+   "topic": "Agentes e tool use",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor técnico",
+    "say": "Estamos construindo um agente que consulta pedidos e emite reembolsos."
+   },
+   "steps": [
+    {
+     "q": "Como funciona o tool use?",
+     "opts": [
+      "O modelo devolve um pedido estruturado com o nome da ferramenta e os argumentos em JSON; seu código executa e devolve o resultado ao modelo.",
+      "O modelo executa o código diretamente no servidor.",
+      "As ferramentas são treinadas dentro do modelo.",
+      "O modelo acessa o banco de dados sozinho."
+     ],
+     "why": "O modelo só propõe a chamada. Quem executa é o seu código, o que permite validar argumentos, aplicar permissões e registrar logs antes de qualquer ação real."
+    },
+    {
+     "q": "Em 4% dos casos o agente chama a ferramenta com argumento inválido. O que faz?",
+     "opts": [
+      "Validar com schema, devolver o erro ao modelo para ele corrigir e limitar o número de tentativas.",
+      "Ignorar o erro e seguir.",
+      "Executar mesmo assim para não travar.",
+      "Remover a ferramenta."
+     ],
+     "why": "Validar antes de executar protege os sistemas. O erro devolvido costuma bastar para o modelo se corrigir. Limite de tentativas evita laços e custo descontrolado."
+    },
+    {
+     "q": "Como avalia se o agente é bom?",
+     "opts": [
+      "Com um conjunto de tarefas e resultados esperados: taxa de sucesso, número de passos, custo e chamadas indevidas, rodado a cada mudança de prompt ou modelo.",
+      "Perguntando a 3 colegas se acharam bom.",
+      "Pelo tamanho das respostas.",
+      "Só olhando o custo por token."
+     ],
+     "why": "Avaliação repetível detecta regressões ao trocar prompt ou modelo. Métricas de sucesso e de segurança, como chamadas indevidas, mostram o comportamento real do agente."
+    }
+   ],
+   "pro": "O modelo só propõe a chamada; meu código valida, executa e registra, e eu avalio o agente com um conjunto fixo de tarefas."
+  },
+  {
+   "id": "d20261018-modelo-18",
+   "cat": "modelo",
+   "topic": "Agentes e tool use",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "Um ticket gerou 400 chamadas e R$ 90 de custo. Qual a correção?",
+   "code": "messages = [pergunta]\nwhile True:\n    resp = llm(messages, tools=tools)\n    if not resp.tool_calls:\n        break\n    messages.append(run_tool(resp.tool_calls[0]))",
+   "opts": [
+    "Limitar o laço (por exemplo 8 passos), impor orçamento de tokens e escalar para um humano ao atingir o limite.",
+    "Trocar while True por while False.",
+    "Aumentar a temperatura para variar as ferramentas.",
+    "Remover a verificação de tool_calls."
+   ],
+   "why": "Sem limite de passos, o agente pode ficar preso chamando a mesma ferramenta. Um teto de iterações e orçamento mantém custo e latência previsíveis, e o escalonamento preserva a experiência do cliente.",
+   "pro": "Coloquei limite de 8 passos e orçamento de tokens, com escalonamento para humano, para o agente não entrar em laço."
+  },
+  {
+   "id": "d20261018-modelo-19",
+   "cat": "modelo",
+   "topic": "Agentes e tool use",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Um agente executa 5 passos e cada passo acerta 95% das vezes, de forma independente. Qual a chance de a tarefa inteira sair certa?",
+   "opts": [
+    "Cerca de 77%: 0,95 elevado a 5.",
+    "Cerca de 95%.",
+    "Cerca de 90%.",
+    "Cerca de 99%."
+   ],
+   "why": "Probabilidades de passos independentes se multiplicam: 0,95^5 = 0,774. Com 10 passos cai para 60%. Por isso fluxos longos exigem verificação intermediária e menos passos.",
+   "pro": "Cinco passos de 95% de acerto dão só 77% no fim; com 10 passos a chance cai para 60%.",
+   "chart": {
+    "type": "line",
+    "title": "Chance de acerto total (%) por número de passos",
+    "labels": [
+     "1",
+     "2",
+     "3",
+     "4",
+     "5",
+     "6",
+     "7",
+     "8",
+     "9",
+     "10"
+    ],
+    "series": [
+     {
+      "name": "%",
+      "values": [
+       95,
+       90.3,
+       85.7,
+       81.5,
+       77.4,
+       73.5,
+       69.8,
+       66.3,
+       63,
+       59.9
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-modelo-20",
+   "cat": "modelo",
+   "topic": "Agentes e tool use",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Quando você usaria um agente em vez de um fluxo fixo com chamadas de LLM?",
+   "ans": "Uso agente quando o caminho para resolver a tarefa não é previsível, por exemplo investigar um problema em várias fontes. Se os passos são conhecidos, prefiro um fluxo fixo, que é mais barato, rápido e fácil de testar. Mesmo com agente, limito ferramentas, passos e custo, e meço o sucesso num conjunto de tarefas. Meu padrão é começar simples e só ganhar autonomia quando a avaliação mostrar benefício.",
+   "pro": "Se o caminho é conhecido uso fluxo fixo; só uso agente quando os passos dependem do que ele encontra."
+  },
+  {
+   "id": "d20261018-negocio-01",
+   "cat": "negocio",
+   "topic": "Direção técnica e roadmap",
+   "kind": "quiz",
+   "mode": "reuniao",
+   "ctx": {
+    "who": "CEO",
+    "say": "Preciso de três entregas de IA neste trimestre e você tem 4 pessoas. Dá?"
+   },
+   "q": "O que você responde a CEO (Direção técnica e roadmap)?",
+   "opts": [
+    "Quatro pessoas somam 12 pessoas-mês no trimestre, e com 20% de suporte restam cerca de 9,6. Cada entrega pede cerca de 4, então cabem duas bem feitas. Proponho duas agora e a terceira como piloto no próximo trimestre; qual você prefere adiar?",
+    "Dá, vamos trabalhar mais e entregar as três.",
+    "Não dá, o time é pequeno demais.",
+    "Dá, mas só se contratarmos 4 pessoas hoje."
+   ],
+   "why": "Capacidade real é menor que a bruta por causa de suporte e incidentes. 4 × 3 = 12; menos 20% = 9,6 pessoas-mês. Três entregas de 4 pedem 12, então o corte e a escolha precisam ser explícitos.",
+   "pro": "Com 9,6 pessoas-mês de capacidade real, cabem duas entregas bem feitas; me diga qual das três adiamos."
+  },
+  {
+   "id": "d20261018-negocio-02",
+   "cat": "negocio",
+   "topic": "Direção técnica e roadmap",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Diretor de tecnologia",
+    "say": "Você vai montar o roadmap de dados dos próximos 12 meses."
+   },
+   "steps": [
+    {
+     "q": "Como constrói esse roadmap?",
+     "opts": [
+      "Parto dos objetivos de negócio, listo iniciativas por valor e esforço, equilibro fundação (qualidade, plataforma) com entregas visíveis e reservo cerca de 30% para imprevistos.",
+      "Junto todos os pedidos das áreas por ordem de chegada.",
+      "Escolho as tecnologias mais modernas e planejo em torno delas.",
+      "Planejo cada semana dos 12 meses com datas fixas."
+     ],
+     "why": "Roadmap serve às metas da empresa, não à lista de pedidos. Fundação sem entrega perde apoio, e entrega sem fundação trava depois. Folga evita que cada imprevisto derrube o plano."
+    },
+    {
+     "q": "Como defende tempo para pagar dívida técnica?",
+     "opts": [
+      "Traduzo em custo: o pipeline quebra 2 vezes por mês, 6 horas cada, e atrasa o fechamento. Peço cerca de 20% da capacidade com meta mensurável.",
+      "Digo que o código está feio e precisa ser refeito.",
+      "Faço escondido nos intervalos.",
+      "Peço um trimestre inteiro sem entregas."
+     ],
+     "why": "Dívida técnica convence quando vira horas perdidas, risco e prazo. Uma fatia fixa com meta preserva as entregas e dá evidência de retorno."
+    },
+    {
+     "q": "No meio do trimestre chega uma demanda urgente. O que faz?",
+     "opts": [
+      "Mostro o trade-off: para entrar, algo sai, e deixo quem decide escolher com os números na mesa.",
+      "Aceito e ponho o time em hora extra.",
+      "Recuso, o roadmap está fechado.",
+      "Aceito e comunico atraso só no fim."
+     ],
+     "why": "Capacidade é finita. Tornar visível o que sai transforma a conversa em decisão informada. Aceitar tudo sem trade-off gera atraso silencioso e desgaste."
+    }
+   ],
+   "pro": "Roadmap tem folga de 30% e toda demanda nova vem com o que sai, para quem decide ver o trade-off."
+  },
+  {
+   "id": "d20261018-negocio-03",
+   "cat": "negocio",
+   "topic": "Direção técnica e roadmap",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "A conta mostra que o roadmap cabe, mas o time sempre atrasa. Qual o erro?",
+   "code": "capacidade = 4 * 13 * 5   # pessoas x semanas x dias\ndemanda = sum(e['dias'] for e in roadmap)\nprint(capacidade, demanda)   # 260 250\nprint('cabe' if demanda <= capacidade else 'estoura')",
+   "opts": [
+    "A capacidade bruta ignora férias, reuniões, suporte e incidentes. A real é cerca de 65% (169 dias), então a demanda de 250 passa de 1,4 vez a capacidade.",
+    "O erro é usar 13 semanas; deveriam ser 20.",
+    "Nada, 250 é menor que 260, cabe com folga.",
+    "O erro é somar dias; deveria multiplicar."
+   ],
+   "why": "260 × 0,65 = 169 dias reais. 250 / 169 ≈ 1,48 vez a capacidade, portanto atraso quase certo. Planejar sobre capacidade bruta é o erro de roadmap mais comum.",
+   "pro": "Planejo sobre capacidade real, cerca de 65% da bruta, e por isso mostro que 250 dias de demanda não cabem em 169."
+  },
+  {
+   "id": "d20261018-negocio-04",
+   "cat": "negocio",
+   "topic": "Direção técnica e roadmap",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Com régua de custo de CLT de 1,7 vez o salário, quanto custa por ano um time de 4 pessoas com salário médio de R$ 15 mil?",
+   "opts": [
+    "Cerca de R$ 1,2 milhão por ano: 4 × 15 mil × 1,7 × 12.",
+    "Cerca de R$ 720 mil.",
+    "Cerca de R$ 2,5 milhões.",
+    "Cerca de R$ 180 mil."
+   ],
+   "why": "4 × 15.000 = 60.000 por mês de salário. Com 1,7 de encargos, benefícios e estrutura, são 102.000 por mês, ou 1.224.000 por ano. Essa conta é a base do ROI de qualquer iniciativa.",
+   "pro": "Um time de 4 com salário médio de R$ 15 mil custa cerca de R$ 1,2 milhão por ano, e o projeto precisa pagar isso.",
+   "chart": {
+    "type": "bar",
+    "title": "Custo anual do time (R$ mil)",
+    "labels": [
+     "2 pessoas",
+     "4 pessoas",
+     "6 pessoas"
+    ],
+    "series": [
+     {
+      "name": "R$ mil",
+      "values": [
+       612,
+       1224,
+       1836
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-negocio-05",
+   "cat": "negocio",
+   "topic": "Direção técnica e roadmap",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Como você decide entre construir uma plataforma interna e entregar mais casos de uso agora?",
+   "ans": "Olho o custo de não ter a plataforma: quantas horas por mês perdemos com retrabalho e quantas entregas atrasam por falta dela. Se o time perde mais de 20% da capacidade com isso, invisto em fundação, mas em fatias pequenas que já entregam valor a um caso real. Combino com o negócio um marco por trimestre e metas mensuráveis, como tempo de entrega de um novo pipeline. Assim a plataforma se paga e não vira projeto infinito.",
+   "pro": "Construo plataforma em fatias que já servem um caso real, e meço o ganho em tempo de entrega."
+  },
+  {
+   "id": "d20261018-negocio-06",
+   "cat": "negocio",
+   "topic": "Mentoria e desenvolvimento do time",
+   "kind": "quiz",
+   "mode": "trabalho",
+   "ctx": {
+    "who": "Analista júnior no Slack",
+    "say": "Fiz a análise de churn, mas não sei se está certa e tenho vergonha de perguntar."
+   },
+   "q": "O que você responde a Analista júnior no Slack (Mentoria e desenvolvimento do time)?",
+   "opts": [
+    "Obrigado por trazer. Vamos revisar juntos por 30 minutos amanhã: me conte a pergunta, a base e a conclusão em 3 frases, e vemos 2 pontos de melhoria. Perguntar cedo me poupa retrabalho e você ganha feedback antes do cliente.",
+    "Manda que eu refaço para você.",
+    "Isso você precisa aprender sozinho.",
+    "Dei uma olhada rápida, está ok."
+   ],
+   "why": "Mentoria cria segurança psicológica e estrutura: tempo marcado, formato curto e foco em poucos pontos. Refazer pelo júnior tira o aprendizado, e deixá-lo sozinho aumenta o risco de erro chegar ao cliente.",
+   "pro": "Revisamos juntos por 30 minutos, com a pergunta, a base e a conclusão, e saímos com 2 melhorias."
+  },
+  {
+   "id": "d20261018-negocio-07",
+   "cat": "negocio",
+   "topic": "Mentoria e desenvolvimento do time",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Diretor de dados",
+    "say": "Uma pessoa do seu time entrega código com bugs recorrentes."
+   },
+   "steps": [
+    {
+     "q": "Como você começa?",
+     "opts": [
+      "Olho 3 PRs recentes para achar o padrão, como falta de testes, e converso 1:1 combinando um hábito concreto.",
+      "Passo a revisar tudo eu mesmo.",
+      "Aviso na reunião do time para todos tomarem cuidado.",
+      "Espero melhorar com o tempo."
+     ],
+     "why": "Padrão comum indica causa tratável. Conversa individual e hábito pequeno e concreto funcionam melhor que cobrança genérica ou esperar sem agir."
+    },
+    {
+     "q": "Como dá um feedback difícil?",
+     "opts": [
+      "Específico, com fato e impacto, e um próximo passo com prazo: \"no PR 12, sem teste de lista vazia, o relatório quebrou; no próximo, inclua o teste\".",
+      "Generalista: \"você precisa ter mais cuidado\".",
+      "Por mensagem no canal do time para todos verem.",
+      "Só na avaliação semestral."
+     ],
+     "why": "Feedback útil descreve o comportamento observado, o efeito e o que fazer. Frases genéricas não mudam nada, e exposição pública prejudica a confiança."
+    },
+    {
+     "q": "Como sabe que a mentoria está funcionando?",
+     "opts": [
+      "Por metas observáveis, como menos comentários de revisão repetidos e mais PRs aprovados sem ajuda, medidos a cada 6 semanas.",
+      "Pela sensação de que a pessoa está mais animada.",
+      "Quando ela deixa de me procurar.",
+      "Pelo número de horas de reunião."
+     ],
+     "why": "Sinais concretos e periódicos mostram progresso e permitem ajustar o plano. Humor e frequência de contato não dizem se a qualidade melhorou."
+    }
+   ],
+   "pro": "Eu dou feedback com fato, impacto e próximo passo, e acompanho em metas observáveis a cada 6 semanas."
+  },
+  {
+   "id": "d20261018-negocio-08",
+   "cat": "negocio",
+   "topic": "Mentoria e desenvolvimento do time",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "Esta função de um júnior quebra em produção quando o filtro retorna lista vazia. Que feedback de revisão ensina mais?",
+   "code": "def media(valores):\n    return sum(valores) / len(valores)\n\nprint(media([]))  # ZeroDivisionError",
+   "opts": [
+    "Perguntar \"o que acontece com lista vazia?\" e pedir um teste, deixando que decida com o consumidor se retorna None, 0 ou erro explícito.",
+    "Reescrever a função e só avisar que foi corrigida.",
+    "Dizer que o código está errado e pedir mais atenção.",
+    "Envolver tudo num try/except que retorna 0."
+   ],
+   "why": "Perguntar ensina a pensar em casos de borda. Retornar 0 esconde a ausência de dado e distorce relatórios. A decisão de retorno depende do uso, por isso vale combinar com quem consome.",
+   "pro": "Em revisão eu pergunto o que acontece com lista vazia, porque ensinar a pensar em borda vale mais que corrigir."
+  },
+  {
+   "id": "d20261018-negocio-09",
+   "cat": "negocio",
+   "topic": "Mentoria e desenvolvimento do time",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Um líder com 8 liderados faz 1:1 semanal de 30 minutos com cada um. Quanto tempo da semana de 40 horas isso consome?",
+   "opts": [
+    "4 horas, 10% da semana: 8 × 30 minutos.",
+    "1 hora, 2,5% da semana.",
+    "8 horas, 20% da semana.",
+    "30 minutos no total."
+   ],
+   "why": "8 pessoas × 0,5 h = 4 h. 4/40 = 10%. Com 12 liderados, passaria de 15%. Por isso o tamanho do time direto limita quanto o líder consegue codar ou mentorar.",
+   "pro": "Oito 1:1 semanais de 30 minutos custam 4 horas, 10% da semana, e isso entra no meu planejamento."
+  },
+  {
+   "id": "d20261018-negocio-10",
+   "cat": "negocio",
+   "topic": "Mentoria e desenvolvimento do time",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Como você ajuda uma pessoa júnior a crescer em 6 meses?",
+   "ans": "Começo alinhando onde ela está e onde quer chegar, e definimos 2 ou 3 metas observáveis, como conduzir sozinha uma análise de ponta a ponta. Marco 1:1 semanal curto, reviso o trabalho com perguntas em vez de respostas e aumento a complexidade aos poucos. Dou feedback específico e peço que apresente resultados ao negócio. Ao final de 6 meses revisamos as metas e ajustamos o plano com ela.",
+   "pro": "Combino 2 ou 3 metas observáveis, faço 1:1 semanal e aumento a autonomia aos poucos."
+  },
+  {
+   "id": "d20261018-negocio-11",
+   "cat": "negocio",
+   "topic": "Influência sem autoridade",
+   "kind": "quiz",
+   "mode": "reuniao",
+   "ctx": {
+    "who": "Gerente de engenharia de outro time",
+    "say": "Sua mudança no schema do evento vai atrasar meu sprint em 2 semanas. Não vou priorizar."
+   },
+   "q": "O que você responde a Gerente de engenharia de outro time (Influência sem autoridade)?",
+   "opts": [
+    "Entendo o custo. Hoje 30% dos eventos chegam sem user_id e isso derruba a atribuição de R$ 4 mi por mês de receita. Posso escrever a mudança e os testes e deixar só a revisão com vocês, cerca de 4 horas. Se não couber agora, qual sprint combinamos?",
+    "Mas essa mudança é prioridade da diretoria, vocês têm que fazer.",
+    "Tudo bem, a gente se vira com os dados incompletos.",
+    "Vou escalar para o seu chefe agora."
+   ],
+   "why": "Influência vem de mostrar o problema do outro lado com número, reduzir o esforço pedido e oferecer alternativas. Escalar de saída gasta relacionamento, e desistir deixa o problema crescer.",
+   "pro": "Reduzi o custo para vocês a 4 horas de revisão e mostrei que 30% dos eventos sem user_id derrubam R$ 4 mi de atribuição."
+  },
+  {
+   "id": "d20261018-negocio-12",
+   "cat": "negocio",
+   "topic": "Influência sem autoridade",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Gestor técnico",
+    "say": "Quero que você convença 3 times a adotar um padrão de eventos."
+   },
+   "steps": [
+    {
+     "q": "Como começa?",
+     "opts": [
+      "Parto da dor deles, com dado, e faço um piloto pequeno com um time que já queira participar.",
+      "Mando um documento com as regras e prazo.",
+      "Peço ao diretor que determine o padrão.",
+      "Apresento o padrão em uma reunião geral."
+     ],
+     "why": "Quem sente o problema adere mais. Um piloto bem-sucedido vira prova social e reduz o risco percebido pelos outros times."
+    },
+    {
+     "q": "Uma pessoa influente discorda em público. O que faz?",
+     "opts": [
+      "Converso 1:1 depois, entendo a objeção e incorporo o que procede, mostrando que a proposta mudou.",
+      "Rebato os argumentos na reunião.",
+      "Ignoro e sigo com o plano.",
+      "Escalo para a liderança."
+     ],
+     "why": "Debater em público endurece posições. A conversa individual revela objeções reais, e incorporá-las transforma o crítico em coautor."
+    },
+    {
+     "q": "Como consolida a adoção?",
+     "opts": [
+      "Documento a decisão, automatizo a checagem no CI e dou crédito aos times que adotaram.",
+      "Mando um lembrete mensal.",
+      "Cobro nas reuniões de status.",
+      "Espero que o hábito se estabeleça."
+     ],
+     "why": "Padrões duram quando são fáceis de seguir e difíceis de violar. Checagem automática remove dependência de cobrança, e reconhecimento mantém o apoio."
+    }
+   ],
+   "pro": "Eu convenço começando pela dor deles, com um piloto pequeno, e consolido com automação no CI."
+  },
+  {
+   "id": "d20261018-negocio-13",
+   "cat": "negocio",
+   "topic": "Influência sem autoridade",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "Você quer mostrar ao outro time o impacto do bug. O que a query entrega e o que falta para convencer?",
+   "code": "SELECT date_trunc('week', criado_em) AS semana,\n       AVG((user_id IS NULL)::int) AS pct_sem_user\nFROM eventos\nGROUP BY 1\nORDER BY 1;",
+   "opts": [
+    "Mostra a proporção semanal de eventos sem user_id (a média de um booleano vira fração); falta traduzir em reais ou decisões afetadas.",
+    "Mostra a quantidade total de usuários por semana.",
+    "Dá erro, pois não se pode converter boolean em inteiro.",
+    "Já convence por si só, números técnicos bastam."
+   ],
+   "why": "Média de 0/1 é a proporção. Para o outro time priorizar, o número precisa virar impacto: receita sem atribuição, decisões erradas ou horas gastas.",
+   "pro": "A query mostra a proporção semanal sem user_id, e eu traduzo isso em receita sem atribuição antes de levar ao outro time."
+  },
+  {
+   "id": "d20261018-negocio-14",
+   "cat": "negocio",
+   "topic": "Influência sem autoridade",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Cerca de 30% dos eventos chegam sem user_id e R$ 4 mi por mês de receita dependem dessa atribuição. Quanto fica sem atribuição, e qual argumento isso dá?",
+   "opts": [
+    "Cerca de R$ 1,2 mi por mês, mais de R$ 14 mi por ano: um argumento em reais para o outro time priorizar.",
+    "Cerca de R$ 120 mil por mês.",
+    "Cerca de R$ 4 mi por mês.",
+    "Nenhum valor, pois o bug é técnico."
+   ],
+   "why": "0,30 × R$ 4 mi = R$ 1,2 mi por mês, ou R$ 14,4 mi por ano. Traduzir um defeito técnico em dinheiro muda a prioridade na conversa com outra área.",
+   "pro": "Os 30% de eventos sem user_id deixam cerca de R$ 1,2 milhão por mês sem atribuição, e esse é o argumento.",
+   "chart": {
+    "type": "bar",
+    "title": "Receita mensal (R$ mi)",
+    "labels": [
+     "Total",
+     "Atribuída",
+     "Sem atribuição"
+    ],
+    "series": [
+     {
+      "name": "R$ mi",
+      "values": [
+       4,
+       2.8,
+       1.2
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-negocio-15",
+   "cat": "negocio",
+   "topic": "Influência sem autoridade",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Conte como você conseguiu apoio de uma pessoa ou área que não respondia a você.",
+   "ans": "Em um projeto de qualidade de dados, o time dono da fonte não tinha prioridade para ajudar. Mostrei que 30% dos registros chegavam incompletos e que isso custava horas ao time deles em chamados. Ofereci escrever a correção e deixar só a revisão com eles. Em duas semanas o problema foi resolvido e os chamados caíram. Aprendi a reduzir o esforço pedido e falar da dor da outra pessoa.",
+   "pro": "Mostro a dor da outra área com número e reduzo o esforço que peço, escrevendo eu mesmo a mudança."
+  },
+  {
+   "id": "d20261018-negocio-16",
+   "cat": "negocio",
+   "topic": "Priorização e dizer não",
+   "kind": "quiz",
+   "mode": "reuniao",
+   "ctx": {
+    "who": "VP Comercial",
+    "say": "Preciso de um dashboard novo até sexta, é urgente."
+   },
+   "q": "O que você responde a VP Comercial (Priorização e dizer não)?",
+   "opts": [
+    "Hoje o time tem 3 pedidos na frente: churn, que vale cerca de R$ 1,5 mi por ano, o seu dashboard, de uns 2 dias, e um relatório fiscal obrigatório. Entrego uma versão simples na sexta se adiarmos o dashboard de marketing uma semana. Você aceita ou prefere ordenar com o diretor?",
+    "Claro, faço até sexta, pode contar comigo.",
+    "Não consigo, o time está sobrecarregado.",
+    "Vou ver o que dá e te aviso."
+   ],
+   "why": "Dizer sim para tudo esconde o custo. Mostrar a fila com valor e esforço e oferecer uma versão menor transforma o não em escolha compartilhada. Quem decide a prioridade passa a ser o negócio, não o analista.",
+   "pro": "Posso entregar na sexta, mas algo da fila precisa esperar uma semana; você escolhe o quê."
+  },
+  {
+   "id": "d20261018-negocio-17",
+   "cat": "negocio",
+   "topic": "Priorização e dizer não",
+   "kind": "chain",
+   "mode": "entrevista",
+   "ctx": {
+    "who": "Diretor de dados",
+    "say": "Chegaram 10 pedidos para o time este mês e só dá para fazer 3."
+   },
+   "steps": [
+    {
+     "q": "Como prioriza?",
+     "opts": [
+      "Pontuo cada pedido por impacto em reais, esforço, prazo legal e confiança, e peço aos donos que comparem os candidatos.",
+      "Faço na ordem de chegada.",
+      "Priorizo o pedido de quem tem o cargo mais alto.",
+      "Faço os mais fáceis primeiro."
+     ],
+     "why": "Critérios explícitos tornam a escolha transparente e defensável. Ordem de chegada ou hierarquia ignoram o valor, e escolher só pelo esforço entrega pouco impacto."
+    },
+    {
+     "q": "Como diz não sem queimar a relação?",
+     "opts": [
+      "Digo \"sim, se\": proponho uma versão menor, um prazo posterior ou mostro o que sairia da fila para encaixar.",
+      "Digo apenas que não temos capacidade.",
+      "Aceito e entrego atrasado.",
+      "Ignoro o pedido."
+     ],
+     "why": "\"Sim, se\" devolve a decisão ao dono com um trade-off claro. Recusa seca fecha a conversa, e aceitar sem capacidade cria atraso e perda de confiança."
+    },
+    {
+     "q": "O CEO pede algo fora da fila. E agora?",
+     "opts": [
+      "Mostro o custo de oportunidade: o que sai ou atrasa para isso entrar, e deixo que decida com os números.",
+      "Faço sem avisar ninguém.",
+      "Recuso, a fila é a fila.",
+      "Faço e deixo o resto atrasar sem dizer nada."
+     ],
+     "why": "Executivos podem priorizar, mas decisões saudáveis dependem de ver o custo. A transparência protege o time e as outras áreas."
+    }
+   ],
+   "pro": "Priorizo por impacto em reais e esforço, e todo sim vem com o que sai da fila."
+  },
+  {
+   "id": "d20261018-negocio-18",
+   "cat": "negocio",
+   "topic": "Priorização e dizer não",
+   "kind": "quiz",
+   "mode": "codigo",
+   "q": "O top 3 de iniciativas saiu com as de menor pontuação. Por quê?",
+   "code": "df['rice'] = df.reach * df.impact * df.confidence / df.effort\ntop = df.sort_values('rice').head(3)\nprint(top[['iniciativa', 'rice']])",
+   "opts": [
+    "sort_values ordena de forma crescente por padrão; usar sort_values('rice', ascending=False).",
+    "O head(3) devolve as últimas linhas.",
+    "A fórmula deveria somar, não multiplicar.",
+    "O pandas não permite colunas calculadas."
+   ],
+   "why": "O padrão do sort_values é ascending=True, então head(3) traz as menores. Em priorização isso inverte a decisão sem nenhum erro visível. Sempre confira o primeiro item do ranking.",
+   "pro": "Ordenei de forma decrescente e conferi o primeiro item do ranking antes de apresentar a priorização."
+  },
+  {
+   "id": "d20261018-negocio-19",
+   "cat": "negocio",
+   "topic": "Priorização e dizer não",
+   "kind": "quiz",
+   "mode": "bolso",
+   "q": "Pelo RICE (alcance × impacto × confiança ÷ esforço), qual priorizar: A (2.000, impacto 2, confiança 80%, esforço 4) ou B (500, impacto 3, confiança 100%, esforço 1)?",
+   "opts": [
+    "B: pontuação 1.500 contra 800 de A.",
+    "A: tem o maior alcance.",
+    "Empate, os dois dão 1.200.",
+    "A: o esforço maior indica projeto mais importante."
+   ],
+   "why": "A = 2.000 × 2 × 0,8 ÷ 4 = 800. B = 500 × 3 × 1 ÷ 1 = 1.500. O esforço baixo e a alta confiança de B compensam o alcance menor.",
+   "pro": "Pelo RICE, B vale 1.500 e A vale 800, então B entra primeiro e o alcance de A não decide sozinho.",
+   "chart": {
+    "type": "bar",
+    "title": "Pontuação RICE",
+    "labels": [
+     "A",
+     "B"
+    ],
+    "series": [
+     {
+      "name": "RICE",
+      "values": [
+       800,
+       1500
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "d20261018-negocio-20",
+   "cat": "negocio",
+   "topic": "Priorização e dizer não",
+   "kind": "flip",
+   "mode": "entrevista",
+   "q": "Como você lida com uma área que quer tudo urgente?",
+   "ans": "Levo a lista completa com valor estimado e esforço de cada pedido e peço que a própria área ordene, sabendo que a capacidade é limitada. Mostro, por exemplo, que com 4 pessoas cabem 3 entregas no mês. Para os que ficam de fora, ofereço versões menores ou data futura. Combino revisões quinzenais da fila. Assim a urgência vira escolha e eu não sou o gargalo da decisão.",
+   "pro": "Mostro a fila com valor e esforço e deixo a área ordenar, porque a capacidade é limitada."
   }
  ]
 }
